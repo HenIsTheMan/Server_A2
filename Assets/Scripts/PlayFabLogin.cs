@@ -39,7 +39,7 @@ namespace Server {
         public void OnLoginClicked() {
             LoginWithEmailAddressRequest req = new LoginWithEmailAddressRequest {
                 Email = "jimeroyesyes@test.com",
-                Password = "123456",
+                Password = "123456"
             };
             PlayFabClientAPI.LoginWithEmailAddress(req,
                 // Another way to register the callback function to handle
