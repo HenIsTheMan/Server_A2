@@ -22,28 +22,39 @@ namespace Server {
 
         #region Unity User Callback Event Funcs
 
-        private void Start() {
-            if(string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId)) {
-                /*
-                Please change the titleId below to your own titleId from PlayFab Game Manager.
-                If you have already set the value in the Editor Extensions, this can be skipped.
-                */
-                PlayFabSettings.staticSettings.TitleId = "42";
-            }
-            var request = new LoginWithCustomIDRequest { CustomId = "GettingStartedGuide", CreateAccount = true };
-            PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginFailure);
-        }
+        //private void Start() {
+        //    if(string.IsNullOrEmpty(PlayFabSettings.staticSettings.TitleId)) {
+        //        /*
+        //        Please change the titleId below to your own titleId from PlayFab Game Manager.
+        //        If you have already set the value in the Editor Extensions, this can be skipped.
+        //        */
+        //        PlayFabSettings.staticSettings.TitleId = "42";
+        //    }
+        //    var request = new LoginWithCustomIDRequest { CustomId = "GettingStartedGuide", CreateAccount = true };
+        //    PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginFailure);
+        //}
 
         #endregion
 
+        public void OnLoginClicked() {
+            LoginWithEmailAddressRequest req = new LoginWithEmailAddressRequest {
+                Email = "jimeroyesyes@test.com",
+                Password = "123456",
+            };
+            PlayFabClientAPI.LoginWithEmailAddress(req,
+                // Another way to register the callback function to handle
+                // success and failure cases
+                OnLoginSuccess, // Function defined below
+                OnLoginFailure // Function defined below
+            );
+        }
+
         private void OnLoginSuccess(LoginResult result) {
-            Debug.Log("Congratulations, you made your first successful API call!");
+            Debug.Log("Login is successful");
         }
 
         private void OnLoginFailure(PlayFabError error) {
-            Debug.LogWarning("Something went wrong with your first API call.  :(");
-            Debug.LogError("Here's some debug information:");
-            Debug.LogError(error.GenerateErrorReport());
+            Debug.LogError("Login failed with error: \n" + error.GenerateErrorReport());
         }
     }
 }
