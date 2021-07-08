@@ -50,5 +50,34 @@ namespace Server {
         void DisplayPlayFabError(PlayFabError error) {
             Debug.Log(error.GenerateErrorReport());
         }
+
+        public void OnAddFriendClicked() {
+            //2nd parameter should be another player account in your title
+            AddFriend(FriendIdType.Email, "abc@test.com");
+        }
+
+        enum FriendIdType { PlayFabId, Username, Email, DisplayName };
+
+        void AddFriend(FriendIdType idType, string friendId) {
+            var request = new AddFriendRequest();
+            switch(idType) {
+                case FriendIdType.PlayFabId:
+                    request.FriendPlayFabId = friendId;
+                    break;
+                case FriendIdType.Username:
+                    request.FriendUsername = friendId;
+                    break;
+                case FriendIdType.Email:
+                    request.FriendEmail = friendId;
+                    break;
+                case FriendIdType.DisplayName:
+                    request.FriendTitleDisplayName = friendId;
+                    break;
+            }
+            // Execute request and update friends when we are done
+            PlayFabClientAPI.AddFriend(request, result => {
+                Debug.Log("Friend added successfully!");
+            }, DisplayPlayFabError);
+        }
     }
 }

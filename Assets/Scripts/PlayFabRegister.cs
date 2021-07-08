@@ -25,9 +25,10 @@ namespace Server {
 
         public void OnRegisterClicked() {
             RegisterPlayFabUserRequest req = new RegisterPlayFabUserRequest {
-                // e.g. abc@test.com so ensure you try something else
-                Email = "jimeroyesyes@test.com",
-                DisplayName = "johnjohn",
+                //Email = "jimeroyesyes@test.com",
+                //DisplayName = "johnjohn",
+                Email = "abc@test.com",
+                DisplayName = "hola",
                 Password = "123456",
                 RequireBothUsernameAndEmail = false
             };
