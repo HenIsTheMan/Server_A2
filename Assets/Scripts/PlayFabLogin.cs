@@ -29,8 +29,6 @@ namespace Server {
                 If you have already set the value in the Editor Extensions, this can be skipped.
                 */
                 PlayFabSettings.staticSettings.TitleId = "42";
-
-                Debug.Log("here", gameObject);
             }
             var request = new LoginWithCustomIDRequest { CustomId = "GettingStartedGuide", CreateAccount = true };
             PlayFabClientAPI.LoginWithCustomID(request, OnLoginSuccess, OnLoginFailure);
