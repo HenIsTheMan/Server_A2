@@ -256,7 +256,10 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1302055290}
+  - component: {fileID: 1302055294}
+  - component: {fileID: 1302055292}
   - component: {fileID: 1302055291}
+  - component: {fileID: 1302055293}
   m_Layer: 0
   m_Name: CreateIfDoesNotExistMaster
   m_TagString: Untagged
@@ -290,8 +293,59 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a1f7fb56aa4648342b23326e7662aac8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  prefab: {fileID: 3490949070755652829, guid: 7da1ac6d75f54394ca641f547517d38f, type: 3}
+  myName: ExpandAndContractCanvas
+  pos: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 1}
+  parentTransform: {fileID: 0}
+--- !u!114 &1302055292
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302055289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f7fb56aa4648342b23326e7662aac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 3199394192008277314, guid: 2899d2cd968d7e444a016889234028f4, type: 3}
+  myName: EventSystem
+  pos: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 1}
+  parentTransform: {fileID: 0}
+--- !u!114 &1302055293
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302055289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f7fb56aa4648342b23326e7662aac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
   prefab: {fileID: 2158822450959349232, guid: d9a0aedc905c12c4b98015825466ac17, type: 3}
   myName: SceneManager
+  pos: {x: 0, y: 0, z: 0}
+  rotation: {x: 0, y: 0, z: 0, w: 1}
+  parentTransform: {fileID: 0}
+--- !u!114 &1302055294
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1302055289}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a1f7fb56aa4648342b23326e7662aac8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  prefab: {fileID: 5473130671261944969, guid: d76be9d76e312474aaecb934ae1c2527, type: 3}
+  myName: AudioListener
   pos: {x: 0, y: 0, z: 0}
   rotation: {x: 0, y: 0, z: 0, w: 1}
   parentTransform: {fileID: 0}
