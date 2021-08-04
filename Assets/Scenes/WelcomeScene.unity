@@ -736,4 +736,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   initControl: {fileID: 0}
   sceneName: SignInScene
-  scenePrepMethodName: WelcomeSceneToSignInScenePrep
+  scenePrepMethodName: JustUnloadPrep
