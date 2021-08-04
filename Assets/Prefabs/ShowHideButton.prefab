@@ -196,8 +196,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shldRunInEditor: 0
   showHidePasswordTmp: {fileID: 0}
-  showPasswordText: Show Password
-  hidePasswordText: Hide Password
+  showPasswordText: Show
+  hidePasswordText: Hide
   inputField: {fileID: 0}
 --- !u!114 &3437753908852842972
 MonoBehaviour:
