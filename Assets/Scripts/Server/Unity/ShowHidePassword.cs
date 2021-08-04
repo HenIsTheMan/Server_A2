@@ -4,8 +4,11 @@ using static TMPro.TMP_InputField;
 
 namespace Server.Unity {
     [ExecuteAlways]
-    internal sealed class ShowPassword: MonoBehaviour {
+    internal sealed class ShowHidePassword: MonoBehaviour {
         #region Fields
+
+        [SerializeField]
+        private bool shldRunInEditor;
 
         private bool isPasswordHidden;
 
@@ -28,7 +31,9 @@ namespace Server.Unity {
 
         #region Ctors and Dtor
 
-        internal ShowPassword(): base() {
+        internal ShowHidePassword(): base() {
+            shldRunInEditor = false;
+
             isPasswordHidden = true;
 
             showHidePasswordTmp = null;
@@ -39,7 +44,7 @@ namespace Server.Unity {
             inputField = null;
         }
 
-        static ShowPassword() {
+        static ShowHidePassword() {
         }
 
         #endregion
@@ -64,7 +69,7 @@ namespace Server.Unity {
         #if UNITY_EDITOR
 
         private void Update() {
-            if(Application.isPlaying) {
+            if(!shldRunInEditor || Application.isPlaying) {
                 return;
             }
             
