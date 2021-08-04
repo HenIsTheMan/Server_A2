@@ -3,11 +3,14 @@ using UnityEngine;
 
 namespace Server.Unity {
     [ExecuteInEditMode]
-    internal sealed class PlaceholderAutofill: MonoBehaviour {
+    internal sealed class TextAutofill: MonoBehaviour {
         #region Fields
 
         [SerializeField]
-        private TMP_Text placeholderTmp;
+        private bool isUpdating;
+
+        [SerializeField]
+        private TMP_Text myTmp;
 
         [SerializeField]
         private TMP_Text myTmpRef;
@@ -25,14 +28,15 @@ namespace Server.Unity {
 
         #region Ctors and Dtor
 
-        internal PlaceholderAutofill(): base() {
-            placeholderTmp = null;
+        internal TextAutofill(): base() {
+            isUpdating = false;
+            myTmp = null;
             myTmpRef = null;
             frontText = string.Empty;
             backText = string.Empty;
         }
 
-        static PlaceholderAutofill() {
+        static TextAutofill() {
         }
 
         #endregion
@@ -40,7 +44,9 @@ namespace Server.Unity {
         #region Unity User Callback Event Funcs
 
         private void Update() {
-            placeholderTmp.text = frontText + myTmpRef.text + backText;
+            if(isUpdating) {
+                myTmp.text = frontText + myTmpRef.text + backText;
+            }
         }
 
         #endregion
