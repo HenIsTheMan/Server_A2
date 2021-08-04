@@ -144,11 +144,11 @@ GameObject:
   m_Component:
   - component: {fileID: 3437753908852842970}
   - component: {fileID: 3437753908852842973}
-  - component: {fileID: 720418168524102477}
+  - component: {fileID: 8133210613279470209}
   - component: {fileID: 3437753908852842972}
   - component: {fileID: 3437753908852842971}
   m_Layer: 5
-  m_Name: ShowButton
+  m_Name: ShowHideButton
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -182,7 +182,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3437753908852842969}
   m_CullTransparentMesh: 1
---- !u!114 &720418168524102477
+--- !u!114 &8133210613279470209
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -194,6 +194,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ffd383d755ae034409001cac18164ea7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  shldRunInEditor: 0
+  showHidePasswordTmp: {fileID: 0}
+  showPasswordText: Show Password
+  hidePasswordText: Hide Password
   inputField: {fileID: 0}
 --- !u!114 &3437753908852842972
 MonoBehaviour:

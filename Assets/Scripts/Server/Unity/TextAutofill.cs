@@ -7,7 +7,7 @@ namespace Server.Unity {
         #region Fields
 
         [SerializeField]
-        private bool isUpdating;
+        private bool shldRunInEditor;
 
         [SerializeField]
         private TMP_Text myTmp;
@@ -29,7 +29,7 @@ namespace Server.Unity {
         #region Ctors and Dtor
 
         internal TextAutofill(): base() {
-            isUpdating = false;
+            shldRunInEditor = false;
             myTmp = null;
             myTmpRef = null;
             frontText = string.Empty;
@@ -44,7 +44,7 @@ namespace Server.Unity {
         #region Unity User Callback Event Funcs
 
         private void Update() {
-            if(isUpdating) {
+            if(shldRunInEditor) {
                 myTmp.text = frontText + myTmpRef.text + backText;
             }
         }
