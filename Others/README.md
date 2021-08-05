@@ -2,13 +2,10 @@
 
 ## Player Account Management
 
-- Login using email
-- Registration using email
 - Edit Account
 - Delete/Deactivate Account
 - Reset Password
 - Password Encryption
-- Unique username
 - Login using third-party e.g. Facebook, Google, OAuth
 
 ## Friend System
@@ -31,7 +28,10 @@
 
 ## Player Account Management
 
+- Login using email
+- Registration using email
 - Password Validation
+- Unique username
 
 ## User Interface
 
