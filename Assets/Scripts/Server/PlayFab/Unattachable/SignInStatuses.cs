@@ -10,9 +10,7 @@ namespace Server.General {
 			WithUsername, //Signing in
 			WithEmail, //Signing in
 			Success,
-			WrongUsername,
-			WrongEmail,
-			WrongPassword,
+			Failure,
 			Amt
 		}
 	}

@@ -8,7 +8,6 @@
 - Delete/Deactivate Account
 - Reset Password
 - Password Encryption
-- Password Validation (e.g. length, number of characters, alphanumeric, etc)
 - Unique username
 - Login using third-party e.g. Facebook, Google, OAuth
 
@@ -29,6 +28,10 @@
 - Trading
 
 # Done
+
+## Player Account Management
+
+- Password Validation
 
 ## User Interface
 
