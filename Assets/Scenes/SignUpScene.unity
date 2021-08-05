@@ -123,6 +123,98 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &76651234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5646325973333328732, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+  m_PrefabInstance: {fileID: 596578055474513758}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &76651235
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76651234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f11a53db68201cb4bb23c1faf6d38875, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  usernameInputField: {fileID: 1372009616}
+  emailInputField: {fileID: 1261325209}
+  newPasswordInputField: {fileID: 5052123000954218455}
+  confirmPasswordInputField: {fileID: 1516903116}
+  onRegistrationSuccess:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 76651236}
+        m_TargetAssemblyTypeName: Server.General.CommonSceneTransitionButton, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+  onRegistrationFailure:
+    m_PersistentCalls:
+      m_Calls: []
+  signUpMsgTmp: {fileID: 1855808258}
+  signUpEllipsesControl: {fileID: 1855808259}
+  signUpMsgs:
+  - Shld not be here... (None)
+  - Username cannot be empty!
+  - Email cannot be empty!
+  - New Password cannot be empty!
+  - Confirm Password cannot be empty!
+  - New Password and Confirm Password do not match!
+  - Username cannot contain spaces!
+  - Email cannot contain spaces!
+  - Username must be 3 - 20 characters long!
+  - Password must be 6 - 100 characters long!
+  - Username must be alphanumeric!
+  - Email is invalid!
+  - Username is already taken!
+  - Email is already taken!
+  - Signing up
+  - Sign Up Success!
+  - Shld not be here... (Amt)
+  signUpMsgColors:
+  - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
+  - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
+--- !u!114 &76651236
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 76651234}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea55c194c078bf14ca5a36bada6850da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initControl: {fileID: 0}
+  sceneName: ProfileScene
+  scenePrepMethodName: JustUnloadPrep
 --- !u!1001 &574302392
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -408,6 +500,28 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 1987493393384155108, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
   m_PrefabInstance: {fileID: 1063233060}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1261325209 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1987493393384155109, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+  m_PrefabInstance: {fileID: 1063233060}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &1372009616 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1987493393384155109, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+  m_PrefabInstance: {fileID: 6739709049413848513}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1516903114
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1156,6 +1270,34 @@ PrefabInstance:
     - target: {fileID: 5646325973333328732, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
       propertyPath: m_Name
       value: SignUpButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 76651235}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Server.PlayFab.SignUp, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5646325973333328735, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
       propertyPath: m_Pivot.x

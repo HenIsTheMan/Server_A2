@@ -66,6 +66,11 @@ namespace Server.PlayFab {
 
         #region Unity User Callback Event Funcs
 
+        private void OnValidate() {
+            UnityEngine.Assertions.Assert.IsTrue(signInMsgs.Length == (int)SignInStatus.Amt + 1);
+            UnityEngine.Assertions.Assert.IsTrue(signInMsgColors.Length == (int)SignInStatus.Amt + 1);
+        }
+
         private void Awake() {
             signInMsgTmp.text = string.Empty;
         }

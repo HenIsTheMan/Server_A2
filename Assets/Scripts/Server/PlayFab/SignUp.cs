@@ -73,7 +73,12 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs 
- 
+
+        private void OnValidate() {
+            UnityEngine.Assertions.Assert.IsTrue(signUpMsgs.Length == (int)SignUpStatus.Amt + 1);
+            UnityEngine.Assertions.Assert.IsTrue(signUpMsgColors.Length == (int)SignUpStatus.Amt + 1);
+        }
+
         private void Awake() { 
             signUpMsgTmp.text = string.Empty; 
         } 
@@ -216,10 +221,10 @@ namespace Server.PlayFab {
             signUpEllipsesControl.enabled = false;
             switch(error.Error) {
                 case PlayFabErrorCode.UsernameNotAvailable:
-                    ShowSignInMsg(SignUpStatus.UsernameNotUnique);
+                    ShowSignInMsg(SignUpStatus.UsernameNotAvailable);
                     break;
                 case PlayFabErrorCode.EmailAddressNotAvailable:
-                    ShowSignInMsg(SignUpStatus.EmailNotUnique);
+                    ShowSignInMsg(SignUpStatus.EmailNotAvailable);
                     break;
                 default:
                     Console.LogError(error.Error.ToString());

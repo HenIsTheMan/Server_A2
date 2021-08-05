@@ -13,8 +13,8 @@ namespace Server.General {
 			InvalidPasswordLen,
 			UsernameHasInvalidChars,
 			InvalidEmail,
-			UsernameNotUnique,
-			EmailNotUnique,
+			UsernameNotAvailable,
+			EmailNotAvailable,
 			Processing,
 			Success,
 			Amt
