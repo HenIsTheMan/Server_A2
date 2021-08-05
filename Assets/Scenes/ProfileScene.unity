@@ -826,6 +826,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   emailInputField: {fileID: 0}
   userFeedbackTmp: {fileID: 1452990598}
+  ellipsesControl: {fileID: 1452990599}
   sendingAcctRecoveryEmailText: Sending Recovery Email
   sendingAcctRecoveryEmailTextColor: {r: 1, g: 1, b: 1, a: 1}
   sentAcctRecoveryEmailText: Sent Recovery Email!

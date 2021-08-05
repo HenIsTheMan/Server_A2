@@ -17,6 +17,9 @@ namespace Server.PlayFab {
         private TMP_Text userFeedbackTmp;
 
         [SerializeField]
+        private EllipsesControl ellipsesControl;
+
+        [SerializeField]
         private string sendingAcctRecoveryEmailText;
 
         [SerializeField]
@@ -47,6 +50,8 @@ namespace Server.PlayFab {
             emailInputField = null;
 
             userFeedbackTmp = null;
+
+            ellipsesControl = null;
 
             sendingAcctRecoveryEmailText = string.Empty;
             sendingAcctRecoveryEmailTextColor = Color.white;
@@ -90,6 +95,7 @@ namespace Server.PlayFab {
                     OnSendAccountRecoveryEmailFailure
                 );
 
+                ellipsesControl.enabled = true;
                 userFeedbackTmp.text = sendingAcctRecoveryEmailText;
                 userFeedbackTmp.color = sendingAcctRecoveryEmailTextColor;
             }
@@ -107,6 +113,7 @@ namespace Server.PlayFab {
                 OnSendAccountRecoveryEmailFailure
             );
 
+            ellipsesControl.enabled = true;
             userFeedbackTmp.text = sendingAcctRecoveryEmailText;
             userFeedbackTmp.color = sendingAcctRecoveryEmailTextColor;
         }
@@ -114,6 +121,7 @@ namespace Server.PlayFab {
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.LogError("GetAccountInfoFailure!");
 
+            ellipsesControl.enabled = false;
             userFeedbackTmp.text = failedToSendAcctRecoveryEmailText;
             userFeedbackTmp.color = failedToSendAcctRecoveryEmailTextColor;
 
@@ -123,6 +131,7 @@ namespace Server.PlayFab {
         private void OnSendAccountRecoveryEmailSuccess(SendAccountRecoveryEmailResult _) {
             Console.Log("SendAccountRecoveryEmailSuccess!");
 
+            ellipsesControl.enabled = false;
             userFeedbackTmp.text = sentAcctRecoveryEmailText;
             userFeedbackTmp.color = sentAcctRecoveryEmailTextColor;
 
@@ -132,6 +141,7 @@ namespace Server.PlayFab {
         private void OnSendAccountRecoveryEmailFailure(PlayFabError error) {
             Console.LogError("SendAccountRecoveryEmailFailure!");
 
+            ellipsesControl.enabled = false;
             userFeedbackTmp.text = sentAcctRecoveryEmailText + ' ' + error.ErrorMessage;
             userFeedbackTmp.color = failedToSendAcctRecoveryEmailTextColor;
 
