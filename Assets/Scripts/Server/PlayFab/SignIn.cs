@@ -26,6 +26,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_Text signInMsgTmp;
 
+        [SerializeField]
+        private EllipsesControl signInEllipsesControl;
+
         [EnumIndices(typeof(SignInStatus)), SerializeField]
         private string[] signInMsgs;
 
@@ -47,6 +50,7 @@ namespace Server.PlayFab {
             onLoginFailure = null;
 
             signInMsgTmp = null;
+            signInEllipsesControl = null;
             signInMsgs = System.Array.Empty<string>();
             signInMsgColors = System.Array.Empty<Color>();
         }
@@ -85,16 +89,64 @@ namespace Server.PlayFab {
                 goto ShowSignInMsg;
             }
 
-            LoginWithEmailAddressRequest req = new LoginWithEmailAddressRequest {
-                Email = usernameEmailInputField.text,
-                Password = passwordInputField.text 
-            };
+            bool isEmail = true;
+            int atIndex = usernameOrEmail.IndexOf('@');
+            int dotIndex = usernameOrEmail.IndexOf('.');
+            int emailLen = usernameOrEmail.Length;
 
-            PlayFabClientAPI.LoginWithEmailAddress(
-                req,
-                OnLoginSuccess,
-                OnLoginFailure
-            );
+            if(usernameOrEmail.Count(myChar => myChar == '@') != 1
+                || usernameOrEmail.Count(myChar => myChar == '.') != 1
+                || atIndex < 1
+                || dotIndex < 3
+                || atIndex > emailLen - 4
+                || dotIndex > emailLen - 2
+                || (atIndex >= dotIndex - 1)
+            ) {
+                isEmail = false;
+            } else {
+                string substr0 = usernameOrEmail.Substring(0, atIndex);
+                string substr1 = usernameOrEmail.Substring(atIndex + 1, dotIndex - atIndex - 1);
+                string substr2 = usernameOrEmail.Substring(dotIndex + 1, emailLen - dotIndex - 1);
+
+                if(!substr0.All(char.IsLetterOrDigit)
+                    || !substr1.All(char.IsLetterOrDigit)
+                    || !substr2.All(char.IsLetterOrDigit)
+                ) { //Diff from Sign Up (on purpose)
+                    isEmail = false;
+                }
+            }
+
+            if(isEmail) {
+                LoginWithEmailAddressRequest request = new LoginWithEmailAddressRequest {
+                    Email = usernameEmailInputField.text,
+                    Password = passwordInputField.text
+                };
+
+                PlayFabClientAPI.LoginWithEmailAddress(
+                    request,
+                    OnLoginSuccess,
+                    OnLoginFailure
+                );
+
+                signInEllipsesControl.enabled = true;
+                ShowSignInMsg(SignInStatus.WithEmail);
+            } else {
+                LoginWithPlayFabRequest request = new LoginWithPlayFabRequest {
+                    Username = usernameEmailInputField.text,
+                    Password = passwordInputField.text
+                };
+
+                PlayFabClientAPI.LoginWithPlayFab(
+                    request,
+                    OnLoginSuccess,
+                    OnLoginFailure
+                );
+
+                signInEllipsesControl.enabled = true;
+                ShowSignInMsg(SignInStatus.WithUsername);
+            }
+
+            return;
 
         ShowSignInMsg:
             ShowSignInMsg(status);
@@ -108,6 +160,7 @@ namespace Server.PlayFab {
         private void OnLoginSuccess(LoginResult _) {
             Console.Log("User Login Successful!");
 
+            signInEllipsesControl.enabled = false;
             ShowSignInMsg(SignInStatus.Success);
 
             onLoginSuccess?.Invoke();
@@ -116,6 +169,7 @@ namespace Server.PlayFab {
         private void OnLoginFailure(PlayFabError error) {
             Console.Log("User Login Failed (" + error.GenerateErrorReport() + ")!");
 
+            signInEllipsesControl.enabled = false;
             switch(error.Error) {
                 case PlayFabErrorCode.InvalidUsername:
                     ShowSignInMsg(SignInStatus.WrongUsername);

@@ -170,6 +170,7 @@ GameObject:
   m_Component:
   - component: {fileID: 208975927}
   - component: {fileID: 208975929}
+  - component: {fileID: 208975930}
   - component: {fileID: 208975928}
   m_Layer: 5
   m_Name: SignInMsg
@@ -226,8 +227,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4294967295
-  m_fontColor: {r: 1, g: 1, b: 1, a: 1}
+    rgba: 4283256141
+  m_fontColor: {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -294,6 +295,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 208975926}
   m_CullTransparentMesh: 1
+--- !u!114 &208975930
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 208975926}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aefae22a68136e440b78a597a2fcb2fe, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  delay: 0.2
+  shldUseLateUpdate: 1
+  tmpComponent: {fileID: 208975928}
+  textsWithNoEllipsis: []
 --- !u!1 &1301363042
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,6 +975,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   signInMsgTmp: {fileID: 208975928}
+  signInEllipsesControl: {fileID: 208975930}
   signInMsgs:
   - Shld not be here... (None)
   - Username/Email cannot be empty!
@@ -967,9 +985,11 @@ MonoBehaviour:
   - Sign In Failure! Wrong Username.
   - Sign In Failure! Wrong Email.
   - Sign In Failure! Wrong Password.
+  - Signing in
+  - Signing in
   - Shld not be here... (Amt)
   signInMsgColors:
-  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
@@ -978,6 +998,8 @@ MonoBehaviour:
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
+  - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
 --- !u!114 &831853082089605379
 MonoBehaviour:
   m_ObjectHideFlags: 0
