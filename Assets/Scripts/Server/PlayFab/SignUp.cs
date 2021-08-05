@@ -51,6 +51,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal SignUp(): base() {
+            canClick = true;
+
             usernameInputField = null;
             emailInputField = null;
             newPasswordInputField = null;
@@ -79,6 +81,11 @@ namespace Server.PlayFab {
         #endregion 
  
         public void OnClick() {
+            if(!canClick) {
+                return;
+            }
+            canClick = false;
+
             SignUpStatus status = SignUpStatus.None;
 
             string username = usernameInputField.text;
@@ -176,6 +183,9 @@ namespace Server.PlayFab {
                 OnRegistrationFailure
             );
 
+            signUpEllipsesControl.enabled = true;
+            ShowSignInMsg(SignUpStatus.Processing, false);
+
             return;
 
         ShowSignInMsg:
@@ -201,7 +211,23 @@ namespace Server.PlayFab {
 		}
 
 		private void OnRegistrationFailure(PlayFabError error) {
-			onRegistrationFailure?.Invoke();
+            Console.Log("User Registration Failed (" + error.GenerateErrorReport() + ")!");
+
+            signUpEllipsesControl.enabled = false;
+            switch(error.Error) {
+                case PlayFabErrorCode.UsernameNotAvailable:
+                    ShowSignInMsg(SignUpStatus.UsernameNotUnique);
+                    break;
+                case PlayFabErrorCode.EmailAddressNotAvailable:
+                    ShowSignInMsg(SignUpStatus.EmailNotUnique);
+                    break;
+                default:
+                    Console.LogError(error.Error.ToString());
+                    UnityEngine.Assertions.Assert.IsTrue(false);
+                    break;
+            }
+
+            onRegistrationFailure?.Invoke();
 		}
 	}
 }

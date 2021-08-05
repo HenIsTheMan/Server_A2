@@ -15,6 +15,7 @@ namespace Server.General {
 			InvalidEmail,
 			UsernameNotUnique,
 			EmailNotUnique,
+			Processing,
 			Success,
 			Amt
 		}
