@@ -47,7 +47,7 @@ namespace Server.PlayFab {
             usernameTextTmp.text = result.AccountInfo.Username;
         }
 
-        private void OnGetAccountInfoFailure(PlayFabError error) {
+        private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.LogError("GetAccountInfoFailure!");
         }
     }
