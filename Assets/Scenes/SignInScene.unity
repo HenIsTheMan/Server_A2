@@ -1391,7 +1391,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3437753908118493480, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
       propertyPath: m_text
-      value: Hide Password
+      value: Hide
       objectReference: {fileID: 0}
     - target: {fileID: 3437753908852842969, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
       propertyPath: m_Name
