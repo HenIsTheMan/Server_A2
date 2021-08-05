@@ -72,6 +72,10 @@ namespace Server.General {
 			}
 		}
 
+		private void OnDisable() {
+			tmpComponent.text = tmpComponent.text.Substring(0, tmpComponent.text.Length - dotCount);
+		}
+
 		#endregion
 
 		private void MyUpdateFunc() {
