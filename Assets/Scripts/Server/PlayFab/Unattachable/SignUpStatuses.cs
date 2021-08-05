@@ -12,7 +12,7 @@ namespace Server.General {
 			InvalidUsernameLen,
 			InvalidPasswordLen,
 			UsernameHasInvalidChars,
-			EmailHasInvalidChars,
+			InvalidEmail,
 			UsernameNotUnique,
 			EmailNotUnique,
 			Success,

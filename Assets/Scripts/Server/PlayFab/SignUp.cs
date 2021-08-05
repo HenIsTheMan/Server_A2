@@ -1,4 +1,5 @@
 using Server.General;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -75,8 +76,94 @@ namespace Server.PlayFab {
  
         #endregion 
  
-        public void OnClick() { 
- 
+        public void OnClick() {
+            SignUpStatus status = SignUpStatus.None;
+
+            string username = usernameInputField.text;
+            if(string.IsNullOrEmpty(username)) {
+                status = SignUpStatus.NoUsername;
+                goto ShowSignInMsg;
+            }
+
+            string email = emailInputField.text;
+            if(string.IsNullOrEmpty(email)) {
+                status = SignUpStatus.NoEmail;
+                goto ShowSignInMsg;
+            }
+
+            string newPassword = newPasswordInputField.text;
+            if(string.IsNullOrEmpty(newPassword)) {
+                status = SignUpStatus.NoNewPassword;
+                goto ShowSignInMsg;
+            }
+
+            string confirmPassword = confirmPasswordInputField.text;
+            if(string.IsNullOrEmpty(confirmPassword)) {
+                status = SignUpStatus.NoConfirmPassword;
+                goto ShowSignInMsg;
+            } else if(newPassword != confirmPassword) {
+                status = SignUpStatus.PasswordsNotMatching;
+                goto ShowSignInMsg;
+            }
+
+            if(username.Contains(' ')) {
+                status = SignUpStatus.SpacesInUsername;
+                goto ShowSignInMsg;
+            }
+
+            if(email.Contains(' ')) {
+                status = SignUpStatus.SpacesInEmail;
+                goto ShowSignInMsg;
+            }
+
+            int usernameLen = username.Length;
+            if(usernameLen < 3 || usernameLen > 20) {
+                status = SignUpStatus.InvalidUsernameLen;
+                goto ShowSignInMsg;
+            }
+
+            int passwordLen = newPassword.Length;
+            if(passwordLen < 6 || passwordLen > 100) {
+                status = SignUpStatus.InvalidPasswordLen;
+                goto ShowSignInMsg;
+            }
+
+            if(!username.All(char.IsLetterOrDigit)) {
+                status = SignUpStatus.UsernameHasInvalidChars;
+                goto ShowSignInMsg;
+            }
+
+            int atIndex = email.IndexOf('@');
+            int dotIndex = email.IndexOf('.');
+            int emailLen = email.Length;
+
+            if(email.Count(myChar => myChar == '@') != 1
+                || email.Count(myChar => myChar == '.') != 1
+                || atIndex < 1
+                || dotIndex < 3
+                || atIndex > emailLen - 4
+                || dotIndex > emailLen - 2
+                || (atIndex >= dotIndex - 1)
+            ) {
+                status = SignUpStatus.InvalidEmail;
+                goto ShowSignInMsg;
+            } else {
+                string substr0 = email.Substring(0, atIndex);
+                string substr1 = email.Substring(atIndex + 1, dotIndex - atIndex - 1);
+                string substr2 = email.Substring(dotIndex + 1, emailLen - dotIndex - 1);
+
+                if(substr2.Length < 2
+                    || !substr0.All(char.IsLetterOrDigit)
+                    || !substr1.All(char.IsLetterOrDigit)
+                    || !substr2.All(char.IsLetter)
+                ) {
+                    status = SignUpStatus.InvalidEmail;
+                    goto ShowSignInMsg;
+                }
+            }
+
+            ShowSignInMsg:
+            ShowSignInMsg(status);
         } 
  
         private void ShowSignInMsg(SignUpStatus status, bool shldSetCanClick = true) { 
