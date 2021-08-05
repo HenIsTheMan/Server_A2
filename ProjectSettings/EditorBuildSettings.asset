@@ -15,6 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/SignInScene.unity
     guid: 0118244f871ab634e80dbc007ea9aeff
   - enabled: 1
+    path: Assets/Scenes/ResetPasswordScene.unity
+    guid: 7c497908f1c0ae5449f04b6714e98f3b
+  - enabled: 1
     path: Assets/Scenes/SignUpScene.unity
     guid: 8d6636cb0e1058144b53027398b6944d
   - enabled: 1

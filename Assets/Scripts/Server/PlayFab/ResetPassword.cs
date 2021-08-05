@@ -129,10 +129,10 @@ namespace Server.PlayFab {
             canClick = true;
         }
 
-        private void OnSendAccountRecoveryEmailFailure(PlayFabError _) {
+        private void OnSendAccountRecoveryEmailFailure(PlayFabError error) {
             Console.LogError("SendAccountRecoveryEmailFailure!");
 
-            userFeedbackTmp.text = failedToSendAcctRecoveryEmailText;
+            userFeedbackTmp.text = sentAcctRecoveryEmailText + ' ' + error.ErrorMessage;
             userFeedbackTmp.color = failedToSendAcctRecoveryEmailTextColor;
 
             canClick = true;
