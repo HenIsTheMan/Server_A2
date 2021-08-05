@@ -1,4 +1,5 @@
 using PlayFab;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -9,6 +10,15 @@ namespace Server.PlayFab {
         [SerializeField]
         private UnityEvent myUnityEvent;
 
+        [SerializeField]
+        private TMP_Text profileMsgTmp;
+
+        [SerializeField]
+        private string signedOutText;
+
+        [SerializeField]
+        private Color signedOutTextColor;
+
         #endregion
 
         #region Properties
@@ -18,6 +28,12 @@ namespace Server.PlayFab {
 
         internal SignOut(): base() {
             myUnityEvent = null;
+
+            profileMsgTmp = null;
+
+            signedOutText = string.Empty;
+
+            signedOutTextColor = Color.white;
         }
 
         static SignOut() {
@@ -30,6 +46,9 @@ namespace Server.PlayFab {
 
         public void OnClick() {
             PlayFabClientAPI.ForgetAllCredentials();
+
+            profileMsgTmp.text = signedOutText;
+            profileMsgTmp.color = signedOutTextColor;
 
             myUnityEvent?.Invoke();
         }

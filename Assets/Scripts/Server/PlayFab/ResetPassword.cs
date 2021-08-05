@@ -11,6 +11,27 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_InputField emailInputField;
 
+        [SerializeField]
+        private TMP_Text profileMsgTmp;
+
+        [SerializeField]
+        private string sendingAcctRecoveryEmailText;
+
+        [SerializeField]
+        private Color sendingAcctRecoveryEmailTextColor;
+
+        [SerializeField]
+        private string sentAcctRecoveryEmailText;
+
+        [SerializeField]
+        private Color sentAcctRecoveryEmailTextColor;
+
+        [SerializeField]
+        private string failedToSendAcctRecoveryEmailText;
+
+        [SerializeField]
+        private Color failedToSendAcctRecoveryEmailTextColor;
+
         #endregion
 
         #region Properties
@@ -20,6 +41,17 @@ namespace Server.PlayFab {
 
         internal ResetPassword(): base() {
             emailInputField = null;
+
+            profileMsgTmp = null;
+
+            sendingAcctRecoveryEmailText = string.Empty;
+            sendingAcctRecoveryEmailTextColor = Color.white;
+
+            sentAcctRecoveryEmailText = string.Empty;
+            sentAcctRecoveryEmailTextColor = Color.white;
+
+            failedToSendAcctRecoveryEmailText = string.Empty;
+            failedToSendAcctRecoveryEmailTextColor = Color.white;
         }
 
         static ResetPassword() {
@@ -48,6 +80,9 @@ namespace Server.PlayFab {
                     OnSendAccountRecoveryEmailSuccess,
                     OnSendAccountRecoveryEmailFailure
                 );
+
+                profileMsgTmp.text = sendingAcctRecoveryEmailText;
+                profileMsgTmp.color = sendingAcctRecoveryEmailTextColor;
             }
         }
 
@@ -62,18 +97,30 @@ namespace Server.PlayFab {
                 OnSendAccountRecoveryEmailSuccess,
                 OnSendAccountRecoveryEmailFailure
             );
+
+            profileMsgTmp.text = sendingAcctRecoveryEmailText;
+            profileMsgTmp.color = sendingAcctRecoveryEmailTextColor;
         }
 
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.LogError("GetAccountInfoFailure!");
+
+            profileMsgTmp.text = failedToSendAcctRecoveryEmailText;
+            profileMsgTmp.color = failedToSendAcctRecoveryEmailTextColor;
         }
 
         private void OnSendAccountRecoveryEmailSuccess(SendAccountRecoveryEmailResult _) {
             Console.Log("SendAccountRecoveryEmailSuccess!");
+
+            profileMsgTmp.text = sentAcctRecoveryEmailText;
+            profileMsgTmp.color = sentAcctRecoveryEmailTextColor;
         }
 
         private void OnSendAccountRecoveryEmailFailure(PlayFabError _) {
             Console.LogError("SendAccountRecoveryEmailFailure!");
+
+            profileMsgTmp.text = failedToSendAcctRecoveryEmailText;
+            profileMsgTmp.color = failedToSendAcctRecoveryEmailTextColor;
         }
     }
 }
