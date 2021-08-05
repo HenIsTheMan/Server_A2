@@ -3,6 +3,7 @@ using PlayFab.ClientModels;
 using Server.General;
 using SimpleJSON;
 using UnityEngine;
+using UnityEngine.Events;
 
 namespace Server.PlayFab {
     internal sealed class Guest: MonoBehaviour {
@@ -14,6 +15,12 @@ namespace Server.PlayFab {
         [SerializeField]
         private int[] key;
 
+        [SerializeField]
+        private UnityEvent onLoginSuccess;
+
+        [SerializeField]
+        private UnityEvent onLoginFailure;
+
         #endregion
 
         #region Properties
@@ -24,6 +31,9 @@ namespace Server.PlayFab {
         internal Guest(): base() {
             len = 0;
             key = System.Array.Empty<int>();
+
+            onLoginSuccess = null;
+            onLoginFailure = null;
         }
 
         static Guest() {
@@ -93,10 +103,14 @@ namespace Server.PlayFab {
 
         private void OnLoginSuccess(LoginResult _) {
             Console.Log("Guest Login Successful!");
+
+            onLoginSuccess?.Invoke();
         }
 
         private void OnLoginFailure(PlayFabError error) {
             Console.Log("Guest Login Failed (" + error.GenerateErrorReport() + ")!");
+
+            onLoginFailure?.Invoke();
         }
     }
 }
