@@ -52,6 +52,10 @@ namespace Server.Unity {
         #region Unity User Callback Event Funcs
 
         private void Awake() {
+            if(inputField == null) {
+                return;
+            }
+
             UnityEngine.Assertions.Assert.IsTrue(
                 inputField.contentType == ContentType.Password
                 || inputField.contentType == ContentType.Standard

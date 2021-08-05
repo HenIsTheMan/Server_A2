@@ -197,7 +197,7 @@ MonoBehaviour:
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
-  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
   - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
 --- !u!114 &76651236
@@ -612,6 +612,14 @@ PrefabInstance:
     - target: {fileID: 1987493393384155108, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987493393384155109, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987493393384155109, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+      propertyPath: m_ContentType
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1987493393384155111, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_Name
@@ -1559,6 +1567,14 @@ PrefabInstance:
     - target: {fileID: 1987493393384155108, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987493393384155109, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+      propertyPath: m_InputType
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 1987493393384155109, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+      propertyPath: m_ContentType
+      value: 7
       objectReference: {fileID: 0}
     - target: {fileID: 1987493393384155111, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_Name
