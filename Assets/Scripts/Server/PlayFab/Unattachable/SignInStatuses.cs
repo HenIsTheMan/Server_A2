@@ -1,6 +1,6 @@
 namespace Server.General {
 	internal static class SignInStatuses: object {
-		internal enum Axis: byte {
+		internal enum SignInStatus: byte {
 			None,
 			NoUsernameOrEmail,
 			NoPassword,
