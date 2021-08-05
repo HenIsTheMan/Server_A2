@@ -13,6 +13,8 @@ namespace Server.PlayFab {
 
         private bool canClick;
 
+        private string email;
+
         [SerializeField]
         private TMP_InputField usernameInputField;
 
@@ -52,6 +54,8 @@ namespace Server.PlayFab {
 
         internal SignUp(): base() {
             canClick = true;
+
+            email = string.Empty;
 
             usernameInputField = null;
             emailInputField = null;
@@ -99,7 +103,7 @@ namespace Server.PlayFab {
                 goto ShowSignInMsg;
             }
 
-            string email = emailInputField.text;
+            email = emailInputField.text;
             if(string.IsNullOrEmpty(email)) {
                 status = SignUpStatus.NoEmail;
                 goto ShowSignInMsg;
@@ -177,6 +181,7 @@ namespace Server.PlayFab {
             }
 
             RegisterPlayFabUserRequest request = new RegisterPlayFabUserRequest {
+                DisplayName = username,
                 Email = email,
                 Username = username,
                 Password = newPassword,
@@ -207,16 +212,32 @@ namespace Server.PlayFab {
         }
 
 		private void OnRegistrationSuccess(RegisterPlayFabUserResult _) {
-			Console.Log("User Registration Successful!");
+            Console.Log("OG User Registration Successful!");
 
-			signUpEllipsesControl.enabled = false;
-			ShowSignInMsg(SignUpStatus.Success);
-
-			onRegistrationSuccess?.Invoke();
+            PlayFabClientAPI.AddOrUpdateContactEmail(
+                new AddOrUpdateContactEmailRequest {
+                    EmailAddress = email
+                },
+                OnAddOrUpdateContactEmailSuccess,
+                OnAddOrUpdateContactEmailFailure
+            );
 		}
 
-		private void OnRegistrationFailure(PlayFabError error) {
-            Console.Log("User Registration Failed (" + error.GenerateErrorReport() + ")!");
+        private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
+            Console.Log("Full User Registration Successful!");
+
+            signUpEllipsesControl.enabled = false;
+            ShowSignInMsg(SignUpStatus.Success);
+
+            onRegistrationSuccess?.Invoke();
+        }
+
+        private void OnAddOrUpdateContactEmailFailure(PlayFabError _) {
+            Console.LogError("Full User Registration Failure!");
+        }
+
+        private void OnRegistrationFailure(PlayFabError error) {
+            Console.LogError("User Registration Failed (" + error.GenerateErrorReport() + ")!");
 
             signUpEllipsesControl.enabled = false;
             switch(error.Error) {
