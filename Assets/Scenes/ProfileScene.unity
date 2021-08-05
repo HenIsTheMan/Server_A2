@@ -825,7 +825,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   emailInputField: {fileID: 0}
-  profileMsgTmp: {fileID: 1452990598}
+  userFeedbackTmp: {fileID: 1452990598}
   sendingAcctRecoveryEmailText: Sending Recovery Email
   sendingAcctRecoveryEmailTextColor: {r: 1, g: 1, b: 1, a: 1}
   sentAcctRecoveryEmailText: Sent Recovery Email!
