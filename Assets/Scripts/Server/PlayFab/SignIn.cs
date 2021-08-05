@@ -11,6 +11,8 @@ namespace Server.PlayFab {
     internal sealed class SignIn: MonoBehaviour {
         #region Fields
 
+        private bool canClick;
+
         [SerializeField]
         private TMP_InputField usernameEmailInputField;
 
@@ -43,6 +45,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal SignIn(): base() {
+            canClick = true;
+
             usernameEmailInputField = null;
             passwordInputField = null;
 
@@ -69,6 +73,11 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            if(!canClick) {
+                return;
+            }
+            canClick = false;
+
             string usernameOrEmail = usernameEmailInputField.text;
             SignInStatus status = SignInStatus.None;
 

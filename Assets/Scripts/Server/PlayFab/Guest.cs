@@ -9,6 +9,8 @@ namespace Server.PlayFab {
     internal sealed class Guest: MonoBehaviour {
         #region Fields
 
+        private bool canClick;
+
         [SerializeField]
         private int len;
 
@@ -29,6 +31,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal Guest(): base() {
+            canClick = true;
+
             len = 0;
             key = System.Array.Empty<int>();
 
@@ -52,6 +56,11 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            if(!canClick) {
+                return;
+            }
+            canClick = false;
+
             PlayFabClientAPI.LoginWithCustomID(
                 new LoginWithCustomIDRequest {
                     CustomId = GenEncryptedCustomID(len, key),
