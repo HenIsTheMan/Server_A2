@@ -1,4 +1,4 @@
-namespace Server.General {
+namespace Server.PlayFab {
 	internal static class SignInStatuses: object {
 		internal enum SignInStatus: int {
 			None,

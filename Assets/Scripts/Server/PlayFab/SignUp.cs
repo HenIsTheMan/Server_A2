@@ -5,7 +5,7 @@ using System.Linq;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
-using static Server.General.SignUpStatuses;
+using static Server.PlayFab.SignUpStatuses;
 
 namespace Server.PlayFab {
     internal sealed class SignUp: MonoBehaviour {
