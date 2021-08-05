@@ -4,8 +4,6 @@
 
 - Edit Account
 - Delete/Deactivate Account
-- Reset Password
-- Password Encryption
 - Login using third-party e.g. Facebook, Google, OAuth
 
 ## Friend System
@@ -24,6 +22,9 @@
 - Gifting
 - Trading
 
+
+
+
 # Done
 
 ## Player Account Management
@@ -32,6 +33,9 @@
 - Registration using email
 - Password Validation
 - Unique username
+- Unique email (added)
+- Reset Password
+- Logout (added)
 
 ## User Interface
 
@@ -44,3 +48,12 @@
 - Hierarchy and Project Structure
 - Code Design
 - Database Structure Design
+
+
+
+
+# Not Needed (as discussed)
+
+## Player Account Management
+
+- Password Encryption
