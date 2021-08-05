@@ -7,6 +7,8 @@ namespace Server.PlayFab {
     internal sealed class SignOut: MonoBehaviour {
         #region Fields
 
+        private bool canClick;
+
         [SerializeField]
         private UnityEvent myUnityEvent;
 
@@ -27,6 +29,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal SignOut(): base() {
+            canClick = true;
+
             myUnityEvent = null;
 
             profileMsgTmp = null;
@@ -45,6 +49,11 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            if(!canClick) {
+                return;
+            }
+            canClick = false;
+
             PlayFabClientAPI.ForgetAllCredentials();
 
             profileMsgTmp.text = signedOutText;

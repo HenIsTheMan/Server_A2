@@ -8,6 +8,8 @@ namespace Server.PlayFab {
     internal sealed class ResetPassword: MonoBehaviour {
         #region Fields
 
+        private bool canClick;
+
         [SerializeField]
         private TMP_InputField emailInputField;
 
@@ -40,6 +42,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal ResetPassword(): base() {
+            canClick = true;
+
             emailInputField = null;
 
             profileMsgTmp = null;
@@ -63,6 +67,11 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            if(!canClick) {
+                return;
+            }
+            canClick = false;
+
             if(emailInputField == null) {
                 if(PlayFabClientAPI.IsClientLoggedIn()) {
                     PlayFabClientAPI.GetAccountInfo(
@@ -107,6 +116,8 @@ namespace Server.PlayFab {
 
             profileMsgTmp.text = failedToSendAcctRecoveryEmailText;
             profileMsgTmp.color = failedToSendAcctRecoveryEmailTextColor;
+
+            canClick = true;
         }
 
         private void OnSendAccountRecoveryEmailSuccess(SendAccountRecoveryEmailResult _) {
@@ -114,6 +125,8 @@ namespace Server.PlayFab {
 
             profileMsgTmp.text = sentAcctRecoveryEmailText;
             profileMsgTmp.color = sentAcctRecoveryEmailTextColor;
+
+            canClick = true;
         }
 
         private void OnSendAccountRecoveryEmailFailure(PlayFabError _) {
@@ -121,6 +134,8 @@ namespace Server.PlayFab {
 
             profileMsgTmp.text = failedToSendAcctRecoveryEmailText;
             profileMsgTmp.color = failedToSendAcctRecoveryEmailTextColor;
+
+            canClick = true;
         }
     }
 }
