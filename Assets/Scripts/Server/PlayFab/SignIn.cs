@@ -138,7 +138,7 @@ namespace Server.PlayFab {
                 );
 
                 signInEllipsesControl.enabled = true;
-                ShowSignInMsg(SignInStatus.WithEmail);
+                ShowSignInMsg(SignInStatus.WithEmail, false);
             } else {
                 LoginWithPlayFabRequest request = new LoginWithPlayFabRequest {
                     Username = usernameEmailInputField.text,
@@ -152,7 +152,7 @@ namespace Server.PlayFab {
                 );
 
                 signInEllipsesControl.enabled = true;
-                ShowSignInMsg(SignInStatus.WithUsername);
+                ShowSignInMsg(SignInStatus.WithUsername, false);
             }
 
             return;
@@ -161,7 +161,11 @@ namespace Server.PlayFab {
             ShowSignInMsg(status);
         }
 
-        private void ShowSignInMsg(SignInStatus status) {
+        private void ShowSignInMsg(SignInStatus status, bool shldSetCanClick = true) {
+            if(shldSetCanClick) {
+                canClick = true;
+            }
+
             signInMsgTmp.text = signInMsgs[(int)status];
             signInMsgTmp.color = signInMsgColors[(int)status];
         }
