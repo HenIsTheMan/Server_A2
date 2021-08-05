@@ -23,8 +23,14 @@ namespace Server.PlayFab {
         [SerializeField]
         private UnityEvent onLoginFailure;
 
+        [SerializeField]
+        private TMP_Text signInMsgTmp;
+
         [EnumIndices(typeof(SignInStatus)), SerializeField]
         private string[] signInMsgs;
+
+        [EnumIndices(typeof(SignInStatus)), SerializeField]
+        private Color[] signInMsgColors;
 
         #endregion
 
@@ -40,7 +46,9 @@ namespace Server.PlayFab {
             onLoginSuccess = null;
             onLoginFailure = null;
 
+            signInMsgTmp = null;
             signInMsgs = System.Array.Empty<string>();
+            signInMsgColors = System.Array.Empty<Color>();
         }
 
         static SignIn() {
@@ -49,6 +57,11 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs
+
+        private void Awake() {
+            signInMsgTmp.text = string.Empty;
+        }
+
         #endregion
 
         public void OnClick() {
@@ -88,7 +101,8 @@ namespace Server.PlayFab {
         }
 
         private void ShowSignInMsg(SignInStatus status) {
-            Console.Log(signInMsgs[(int)status]);
+            signInMsgTmp.text = signInMsgs[(int)status];
+            signInMsgTmp.color = signInMsgColors[(int)status];
         }
 
         private void OnLoginSuccess(LoginResult _) {
@@ -101,6 +115,18 @@ namespace Server.PlayFab {
 
         private void OnLoginFailure(PlayFabError error) {
             Console.Log("User Login Failed (" + error.GenerateErrorReport() + ")!");
+
+            switch(error.Error) {
+                case PlayFabErrorCode.InvalidUsername:
+                    ShowSignInMsg(SignInStatus.WrongUsername);
+                    break;
+                case PlayFabErrorCode.InvalidEmailAddress:
+                    ShowSignInMsg(SignInStatus.WrongEmail);
+                    break;
+                case PlayFabErrorCode.InvalidPassword:
+                    ShowSignInMsg(SignInStatus.WrongPassword);
+                    break;
+            }
 
             onLoginFailure?.Invoke();
         }
