@@ -194,17 +194,7 @@ namespace Server.PlayFab {
             Console.Log("User Login Failed (" + error.GenerateErrorReport() + ")!");
 
             signInEllipsesControl.enabled = false;
-            switch(error.Error) {
-                case PlayFabErrorCode.InvalidUsername:
-                    ShowSignInMsg(SignInStatus.WrongUsername);
-                    break;
-                case PlayFabErrorCode.InvalidEmailAddress:
-                    ShowSignInMsg(SignInStatus.WrongEmail);
-                    break;
-                case PlayFabErrorCode.InvalidPassword:
-                    ShowSignInMsg(SignInStatus.WrongPassword);
-                    break;
-            }
+            ShowSignInMsg(SignInStatus.Failure);
 
             onLoginFailure?.Invoke();
         }

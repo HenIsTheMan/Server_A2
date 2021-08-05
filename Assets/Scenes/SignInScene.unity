@@ -986,9 +986,7 @@ MonoBehaviour:
   - Signing in with username
   - Signing in with email
   - Sign In Success!
-  - Sign In Failure! Wrong Username.
-  - Sign In Failure! Wrong Email.
-  - Sign In Failure! Wrong Password.
+  - Sign In Failure! Incorrect Username/Email and/or Password
   - Shld not be here... (Amt)
   signInMsgColors:
   - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
@@ -1000,8 +998,6 @@ MonoBehaviour:
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 1, g: 1, b: 1, a: 1}
   - {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
-  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
-  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
 --- !u!114 &831853082089605379
