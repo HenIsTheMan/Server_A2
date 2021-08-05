@@ -35,33 +35,15 @@ namespace Server.PlayFab {
 
         private void Awake() {
             if(PlayFabClientAPI.IsClientLoggedIn()) {
-                PlayFabClientAPI.GetAccountInfo(
-                    new GetAccountInfoRequest (),
-                    OnGetAcctInfoSuccess,
-                    OnGetAcctInfoFailure
+                PlayFabClientAPI.GetPlayerProfile(
+                    new GetPlayerProfileRequest(),
+                    OnGetPlayerProfileSuccess,
+                    OnGetPlayerProfileFailure
                 );
             }
         }
 
         #endregion
-
-        private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
-            PlayFabClientAPI.GetPlayerProfile(
-                new GetPlayerProfileRequest {
-                    PlayFabId = result.AccountInfo.PlayFabId,
-                    ProfileConstraints = new PlayerProfileViewConstraints {
-                        ShowContactEmailAddresses = true,
-                        ShowDisplayName = true
-                    }
-                },
-                OnGetPlayerProfileSuccess,
-                OnGetPlayerProfileFailure
-            );
-        }
-
-        private void OnGetAcctInfoFailure(PlayFabError _) {
-            Console.LogError("GetAcctInfoFailure!");
-        }
 
         private void OnGetPlayerProfileSuccess(GetPlayerProfileResult result) {
             Console.Log("GetPlayerProfileSuccess!");
