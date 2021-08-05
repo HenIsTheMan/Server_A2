@@ -9,7 +9,10 @@ namespace Server.PlayFab {
         #region Fields
 
         [SerializeField]
-        private TMP_Text usernameTextTmp;
+        private TMP_Text displayNameTextTmp;
+
+        [SerializeField]
+        private TMP_Text contactEmailTextTmp;
 
         #endregion
 
@@ -19,7 +22,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal Profile(): base() {
-            usernameTextTmp = null;
+            displayNameTextTmp = null;
+            contactEmailTextTmp = null;
         }
 
         static Profile() {
@@ -31,24 +35,25 @@ namespace Server.PlayFab {
 
         private void Awake() {
             if(PlayFabClientAPI.IsClientLoggedIn()) {
-                PlayFabClientAPI.GetAccountInfo(
-                    new GetAccountInfoRequest(),
-                    OnGetAccountInfoSuccess,
-                    OnGetAccountInfoFailure
+                PlayFabClientAPI.GetPlayerProfile(
+                    new GetPlayerProfileRequest(),
+                    OnGetPlayerProfileSuccess,
+                    OnGetPlayerProfileFailure
                 );
             }
         }
 
         #endregion
 
-        private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
-            Console.Log("GetAccountInfoSuccess!");
+        private void OnGetPlayerProfileSuccess(GetPlayerProfileResult result) {
+            Console.Log("GetPlayerProfileSuccess!");
 
-            usernameTextTmp.text = result.AccountInfo.Username;
+            displayNameTextTmp.text = result.PlayerProfile.DisplayName;
+            contactEmailTextTmp.text = result.PlayerProfile.ContactEmailAddresses[0].EmailAddress;
         }
 
-        private void OnGetAccountInfoFailure(PlayFabError _) {
-            Console.LogError("GetAccountInfoFailure!");
+        private void OnGetPlayerProfileFailure(PlayFabError _) {
+            Console.LogError("GetPlayerProfileFailure!");
         }
     }
 }
