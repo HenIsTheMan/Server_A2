@@ -67,7 +67,38 @@ namespace Server.PlayFab {
 
         #endregion
 
-        #region Unity User Callback Event Funcs
-        #endregion
+        #region Unity User Callback Event Funcs 
+ 
+        private void Awake() { 
+            signUpMsgTmp.text = string.Empty; 
+        } 
+ 
+        #endregion 
+ 
+        public void OnClick() { 
+ 
+        } 
+ 
+        private void ShowSignInMsg(SignUpStatus status, bool shldSetCanClick = true) { 
+            if(shldSetCanClick) { 
+                canClick = true; 
+            } 
+ 
+            signUpMsgTmp.text = signUpMsgs[(int)status]; 
+            signUpMsgTmp.color = signUpMsgColors[(int)status]; 
+        }
+
+        //private void OnRegistrationSuccess(RegistrationResult _) { 
+        //    Console.Log("User Registration Successful!"); 
+
+        //    signUpEllipsesControl.enabled = false; 
+        //    ShowSignInMsg(SignUpStatus.Success); 
+
+        //    onRegistrationSuccess?.Invoke(); 
+        //}
+
+        //private void OnRegistrationFailure() {
+        //    onRegistrationFailure?.Invoke();
+        //}
     }
 }
