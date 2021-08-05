@@ -7,8 +7,8 @@ namespace Server.General {
 			SpacesInUsernameOrEmail,
 			InvalidUsernameLen,
 			InvalidPasswordLen,
-			WithUsername, //Signing in
-			WithEmail, //Signing in
+			ProcessingWithUsername,
+			ProcessingWithEmail,
 			Success,
 			Failure,
 			Amt

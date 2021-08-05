@@ -149,7 +149,7 @@ namespace Server.PlayFab {
                 );
 
                 signInEllipsesControl.enabled = true;
-                ShowSignInMsg(SignInStatus.WithEmail, false);
+                ShowSignInMsg(SignInStatus.ProcessingWithEmail, false);
             } else {
                 LoginWithPlayFabRequest request = new LoginWithPlayFabRequest {
                     Username = usernameOrEmail,
@@ -163,7 +163,7 @@ namespace Server.PlayFab {
                 );
 
                 signInEllipsesControl.enabled = true;
-                ShowSignInMsg(SignInStatus.WithUsername, false);
+                ShowSignInMsg(SignInStatus.ProcessingWithUsername, false);
             }
 
             return;
