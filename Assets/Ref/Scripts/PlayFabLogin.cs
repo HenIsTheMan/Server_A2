@@ -2,7 +2,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using UnityEngine;
 
-namespace Server {
+namespace Server.Ref {
     internal sealed class PlayFabLogin: MonoBehaviour {
         #region Fields
         #endregion

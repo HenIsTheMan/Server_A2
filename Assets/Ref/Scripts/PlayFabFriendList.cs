@@ -3,7 +3,7 @@ using UnityEngine;
 using PlayFab;
 using PlayFab.ClientModels;
 
-namespace Server {
+namespace Server.Ref {
     internal sealed class PlayFabFriendList: MonoBehaviour {
         #region Fields
 
