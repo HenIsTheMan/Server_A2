@@ -1,3 +1,5 @@
+using PlayFab;
+using PlayFab.ClientModels;
 using Server.General;
 using System.Linq;
 using TMPro;
@@ -162,30 +164,44 @@ namespace Server.PlayFab {
                 }
             }
 
-            ShowSignInMsg:
+            RegisterPlayFabUserRequest request = new RegisterPlayFabUserRequest {
+                Email = email,
+                Username = username,
+                Password = newPassword,
+            };
+
+            PlayFabClientAPI.RegisterPlayFabUser(
+                request,
+                OnRegistrationSuccess,
+                OnRegistrationFailure
+            );
+
+            return;
+
+        ShowSignInMsg:
             ShowSignInMsg(status);
         } 
  
         private void ShowSignInMsg(SignUpStatus status, bool shldSetCanClick = true) { 
-            if(shldSetCanClick) { 
-                canClick = true; 
+            if(shldSetCanClick) {
+                canClick = true;
             } 
  
             signUpMsgTmp.text = signUpMsgs[(int)status]; 
             signUpMsgTmp.color = signUpMsgColors[(int)status]; 
         }
 
-        //private void OnRegistrationSuccess(RegistrationResult _) { 
-        //    Console.Log("User Registration Successful!"); 
+		private void OnRegistrationSuccess(RegisterPlayFabUserResult _) {
+			Console.Log("User Registration Successful!");
 
-        //    signUpEllipsesControl.enabled = false; 
-        //    ShowSignInMsg(SignUpStatus.Success); 
+			signUpEllipsesControl.enabled = false;
+			ShowSignInMsg(SignUpStatus.Success);
 
-        //    onRegistrationSuccess?.Invoke(); 
-        //}
+			onRegistrationSuccess?.Invoke();
+		}
 
-        //private void OnRegistrationFailure() {
-        //    onRegistrationFailure?.Invoke();
-        //}
-    }
+		private void OnRegistrationFailure(PlayFabError error) {
+			onRegistrationFailure?.Invoke();
+		}
+	}
 }
