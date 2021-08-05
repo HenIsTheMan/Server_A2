@@ -981,8 +981,10 @@ MonoBehaviour:
   - Username/Email cannot be empty!
   - Password cannot be empty!
   - Username/Email cannot contain spaces!
-  - Signing in
-  - Signing in
+  - Username must be 3 - 20 characters long!
+  - Password must be 6 - 100 characters long!
+  - Signing in with username
+  - Signing in with email
   - Sign In Success!
   - Sign In Failure! Wrong Username.
   - Sign In Failure! Wrong Email.
@@ -990,6 +992,8 @@ MonoBehaviour:
   - Shld not be here... (Amt)
   signInMsgColors:
   - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   - {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}

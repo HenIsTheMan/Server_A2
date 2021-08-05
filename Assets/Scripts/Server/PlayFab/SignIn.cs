@@ -101,21 +101,21 @@ namespace Server.PlayFab {
             bool isEmail = true;
             int atIndex = usernameOrEmail.IndexOf('@');
             int dotIndex = usernameOrEmail.IndexOf('.');
-            int emailLen = usernameOrEmail.Length;
+            int usernameOrEmailLen = usernameOrEmail.Length;
 
             if(usernameOrEmail.Count(myChar => myChar == '@') != 1
                 || usernameOrEmail.Count(myChar => myChar == '.') != 1
                 || atIndex < 1
                 || dotIndex < 3
-                || atIndex > emailLen - 4
-                || dotIndex > emailLen - 2
+                || atIndex > usernameOrEmailLen - 4
+                || dotIndex > usernameOrEmailLen - 2
                 || (atIndex >= dotIndex - 1)
             ) {
                 isEmail = false;
             } else {
                 string substr0 = usernameOrEmail.Substring(0, atIndex);
                 string substr1 = usernameOrEmail.Substring(atIndex + 1, dotIndex - atIndex - 1);
-                string substr2 = usernameOrEmail.Substring(dotIndex + 1, emailLen - dotIndex - 1);
+                string substr2 = usernameOrEmail.Substring(dotIndex + 1, usernameOrEmailLen - dotIndex - 1);
 
                 if(!substr0.All(char.IsLetterOrDigit)
                     || !substr1.All(char.IsLetterOrDigit)
@@ -125,10 +125,21 @@ namespace Server.PlayFab {
                 }
             }
 
-            if(isEmail) {
+			if(!isEmail && (usernameOrEmailLen < 3 || usernameOrEmailLen > 20)) {
+				status = SignInStatus.InvalidUsernameLen;
+				goto ShowSignInMsg;
+			}
+
+            int passwordLen = password.Length;
+            if(passwordLen < 6 || passwordLen > 100) {
+                status = SignInStatus.InvalidPasswordLen;
+                goto ShowSignInMsg;
+            }
+
+			if(isEmail) {
                 LoginWithEmailAddressRequest request = new LoginWithEmailAddressRequest {
-                    Email = usernameEmailInputField.text,
-                    Password = passwordInputField.text
+                    Email = usernameOrEmail,
+                    Password = password
                 };
 
                 PlayFabClientAPI.LoginWithEmailAddress(
@@ -141,8 +152,8 @@ namespace Server.PlayFab {
                 ShowSignInMsg(SignInStatus.WithEmail, false);
             } else {
                 LoginWithPlayFabRequest request = new LoginWithPlayFabRequest {
-                    Username = usernameEmailInputField.text,
-                    Password = passwordInputField.text
+                    Username = usernameOrEmail,
+                    Password = password
                 };
 
                 PlayFabClientAPI.LoginWithPlayFab(

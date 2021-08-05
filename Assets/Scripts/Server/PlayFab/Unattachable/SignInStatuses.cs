@@ -5,6 +5,8 @@ namespace Server.General {
 			NoUsernameOrEmail,
 			NoPassword,
 			SpacesInUsernameOrEmail,
+			InvalidUsernameLen,
+			InvalidPasswordLen,
 			WithUsername, //Signing in
 			WithEmail, //Signing in
 			Success,
