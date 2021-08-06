@@ -146,6 +146,34 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeleteAcctButton
       objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 830846079}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Server.PlayFab.DeleteAcct, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 5646325973333328735, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
@@ -251,6 +279,56 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 5646325973333328735, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
   m_PrefabInstance: {fileID: 830846076}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &830846078 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5646325973333328732, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+  m_PrefabInstance: {fileID: 830846076}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &830846079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830846078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2e03920c89deae8409e23687dce9ac41, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  editAcctMsgTmp: {fileID: 1743953980707887738}
+  acctDeletedText: Account Deletion Success!
+  acctDeletedTextColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
+  myUnityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 830846080}
+        m_TargetAssemblyTypeName: Server.General.CommonSceneTransitionButton, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &830846080
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 830846078}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea55c194c078bf14ca5a36bada6850da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initControl: {fileID: 0}
+  sceneName: WelcomeScene
+  scenePrepMethodName: JustUnloadPrep
 --- !u!1001 &837744597
 PrefabInstance:
   m_ObjectHideFlags: 0
