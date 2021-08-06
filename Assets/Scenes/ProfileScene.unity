@@ -172,6 +172,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   displayNameTextTmp: {fileID: 1325925584}
+  contactEmailTextTmp: {fileID: 641529662}
 --- !u!1 &641529660
 GameObject:
   m_ObjectHideFlags: 0
