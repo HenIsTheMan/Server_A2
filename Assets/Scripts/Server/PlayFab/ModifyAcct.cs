@@ -25,10 +25,19 @@ namespace Server.PlayFab {
         private TMP_InputField contactEmailInputField;
 
         [SerializeField]
+        private TMP_InputField passwordInputField;
+
+        [SerializeField]
         private TMP_Text editAcctMsgTmp;
 
         [SerializeField]
         private EllipsesControl editAcctEllipsesControl;
+
+        [SerializeField]
+        private string failedToSaveText;
+
+        [SerializeField]
+        private Color failedToSaveTextColor;
 
         [SerializeField]
         private string savingText;
@@ -43,10 +52,10 @@ namespace Server.PlayFab {
         private Color savedTextColor;
 
         [SerializeField]
-        private string failedToSaveText;
+        private string wrongPasswordText;
 
         [SerializeField]
-        private Color failedToSaveTextColor;
+        private Color wrongPasswordTextColor;
 
         #endregion
 
@@ -62,6 +71,7 @@ namespace Server.PlayFab {
             emailInputField = null;
             displayNameInputField = null;
             contactEmailInputField = null;
+            passwordInputField = null;
 
             editAcctMsgTmp = null;
             editAcctEllipsesControl = null;
@@ -74,6 +84,9 @@ namespace Server.PlayFab {
 
             failedToSaveText = string.Empty;
             failedToSaveTextColor = Color.white;
+
+            wrongPasswordText = string.Empty;
+            wrongPasswordTextColor = Color.white;
         }
 
         static ModifyAcct() {
@@ -129,6 +142,23 @@ namespace Server.PlayFab {
         }
 
         public void OnClick() {
+            PlayFabClientAPI.LoginWithEmailAddress(
+                new LoginWithEmailAddressRequest {
+                    Email = emailInputField.text,
+                    Password = passwordInputField.text
+                },
+                OnLoginSuccess,
+                OnLoginFailure
+            );
+
+            editAcctEllipsesControl.enabled = true;
+            editAcctMsgTmp.text = savingText;
+            editAcctMsgTmp.color = savingTextColor;
+        }
+
+        private void OnLoginSuccess(LoginResult _) {
+            Console.Log("LoginSuccess!");
+
             PlayFabClientAPI.UpdateUserTitleDisplayName(
                 new UpdateUserTitleDisplayNameRequest {
                     DisplayName = displayNameInputField.text
@@ -144,10 +174,14 @@ namespace Server.PlayFab {
                 OnAddOrUpdateContactEmailSuccess,
                 OnAddOrUpdateContactEmailFailure
             );
+        }
 
-            editAcctEllipsesControl.enabled = true;
-            editAcctMsgTmp.text = savingText;
-            editAcctMsgTmp.color = savingTextColor;
+        private void OnLoginFailure(PlayFabError error) {
+            Console.Log("LoginFailure!");
+
+            editAcctEllipsesControl.enabled = false;
+            editAcctMsgTmp.text = wrongPasswordText;
+            editAcctMsgTmp.color = wrongPasswordTextColor;
         }
 
         private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
@@ -182,8 +216,8 @@ namespace Server.PlayFab {
             }
         }
 
-        private void OnAddOrUpdateContactEmailFailure(PlayFabError _) {
-            Console.LogError("AddOrUpdateContactEmailFailure!");
+        private void OnAddOrUpdateContactEmailFailure(PlayFabError error) {
+            Console.Log("AddOrUpdateContactEmailFailure!" + ' ' + error.ErrorMessage);
 
             editAcctEllipsesControl.enabled = false;
             editAcctMsgTmp.text = failedToSaveText;

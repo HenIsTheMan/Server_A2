@@ -614,14 +614,17 @@ MonoBehaviour:
   emailInputField: {fileID: 1376393768}
   displayNameInputField: {fileID: 1560507574}
   contactEmailInputField: {fileID: 837744599}
+  passwordInputField: {fileID: 6765346249695644215}
   editAcctMsgTmp: {fileID: 1743953980707887738}
   editAcctEllipsesControl: {fileID: 1743953980707887736}
+  failedToSaveText: Failed To Save!
+  failedToSaveTextColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
   savingText: Saving
   savingTextColor: {r: 1, g: 1, b: 1, a: 1}
   savedText: Saved!
   savedTextColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
-  failedToSaveText: Failed To Save!
-  failedToSaveTextColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  wrongPasswordText: Password Is Incorrect!
+  wrongPasswordTextColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
 --- !u!1001 &1189193109016323955
 PrefabInstance:
   m_ObjectHideFlags: 0
