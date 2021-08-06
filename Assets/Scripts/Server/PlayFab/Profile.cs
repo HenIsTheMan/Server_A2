@@ -1,6 +1,8 @@
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.PfEditor.Json;
 using Server.General;
+using SimpleJSON;
 using TMPro;
 using UnityEngine;
 
@@ -35,25 +37,30 @@ namespace Server.PlayFab {
 
         private void Awake() {
             if(PlayFabClientAPI.IsClientLoggedIn()) {
-                PlayFabClientAPI.GetPlayerProfile(
-                    new GetPlayerProfileRequest(),
-                    OnGetPlayerProfileSuccess,
-                    OnGetPlayerProfileFailure
+                PlayFabClientAPI.ExecuteCloudScript(
+                    new ExecuteCloudScriptRequest() {
+                        FunctionName = "GetPlayerProfile",
+                        GeneratePlayStreamEvent = true,
+                    },
+                    OnExecuteCloudScriptSuccess,
+                    OnExecuteCloudScriptFailure
                 );
             }
         }
 
         #endregion
 
-        private void OnGetPlayerProfileSuccess(GetPlayerProfileResult result) {
-            Console.Log("GetPlayerProfileSuccess!");
+        private void OnExecuteCloudScriptSuccess(ExecuteCloudScriptResult result) {
+            Console.Log("ExecuteCloudScriptSuccess!");
 
-            displayNameTextTmp.text = result.PlayerProfile.DisplayName;
-            contactEmailTextTmp.text = result.PlayerProfile.ContactEmailAddresses[0].EmailAddress;
+            JSONNode playerProfile = JSON.Parse(JsonWrapper.SerializeObject(result.FunctionResult)); //I guess
+
+            displayNameTextTmp.text = playerProfile["displayName"].Value;
+            contactEmailTextTmp.text = playerProfile["contactEmailAddress"].Value;
         }
 
-        private void OnGetPlayerProfileFailure(PlayFabError _) {
-            Console.LogError("GetPlayerProfileFailure!");
+        private void OnExecuteCloudScriptFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptFailure!");
         }
     }
 }
