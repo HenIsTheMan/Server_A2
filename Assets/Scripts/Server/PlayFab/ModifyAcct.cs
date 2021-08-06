@@ -97,6 +97,8 @@ namespace Server.PlayFab {
         #region Unity User Callback Event Funcs
 
         private void Awake() {
+            editAcctMsgTmp.text = string.Empty;
+
             if(PlayFabClientAPI.IsClientLoggedIn()) {
                 PlayFabClientAPI.GetAccountInfo( 
                     new GetAccountInfoRequest (), 

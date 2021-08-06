@@ -69,6 +69,11 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs
+
+        private void Awake() {
+            userFeedbackTmp.text = string.Empty;
+        }
+
         #endregion
 
         public void OnClick() {
