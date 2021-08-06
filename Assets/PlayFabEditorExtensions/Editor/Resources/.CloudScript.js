@@ -337,10 +337,4 @@ handlers.GetPlayerProfile = function () {
         displayName: displayName
     };
 }
-
-handlers.DeleteAcct = function () {
-    server.DeleteMasterPlayerAccount({
-        "PlayFabId": currentPlayerId
-    });
-}
 //*/
