@@ -34,7 +34,7 @@ namespace Server.Ref {
         void GetFriends() {
             PlayFabClientAPI.GetFriendsList(new GetFriendsListRequest {
                 IncludeSteamFriends = false,
-                IncludeFacebookFriends = false,
+                IncludeFacebookFriends = true,
                 XboxToken = null
             }, result => {
                 _friends = result.Friends;
