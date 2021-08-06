@@ -239,13 +239,13 @@ namespace Server.PlayFab {
             }
         }
 
-        private void OnUpdateUserTitleDisplayNameFailure(PlayFabError _) {
-            Console.LogError("UpdateUserTitleDisplayNameFailure!");
+        private void OnUpdateUserTitleDisplayNameFailure(PlayFabError error) {
+            Console.Log("UpdateUserTitleDisplayNameFailure!" + ' ' + error.ErrorMessage);
 
             displayNameInputField.readOnly = false;
 
             editAcctEllipsesControl.enabled = false;
-            editAcctMsgTmp.text = failedToSaveText;
+            editAcctMsgTmp.text = failedToSaveText + ' ' + error.ErrorMessage;
             editAcctMsgTmp.color = failedToSaveTextColor;
         }
 
@@ -270,7 +270,7 @@ namespace Server.PlayFab {
             contactEmailInputField.readOnly = false;
 
             editAcctEllipsesControl.enabled = false;
-            editAcctMsgTmp.text = failedToSaveText;
+            editAcctMsgTmp.text = failedToSaveText + ' ' + error.ErrorMessage;
             editAcctMsgTmp.color = failedToSaveTextColor;
         }
     }
