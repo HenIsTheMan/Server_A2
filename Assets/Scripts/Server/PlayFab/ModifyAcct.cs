@@ -10,6 +10,8 @@ namespace Server.PlayFab {
     internal sealed class ModifyAcct: MonoBehaviour {
         #region Fields
 
+        private int doneCount;
+
         [SerializeField]
         private TMP_InputField usernameInputField;
 
@@ -22,6 +24,30 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_InputField contactEmailInputField;
 
+        [SerializeField]
+        private TMP_Text editAcctMsgTmp;
+
+        [SerializeField]
+        private EllipsesControl editAcctEllipsesControl;
+
+        [SerializeField]
+        private string savingText;
+
+        [SerializeField]
+        private Color savingTextColor;
+
+        [SerializeField]
+        private string savedText;
+
+        [SerializeField]
+        private Color savedTextColor;
+
+        [SerializeField]
+        private string failedToSaveText;
+
+        [SerializeField]
+        private Color failedToSaveTextColor;
+
         #endregion
 
         #region Properties
@@ -30,10 +56,24 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal ModifyAcct(): base() {
+            doneCount = 0;
+
             usernameInputField = null;
             emailInputField = null;
             displayNameInputField = null;
             contactEmailInputField = null;
+
+            editAcctMsgTmp = null;
+            editAcctEllipsesControl = null;
+
+            savingText = string.Empty;
+            savingTextColor = Color.white;
+
+            savedText = string.Empty;
+            savedTextColor = Color.white;
+
+            failedToSaveText = string.Empty;
+            failedToSaveTextColor = Color.white;
         }
 
         static ModifyAcct() {
@@ -86,6 +126,68 @@ namespace Server.PlayFab {
 
         private void OnExecuteCloudScriptFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptFailure!");
+        }
+
+        public void OnClick() {
+            PlayFabClientAPI.UpdateUserTitleDisplayName(
+                new UpdateUserTitleDisplayNameRequest {
+                    DisplayName = displayNameInputField.text
+                },
+                OnUpdateUserTitleDisplayNameSuccess,
+                OnUpdateUserTitleDisplayNameFailure
+            );
+
+            PlayFabClientAPI.AddOrUpdateContactEmail(
+                new AddOrUpdateContactEmailRequest {
+                    EmailAddress = contactEmailInputField.text
+                },
+                OnAddOrUpdateContactEmailSuccess,
+                OnAddOrUpdateContactEmailFailure
+            );
+
+            editAcctEllipsesControl.enabled = true;
+            editAcctMsgTmp.text = savingText;
+            editAcctMsgTmp.color = savingTextColor;
+        }
+
+        private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
+            Console.Log("UpdateUserTitleDisplayNameSuccess!");
+
+            if(doneCount == 1) {
+                editAcctEllipsesControl.enabled = false;
+                editAcctMsgTmp.text = savedText;
+                editAcctMsgTmp.color = savedTextColor;
+            } else {
+                ++doneCount;
+            }
+        }
+
+        private void OnUpdateUserTitleDisplayNameFailure(PlayFabError _) {
+            Console.LogError("UpdateUserTitleDisplayNameFailure!");
+
+            editAcctEllipsesControl.enabled = false;
+            editAcctMsgTmp.text = failedToSaveText;
+            editAcctMsgTmp.color = failedToSaveTextColor;
+        }
+
+        private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
+            Console.Log("AddOrUpdateContactEmailSuccess!");
+
+            if(doneCount == 1) {
+                editAcctEllipsesControl.enabled = false;
+                editAcctMsgTmp.text = savedText;
+                editAcctMsgTmp.color = savedTextColor;
+            } else {
+                ++doneCount;
+            }
+        }
+
+        private void OnAddOrUpdateContactEmailFailure(PlayFabError _) {
+            Console.LogError("AddOrUpdateContactEmailFailure!");
+
+            editAcctEllipsesControl.enabled = false;
+            editAcctMsgTmp.text = failedToSaveText;
+            editAcctMsgTmp.color = failedToSaveTextColor;
         }
     }
 }
