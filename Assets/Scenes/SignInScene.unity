@@ -1269,7 +1269,7 @@ MonoBehaviour:
   - Signing in with username
   - Signing in with email
   - Sign In Success!
-  - Sign In Failure! Incorrect Username/Email and/or Password
+  - Incorrect Username/Email and/or Password
   - Shld not be here... (Amt)
   signInMsgColors:
   - {r: 0.3019608, g: 0.3019608, b: 0.3019608, a: 1}
