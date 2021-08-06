@@ -144,10 +144,10 @@ namespace Server.PlayFab {
         }
 
         private void OnSendAccountRecoveryEmailFailure(PlayFabError error) {
-            Console.LogError("SendAccountRecoveryEmailFailure!");
+            Console.Log("SendAccountRecoveryEmailFailure!");
 
             ellipsesControl.enabled = false;
-            userFeedbackTmp.text = sentAcctRecoveryEmailText + ' ' + error.ErrorMessage;
+            userFeedbackTmp.text = failedToSendAcctRecoveryEmailText + ' ' + error.ErrorMessage;
             userFeedbackTmp.color = failedToSendAcctRecoveryEmailTextColor;
 
             canClick = true;
