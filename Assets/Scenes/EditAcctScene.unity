@@ -297,6 +297,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   editAcctMsgTmp: {fileID: 1743953980707887738}
+  editAcctEllipsesControl: {fileID: 1743953980707887736}
+  deletingAcctText: Deleting Account
+  deletingAcctTextColor: {r: 1, g: 1, b: 1, a: 1}
   acctDeletedText: Account Deletion Success!
   acctDeletedTextColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
   myUnityEvent:

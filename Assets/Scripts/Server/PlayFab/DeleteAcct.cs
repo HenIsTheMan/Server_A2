@@ -14,6 +14,15 @@ namespace Server.PlayFab {
         private TMP_Text editAcctMsgTmp;
 
         [SerializeField]
+        private EllipsesControl editAcctEllipsesControl;
+
+        [SerializeField]
+        private string deletingAcctText;
+
+        [SerializeField]
+        private Color deletingAcctTextColor;
+
+        [SerializeField]
         private string acctDeletedText;
 
         [SerializeField]
@@ -31,6 +40,11 @@ namespace Server.PlayFab {
 
         internal DeleteAcct(): base() {
             editAcctMsgTmp = null;
+            editAcctEllipsesControl = null;
+
+            deletingAcctText = string.Empty;
+            deletingAcctTextColor = Color.white;
+
             acctDeletedText = string.Empty;
             acctDeletedTextColor = Color.white;
 
@@ -51,6 +65,10 @@ namespace Server.PlayFab {
                 OnGetAccountInfoSuccess,
                 OnGetAccountInfoFailure
             );
+
+            editAcctEllipsesControl.enabled = true;
+            editAcctMsgTmp.text = deletingAcctText;
+            editAcctMsgTmp.color = deletingAcctTextColor;
         }
 
         private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
@@ -72,6 +90,9 @@ namespace Server.PlayFab {
         private void OnDeleteMasterPlayerAccountSuccess(DeleteMasterPlayerAccountResult result) {
             Console.Log("DeleteMasterPlayerAccountSuccess!");
 
+            PlayFabClientAPI.ForgetAllCredentials();
+
+            editAcctEllipsesControl.enabled = false;
             editAcctMsgTmp.text = acctDeletedText;
             editAcctMsgTmp.color = acctDeletedTextColor;
 
