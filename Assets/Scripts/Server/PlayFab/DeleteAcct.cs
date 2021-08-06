@@ -1,4 +1,5 @@
 using PlayFab;
+using PlayFab.AdminModels;
 using PlayFab.ClientModels;
 using Server.General;
 using TMPro;
@@ -45,18 +46,31 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
-            PlayFabClientAPI.ExecuteCloudScript(
-                new ExecuteCloudScriptRequest() {
-                    FunctionName = "DeleteAcct",
-                    GeneratePlayStreamEvent = true,
-                },
-                OnExecuteCloudScriptSuccess,
-                OnExecuteCloudScriptFailure
+            PlayFabClientAPI.GetAccountInfo(
+                new GetAccountInfoRequest(),
+                OnGetAccountInfoSuccess,
+                OnGetAccountInfoFailure
             );
         }
 
-        private void OnExecuteCloudScriptSuccess(ExecuteCloudScriptResult result) {
-            Console.Log("ExecuteCloudScriptSuccess!");
+        private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
+            Console.Log("GetAccountInfoSuccess!");
+
+            PlayFabAdminAPI.DeleteMasterPlayerAccount(
+                new DeleteMasterPlayerAccountRequest {
+                    PlayFabId = result.AccountInfo.PlayFabId
+                },
+                OnDeleteMasterPlayerAccountSuccess,
+                OnDeleteMasterPlayerAccountFailure
+            );
+        }
+
+        private void OnGetAccountInfoFailure(PlayFabError _) {
+            Console.LogError("GetAccountInfoFailure!");
+        }
+
+        private void OnDeleteMasterPlayerAccountSuccess(DeleteMasterPlayerAccountResult result) {
+            Console.Log("DeleteMasterPlayerAccountSuccess!");
 
             editAcctMsgTmp.text = acctDeletedText;
             editAcctMsgTmp.color = acctDeletedTextColor;
@@ -64,8 +78,8 @@ namespace Server.PlayFab {
             myUnityEvent?.Invoke();
         }
 
-        private void OnExecuteCloudScriptFailure(PlayFabError _) {
-            Console.LogError("ExecuteCloudScriptFailure!");
+        private void OnDeleteMasterPlayerAccountFailure(PlayFabError _) {
+            Console.LogError("DeleteMasterPlayerAccountFailure!");
         }
     }
 }
