@@ -2,9 +2,7 @@
 
 ## Player Account Management
 
-- Edit Account
-- Delete/Deactivate Account
-- Login using third-party e.g. Facebook, Google, OAuth
+- Login using third-party e.g. Facebook, Google, OAuth (Pending)
 
 ## Friend System
 
@@ -35,6 +33,8 @@
 - Unique username
 - Unique email (added)
 - Reset Password
+- Edit Account
+- Delete/Deactivate Account
 - Logout (added)
 
 ## User Interface
