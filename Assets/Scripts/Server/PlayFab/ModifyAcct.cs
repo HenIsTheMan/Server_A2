@@ -38,12 +38,6 @@ namespace Server.PlayFab {
         private EllipsesControl editAcctEllipsesControl;
 
         [SerializeField]
-        private string failedToSaveText;
-
-        [SerializeField]
-        private Color failedToSaveTextColor;
-
-        [SerializeField]
         private string savingText;
 
         [SerializeField]
@@ -54,6 +48,18 @@ namespace Server.PlayFab {
 
         [SerializeField]
         private Color savedTextColor;
+
+        [SerializeField]
+        private string failedToSaveText;
+
+        [SerializeField]
+        private Color failedToSaveTextColor;
+
+        [SerializeField]
+        private string nthToSaveText;
+
+        [SerializeField]
+        private Color nthToSaveTextColor;
 
         [SerializeField]
         private string wrongPasswordText;
@@ -92,6 +98,9 @@ namespace Server.PlayFab {
 
             failedToSaveText = string.Empty;
             failedToSaveTextColor = Color.white;
+
+            nthToSaveText = string.Empty;
+            nthToSaveTextColor = Color.white;
 
             wrongPasswordText = string.Empty;
             wrongPasswordTextColor = Color.white;
@@ -198,6 +207,12 @@ namespace Server.PlayFab {
 
                 contactEmailInputField.readOnly = true;
                 ++operationCount;
+            }
+
+            if(operationCount == 0) {
+                editAcctEllipsesControl.enabled = false;
+                editAcctMsgTmp.text = nthToSaveText;
+                editAcctMsgTmp.color = nthToSaveTextColor;
             }
         }
 
