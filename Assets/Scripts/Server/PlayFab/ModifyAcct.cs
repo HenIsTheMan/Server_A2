@@ -11,6 +11,10 @@ namespace Server.PlayFab {
         #region Fields
 
         private int doneCount;
+        private int operationCount;
+
+        private string displayNameSave;
+        private string contactEmailSave;
 
         [SerializeField]
         private TMP_InputField usernameInputField;
@@ -66,6 +70,10 @@ namespace Server.PlayFab {
 
         internal ModifyAcct(): base() {
             doneCount = 0;
+            operationCount = 0;
+
+            displayNameSave = string.Empty;
+            contactEmailSave = string.Empty;
 
             usernameInputField = null;
             emailInputField = null;
@@ -135,8 +143,8 @@ namespace Server.PlayFab {
 
             JSONNode playerProfile = JSON.Parse(JsonWrapper.SerializeObject(result.FunctionResult)); //I guess
 
-            displayNameInputField.text = playerProfile["displayName"].Value;
-            contactEmailInputField.text = playerProfile["contactEmailAddress"].Value;
+            displayNameSave = displayNameInputField.text = playerProfile["displayName"].Value;
+            contactEmailSave = contactEmailInputField.text = playerProfile["contactEmailAddress"].Value;
         }
 
         private void OnExecuteCloudScriptFailure(PlayFabError _) {
@@ -156,26 +164,41 @@ namespace Server.PlayFab {
             editAcctEllipsesControl.enabled = true;
             editAcctMsgTmp.text = savingText;
             editAcctMsgTmp.color = savingTextColor;
+
+            passwordInputField.text = string.Empty;
         }
 
         private void OnLoginSuccess(LoginResult _) {
             Console.Log("LoginSuccess!");
 
-            PlayFabClientAPI.UpdateUserTitleDisplayName(
-                new UpdateUserTitleDisplayNameRequest {
-                    DisplayName = displayNameInputField.text
-                },
-                OnUpdateUserTitleDisplayNameSuccess,
-                OnUpdateUserTitleDisplayNameFailure
-            );
+            doneCount = 0;
+            operationCount = 0;
 
-            PlayFabClientAPI.AddOrUpdateContactEmail(
-                new AddOrUpdateContactEmailRequest {
-                    EmailAddress = contactEmailInputField.text
-                },
-                OnAddOrUpdateContactEmailSuccess,
-                OnAddOrUpdateContactEmailFailure
-            );
+            if(displayNameInputField.text != displayNameSave) {
+                PlayFabClientAPI.UpdateUserTitleDisplayName(
+                    new UpdateUserTitleDisplayNameRequest {
+                        DisplayName = displayNameInputField.text
+                    },
+                    OnUpdateUserTitleDisplayNameSuccess,
+                    OnUpdateUserTitleDisplayNameFailure
+                );
+
+                displayNameInputField.readOnly = true;
+                ++operationCount;
+            }
+
+            if(contactEmailInputField.text != contactEmailSave) {
+                PlayFabClientAPI.AddOrUpdateContactEmail(
+                    new AddOrUpdateContactEmailRequest {
+                        EmailAddress = contactEmailInputField.text
+                    },
+                    OnAddOrUpdateContactEmailSuccess,
+                    OnAddOrUpdateContactEmailFailure
+                );
+
+                contactEmailInputField.readOnly = true;
+                ++operationCount;
+            }
         }
 
         private void OnLoginFailure(PlayFabError error) {
@@ -186,10 +209,13 @@ namespace Server.PlayFab {
             editAcctMsgTmp.color = wrongPasswordTextColor;
         }
 
-        private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
+        private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult result) {
             Console.Log("UpdateUserTitleDisplayNameSuccess!");
 
-            if(doneCount == 1) {
+            displayNameSave = result.DisplayName;
+            displayNameInputField.readOnly = false;
+
+            if(doneCount == operationCount - 1) {
                 editAcctEllipsesControl.enabled = false;
                 editAcctMsgTmp.text = savedText;
                 editAcctMsgTmp.color = savedTextColor;
@@ -201,6 +227,8 @@ namespace Server.PlayFab {
         private void OnUpdateUserTitleDisplayNameFailure(PlayFabError _) {
             Console.LogError("UpdateUserTitleDisplayNameFailure!");
 
+            displayNameInputField.readOnly = false;
+
             editAcctEllipsesControl.enabled = false;
             editAcctMsgTmp.text = failedToSaveText;
             editAcctMsgTmp.color = failedToSaveTextColor;
@@ -209,7 +237,10 @@ namespace Server.PlayFab {
         private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
             Console.Log("AddOrUpdateContactEmailSuccess!");
 
-            if(doneCount == 1) {
+            contactEmailSave = contactEmailInputField.text; //Only way as far as I can tell
+            contactEmailInputField.readOnly = false;
+
+            if(doneCount == operationCount - 1) {
                 editAcctEllipsesControl.enabled = false;
                 editAcctMsgTmp.text = savedText;
                 editAcctMsgTmp.color = savedTextColor;
@@ -220,6 +251,8 @@ namespace Server.PlayFab {
 
         private void OnAddOrUpdateContactEmailFailure(PlayFabError error) {
             Console.Log("AddOrUpdateContactEmailFailure!" + ' ' + error.ErrorMessage);
+
+            contactEmailInputField.readOnly = false;
 
             editAcctEllipsesControl.enabled = false;
             editAcctMsgTmp.text = failedToSaveText;
