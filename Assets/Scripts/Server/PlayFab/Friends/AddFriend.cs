@@ -73,6 +73,8 @@ namespace Server.PlayFab {
                     break;
             }
 
+            inputField.text = string.Empty;
+
             PlayFabClientAPI.GetAccountInfo(
                 request,
                 OnGetAccountInfoSuccess,
