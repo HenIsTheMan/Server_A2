@@ -116,6 +116,10 @@ namespace Server.PlayFab {
 
             doneCount = 0;
 
+            usernameInputField.readOnly = true;
+            emailInputField.readOnly = true;
+            userAccessTokenInputField.readOnly = true;
+
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
                 OnGetAcctInfoSuccess,
@@ -135,9 +139,7 @@ namespace Server.PlayFab {
         private void OnLoginWithFacebookFailure(PlayFabError error) {
             Console.Log("Facebook Sign In Failure: " + error.GenerateErrorReport());
 
-            facebookSignInEllipsesControl.enabled = false;
-            facebookSignInMsg.text = signInFailureText;
-            facebookSignInMsg.color = signInFailureColor;
+            MyFailureFunc();
         }
 
         private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
@@ -173,7 +175,7 @@ namespace Server.PlayFab {
             Console.Log("AddUsernamePasswordSuccess!");
 
             if(doneCount == 2) {
-                MyFunc();
+                MySuccessFunc();
             } else {
                 ++doneCount;
             }
@@ -181,10 +183,14 @@ namespace Server.PlayFab {
 
         private void OnAddUsernamePasswordFailure(PlayFabError _) {
             Console.LogError("AddUsernamePasswordFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnGetAcctInfoFailure(PlayFabError _) {
             Console.LogError("GetAcctInfoFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnExecuteCloudScriptSuccess(ExecuteCloudScriptResult result) {
@@ -223,7 +229,7 @@ namespace Server.PlayFab {
             Console.Log("UpdateUserTitleDisplayNameSuccess!");
 
             if(doneCount == 2) {
-                MyFunc();
+                MySuccessFunc();
             } else {
                 ++doneCount;
             }
@@ -231,13 +237,15 @@ namespace Server.PlayFab {
 
         private void OnUpdateUserTitleDisplayNameFailure(PlayFabError error) {
             Console.LogError("UpdateUserTitleDisplayNameFailure!" + ' ' + error.ErrorMessage);
+
+            MyFailureFunc();
         }
 
         private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
             Console.Log("AddOrUpdateContactEmailSuccess!");
 
             if(doneCount == 2) {
-                MyFunc();
+                MySuccessFunc();
             } else {
                 ++doneCount;
             }
@@ -245,18 +253,32 @@ namespace Server.PlayFab {
 
         private void OnAddOrUpdateContactEmailFailure(PlayFabError error) {
             Console.LogError("AddOrUpdateContactEmailFailure!" + ' ' + error.ErrorMessage);
+
+            MyFailureFunc();
         }
 
         private void OnExecuteCloudScriptFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptFailure!");
+
+            MyFailureFunc();
         }
 
-        private void MyFunc() {
+        private void MySuccessFunc() {
             facebookSignInEllipsesControl.enabled = false;
             facebookSignInMsg.text = signInSuccessText;
             facebookSignInMsg.color = signInSuccessColor;
 
             myUnityEvent?.Invoke();
+        }
+
+        private void MyFailureFunc() {
+            facebookSignInEllipsesControl.enabled = false;
+            facebookSignInMsg.text = signInFailureText;
+            facebookSignInMsg.color = signInFailureColor;
+
+            usernameInputField.readOnly = false;
+            emailInputField.readOnly = false;
+            userAccessTokenInputField.readOnly = false;
         }
     }
 }
