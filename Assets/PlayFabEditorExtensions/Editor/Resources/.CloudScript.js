@@ -338,7 +338,7 @@ handlers.GetPlayerProfile = function () {
     };
 }
 
-handlers.UpdateUserReadOnlyData = function (args) {
+function UpdateUserReadOnlyData(args) {
     var keyValPair = {};
 
     keyValPair[args.Key] = args.Val;
@@ -348,6 +348,8 @@ handlers.UpdateUserReadOnlyData = function (args) {
         Data: keyValPair
     });
 };
+
+handlers.UpdateUserReadOnlyData = UpdateUserReadOnlyData;
 
 handlers.GetUserReadOnlyData = function (args) {
     var userReadOnlyData = server.GetUserReadOnlyData({
@@ -368,5 +370,7 @@ handlers.AcceptFriendRequest = function (args) {
         PlayFabId: args.OtherPlayFabID,
         FriendPlayFabId: args.PlayFabID
     });
+
+    UpdateUserReadOnlyData(args);
 };
 //*/
