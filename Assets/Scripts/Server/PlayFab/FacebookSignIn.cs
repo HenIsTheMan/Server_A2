@@ -193,8 +193,8 @@ namespace Server.PlayFab {
             }
         }
 
-        private void OnAddUsernamePasswordFailure(PlayFabError _) {
-            Console.LogError("AddUsernamePasswordFailure!");
+        private void OnAddUsernamePasswordFailure(PlayFabError error) {
+            Console.LogError("AddUsernamePasswordFailure! " + error.GenerateErrorReport());
 
             MyFailureFunc();
         }
@@ -227,6 +227,12 @@ namespace Server.PlayFab {
                 OnUpdateUserTitleDisplayNameSuccess,
                 OnUpdateUserTitleDisplayNameFailure
             );
+
+            _ = StartCoroutine(UpdateContactEmail(contactEmail));
+        }
+
+        private System.Collections.IEnumerator UpdateContactEmail(string contactEmail) {
+            yield return new WaitForSeconds(0.1f); //Force a delay to prevent weird HTTP error
 
             PlayFabClientAPI.AddOrUpdateContactEmail(
                 new AddOrUpdateContactEmailRequest {

@@ -331,9 +331,19 @@ handlers.GetPlayerProfile = function () {
   	
   	var contactEmailAddresses = playerData.PlayerProfile.ContactEmailAddresses;
   	var displayName = playerData.PlayerProfile.DisplayName;
-  
+
+    var contactEmail = "";
+
+    if (contactEmailAddresses.length != 0) {
+        contactEmail = contactEmailAddresses[0].EmailAddress;
+    }
+
+    if (!displayName) {
+        displayName = "";
+    }
+
     return {
-        contactEmailAddress: contactEmailAddresses[0].EmailAddress,
+        contactEmailAddress: contactEmail,
         displayName: displayName
     };
 }
