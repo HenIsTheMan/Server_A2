@@ -53,10 +53,9 @@ namespace IWP.General {
 		internal void DeactivateObj(GameObject obj) {
 			GameObject GO = activeObjs.Where(x => x == obj).SingleOrDefault();
 
-			if(GO != null) {
+			if(GO != null && activeObjs.Remove(GO)) {
 				GO.SetActive(false);
 				inactiveObjs.Add(GO);
-				_ = activeObjs.Remove(GO);
 			}
 		}
     }
