@@ -11,6 +11,8 @@ namespace Server.PlayFab {
     internal sealed class FacebookSignIn: MonoBehaviour {
         #region Fields
 
+        private int doneCount;
+
         [SerializeField]
         private int passwordLen;
 
@@ -52,6 +54,7 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal FacebookSignIn() : base() {
+            doneCount = 0;
             passwordLen = 0;
 
             userAccessTokenInputField = null;
@@ -101,6 +104,8 @@ namespace Server.PlayFab {
 
         private void OnLoginWithFacebookSuccess(LoginResult result) {
             Console.Log("Partial Facebook Sign In Success: " + result.SessionTicket);
+
+            doneCount = 0;
 
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
@@ -157,6 +162,12 @@ namespace Server.PlayFab {
 
         private void OnAddUsernamePasswordSuccess(AddUsernamePasswordResult _) {
             Console.Log("AddUsernamePasswordSuccess!");
+
+            if(doneCount == 2) {
+                MyFunc();
+            } else {
+                ++doneCount;
+            }
         }
 
         private void OnAddUsernamePasswordFailure(PlayFabError _) {
@@ -195,6 +206,12 @@ namespace Server.PlayFab {
 
         private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
             Console.Log("UpdateUserTitleDisplayNameSuccess!");
+
+            if(doneCount == 2) {
+                MyFunc();
+            } else {
+                ++doneCount;
+            }
         }
 
         private void OnUpdateUserTitleDisplayNameFailure(PlayFabError error) {
@@ -203,6 +220,12 @@ namespace Server.PlayFab {
 
         private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
             Console.Log("AddOrUpdateContactEmailSuccess!");
+
+            if(doneCount == 2) {
+                MyFunc();
+            } else {
+                ++doneCount;
+            }
         }
 
         private void OnAddOrUpdateContactEmailFailure(PlayFabError error) {
@@ -213,7 +236,7 @@ namespace Server.PlayFab {
             Console.LogError("ExecuteCloudScriptFailure!");
         }
 
-        private void Func() {
+        private void MyFunc() {
             facebookSignInEllipsesControl.enabled = false;
             facebookSignInMsg.text = signInSuccessText;
             facebookSignInMsg.color = signInSuccessColor;

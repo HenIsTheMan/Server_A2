@@ -575,6 +575,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6854b0e016d1524fbdea6377b1ed3d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  passwordLen: 40
   userAccessTokenInputField: {fileID: 8957235987778639334}
   facebookSignInMsg: {fileID: 3753816965241113537}
   facebookSignInEllipsesControl: {fileID: 3753816965241113536}
