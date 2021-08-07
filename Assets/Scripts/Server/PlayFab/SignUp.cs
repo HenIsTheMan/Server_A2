@@ -13,6 +13,8 @@ namespace Server.PlayFab {
 
         private bool canClick;
 
+        private int doneCount;
+
         private string email;
 
         [SerializeField]
@@ -54,6 +56,8 @@ namespace Server.PlayFab {
 
         internal SignUp(): base() {
             canClick = true;
+
+            doneCount = 0;
 
             email = string.Empty;
 
@@ -211,8 +215,10 @@ namespace Server.PlayFab {
             signUpMsgTmp.color = signUpMsgColors[(int)status]; 
         }
 
-		private void OnRegistrationSuccess(RegisterPlayFabUserResult _) {
+		private void OnRegistrationSuccess(RegisterPlayFabUserResult result) {
             Console.Log("OG User Registration Successful!");
+
+            doneCount = 0;
 
             PlayFabClientAPI.AddOrUpdateContactEmail(
                 new AddOrUpdateContactEmailRequest {
@@ -221,9 +227,46 @@ namespace Server.PlayFab {
                 OnAddOrUpdateContactEmailSuccess,
                 OnAddOrUpdateContactEmailFailure
             );
-		}
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "SetFriendRequests",
+                    FunctionParameter = new {
+                        PlayFabID = result.PlayFabId,
+                        FriendRequests = string.Empty
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptSetSuccess,
+                OnExecuteCloudScriptSetFailure
+            );;
+        }
+
+        private void OnExecuteCloudScriptSetSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptSetSuccess!");
+
+            if(doneCount == 1) {
+                FullUserRegistrationSuccessful();
+            } else {
+                ++doneCount;
+            }
+        }
+
+        private void OnExecuteCloudScriptSetFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptSetFailure!");
+        }
 
         private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
+            Console.Log("AddOrUpdateContactEmailSuccess!");
+
+            if(doneCount == 1) {
+                FullUserRegistrationSuccessful();
+            } else {
+                ++doneCount;
+            }
+        }
+
+        private void FullUserRegistrationSuccessful() {
             Console.Log("Full User Registration Successful!");
 
             signUpEllipsesControl.enabled = false;
@@ -233,7 +276,7 @@ namespace Server.PlayFab {
         }
 
         private void OnAddOrUpdateContactEmailFailure(PlayFabError _) {
-            Console.LogError("Full User Registration Failure!");
+            Console.LogError("AddOrUpdateContactEmailFailure!");
         }
 
         private void OnRegistrationFailure(PlayFabError error) {
