@@ -13,11 +13,14 @@ namespace Server.PlayFab {
 
         private int doneCount;
 
-        private string email;
-        private string username;
-
         [SerializeField]
         private int passwordLen;
+
+        [SerializeField]
+        private TMP_InputField usernameInputField;
+
+        [SerializeField]
+        private TMP_InputField emailInputField;
 
         [SerializeField]
         private TMP_InputField userAccessTokenInputField;
@@ -58,11 +61,10 @@ namespace Server.PlayFab {
 
         internal FacebookSignIn() : base() {
             doneCount = 0;
-
-            email = string.Empty;
-            username = string.Empty;
-
             passwordLen = 0;
+
+            usernameInputField = null;
+            emailInputField = null;
 
             userAccessTokenInputField = null;
 
@@ -98,14 +100,7 @@ namespace Server.PlayFab {
             PlayFabClientAPI.LoginWithFacebook(
                 new LoginWithFacebookRequest() {
                     CreateAccount = true,
-                    AccessToken = userAccessTokenInputField.text,
-                    InfoRequestParameters = new GetPlayerCombinedInfoRequestParams {
-                        GetPlayerProfile = true,
-                        GetUserAccountInfo = true,
-                        ProfileConstraints = new PlayerProfileViewConstraints {
-                            ShowLinkedAccounts = true
-                        }
-                    }
+                    AccessToken = userAccessTokenInputField.text
                 },
                 OnLoginWithFacebookSuccess,
                 OnLoginWithFacebookFailure
@@ -121,18 +116,19 @@ namespace Server.PlayFab {
 
             doneCount = 0;
 
-            foreach(var acct in result.InfoResultPayload.PlayerProfile.LinkedAccounts) {
-                if(acct.Platform == LoginIdentityProvider.Facebook) {
-                    email = acct.Email;
-                    username = acct.Username;
-                    break;
-                }
-            }
-
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
                 OnGetAcctInfoSuccess,
                 OnGetAcctInfoFailure
+            );
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "GetPlayerProfile",
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptSuccess,
+                OnExecuteCloudScriptFailure
             );
         }
 
@@ -147,21 +143,14 @@ namespace Server.PlayFab {
         private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
             Console.Log("GetAcctInfoSuccess!");
 
-            string myUsername = result.AccountInfo.Username;
-            if(string.IsNullOrEmpty(myUsername)) {
-                myUsername = username;
+            string username = result.AccountInfo.Username;
+            if(string.IsNullOrEmpty(username)) {
+                username = usernameInputField.text;
             }
 
-            string myEmail = result.AccountInfo.PrivateInfo.Email;
-            if(string.IsNullOrEmpty(myEmail)) {
-                myEmail = email;
-            }
-
-            if(myUsername == null) {
-                myUsername = string.Empty;
-            }
-            if(myEmail == null) {
-                myEmail = string.Empty;
+            string email = result.AccountInfo.PrivateInfo.Email;
+            if(string.IsNullOrEmpty(email)) {
+                email = emailInputField.text;
             }
 
             string password = string.Empty;
@@ -171,8 +160,8 @@ namespace Server.PlayFab {
 
             PlayFabClientAPI.AddUsernamePassword(
                 new AddUsernamePasswordRequest() {
-                    Email = myEmail,
-                    Username = myUsername,
+                    Email = email,
+                    Username = username,
                     Password = password,
                 },
                 OnAddUsernamePasswordSuccess,
@@ -180,25 +169,22 @@ namespace Server.PlayFab {
             );
         }
 
-        private void OnGetAcctInfoFailure(PlayFabError _) {
-            Console.LogError("GetAcctInfoFailure!");
-        }
-
         private void OnAddUsernamePasswordSuccess(AddUsernamePasswordResult _) {
             Console.Log("AddUsernamePasswordSuccess!");
 
-            PlayFabClientAPI.ExecuteCloudScript(
-                new ExecuteCloudScriptRequest() {
-                    FunctionName = "GetPlayerProfile",
-                    GeneratePlayStreamEvent = true,
-                },
-                OnExecuteCloudScriptSuccess,
-                OnExecuteCloudScriptFailure
-            );
+            if(doneCount == 2) {
+                MyFunc();
+            } else {
+                ++doneCount;
+            }
         }
 
         private void OnAddUsernamePasswordFailure(PlayFabError _) {
             Console.LogError("AddUsernamePasswordFailure!");
+        }
+
+        private void OnGetAcctInfoFailure(PlayFabError _) {
+            Console.LogError("GetAcctInfoFailure!");
         }
 
         private void OnExecuteCloudScriptSuccess(ExecuteCloudScriptResult result) {
@@ -208,12 +194,12 @@ namespace Server.PlayFab {
 
             string displayName = playerProfile["displayName"].Value;
             if(string.IsNullOrEmpty(displayName)) {
-                displayName = username;
+                displayName = usernameInputField.text;
             }
 
             string contactEmail = playerProfile["contactEmailAddress"].Value;
             if(string.IsNullOrEmpty(contactEmail)) {
-                contactEmail = email;
+                contactEmail = emailInputField.text;
             }
 
             PlayFabClientAPI.UpdateUserTitleDisplayName(
@@ -236,7 +222,7 @@ namespace Server.PlayFab {
         private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
             Console.Log("UpdateUserTitleDisplayNameSuccess!");
 
-            if(doneCount == 1) {
+            if(doneCount == 2) {
                 MyFunc();
             } else {
                 ++doneCount;
@@ -250,7 +236,7 @@ namespace Server.PlayFab {
         private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
             Console.Log("AddOrUpdateContactEmailSuccess!");
 
-            if(doneCount == 1) {
+            if(doneCount == 2) {
                 MyFunc();
             } else {
                 ++doneCount;
