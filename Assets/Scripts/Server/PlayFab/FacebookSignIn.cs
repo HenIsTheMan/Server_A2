@@ -13,6 +13,9 @@ namespace Server.PlayFab {
 
         private int doneCount;
 
+        private string email;
+        private string username;
+
         [SerializeField]
         private int passwordLen;
 
@@ -55,6 +58,10 @@ namespace Server.PlayFab {
 
         internal FacebookSignIn() : base() {
             doneCount = 0;
+
+            email = string.Empty;
+            username = string.Empty;
+
             passwordLen = 0;
 
             userAccessTokenInputField = null;
@@ -91,7 +98,13 @@ namespace Server.PlayFab {
             PlayFabClientAPI.LoginWithFacebook(
                 new LoginWithFacebookRequest() {
                     CreateAccount = true,
-                    AccessToken = userAccessTokenInputField.text
+                    AccessToken = userAccessTokenInputField.text,
+                    InfoRequestParameters = new GetPlayerCombinedInfoRequestParams {
+                        GetPlayerProfile = true,
+                        ProfileConstraints = new PlayerProfileViewConstraints {
+                            ShowLinkedAccounts = true
+                        }
+                    }
                 },
                 OnLoginWithFacebookSuccess,
                 OnLoginWithFacebookFailure
@@ -106,6 +119,14 @@ namespace Server.PlayFab {
             Console.Log("Partial Facebook Sign In Success: " + result.SessionTicket);
 
             doneCount = 0;
+
+            foreach(var acct in result.InfoResultPayload.PlayerProfile.LinkedAccounts) {
+                if(acct.Platform == LoginIdentityProvider.Facebook) {
+                    email = acct.Email;
+                    username = acct.Username;
+                    break;
+                }
+            }
 
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
@@ -134,14 +155,18 @@ namespace Server.PlayFab {
         private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
             Console.Log("GetAcctInfoSuccess!");
 
-            string email = string.Empty;
-            if(string.IsNullOrEmpty(result.AccountInfo.Username)) {
-                email = "Test";
+            if(!string.IsNullOrEmpty(result.AccountInfo.Username)) {
+                username = result.AccountInfo.Username;
+            }
+            if(!string.IsNullOrEmpty(result.AccountInfo.PrivateInfo.Email)) {
+                email = result.AccountInfo.PrivateInfo.Email;
             }
 
-            string username = string.Empty;
-            if(string.IsNullOrEmpty(result.AccountInfo.PrivateInfo.Email)) {
-                username = "Test";
+            if(username == null) {
+                username = string.Empty;
+            }
+            if(email == null) {
+                email = string.Empty;
             }
 
             string password = string.Empty;
