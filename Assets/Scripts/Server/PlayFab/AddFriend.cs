@@ -1,6 +1,8 @@
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.PfEditor.Json;
 using Server.General;
+using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using static Server.PlayFab.AddFriendTypes;
@@ -34,36 +36,83 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
-            AddFriendRequest request = new AddFriendRequest();
+            GetAccountInfoRequest request = new GetAccountInfoRequest();
 
             switch((AddFriendType)dropdown.value) {
                 case AddFriendType.DisplayName:
-                    request.FriendTitleDisplayName = inputField.text;
+                    request.TitleDisplayName = inputField.text;
                     break;
                 case AddFriendType.Username:
-                    request.FriendUsername = inputField.text;
+                    request.Username = inputField.text;
                     break;
                 case AddFriendType.Email:
-                    request.FriendEmail = inputField.text;
+                    request.Email = inputField.text;
                     break;
                 case AddFriendType.PlayFabID:
-                    request.FriendPlayFabId = inputField.text;
+                    request.PlayFabId = inputField.text;
                     break;
             }
 
-            PlayFabClientAPI.AddFriend(
+            PlayFabClientAPI.GetAccountInfo(
                 request,
-                OnAddFriendSuccess,
-                OnAddFriendFailure
+                OnGetAccountInfoSuccess,
+                OnGetAccountInfoFailure
             );
         }
 
-		private void OnAddFriendSuccess(AddFriendResult result) {
-            Console.Log("AddFriendSuccess!");
+		private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
+            Console.Log("GetAccountInfoSuccess!");
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "GetFriendRequests",
+                    FunctionParameter = new {
+                        PlayFabID = result.AccountInfo.PlayFabId
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptGetSuccess,
+                OnExecuteCloudScriptGetFailure
+            );
         }
 
-        private void OnAddFriendFailure(PlayFabError error) {
-            Console.Log("AddFriendFailure!");
+        private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
+            Console.Log("ExecuteCloudScriptGetSuccess!");
+
+            string strResult = JsonWrapper.SerializeObject(result.FunctionResult);
+
+            if(string.IsNullOrEmpty(strResult)) {
+                PlayFabClientAPI.ExecuteCloudScript(
+                    new ExecuteCloudScriptRequest() {
+                        FunctionName = "SetFriendRequests",
+                        FunctionParameter = new {
+                            PlayFabID = result.AccountInfo.PlayFabId
+                        },
+                        GeneratePlayStreamEvent = true,
+                    },
+                    OnExecuteCloudScriptSetSuccess,
+                    OnExecuteCloudScriptSetFailure
+                );
+            } else {
+                JSONArray arr = (JSONArray)JSON.Parse(strResult); //I guess
+                Console.Log(arr.Count);
+            }
+        }
+
+        private void OnExecuteCloudScriptSetSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptSetSuccess!");
+        }
+
+        private void OnExecuteCloudScriptSetFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptSetFailure!");
+        }
+
+        private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptGetFailure!");
+        }
+
+        private void OnGetAccountInfoFailure(PlayFabError _) {
+            Console.Log("GetAccountInfoFailure!");
         }
     }
 }
