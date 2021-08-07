@@ -19,6 +19,8 @@ namespace Server.PlayFab {
 
         private string emailOfRequester;
 
+        private string playFabIdOfRequestee;
+
         #endregion
 
         #region Properties
@@ -27,6 +29,10 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal AddFriend(): base() {
+            dropdown = null;
+            inputField = null;
+            emailOfRequester = string.Empty;
+            playFabIdOfRequestee = string.Empty;
         }
 
         static AddFriend() {
@@ -77,11 +83,13 @@ namespace Server.PlayFab {
         private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
             Console.Log("GetAccountInfoSuccess!");
 
+            playFabIdOfRequestee = result.AccountInfo.PlayFabId;
+
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "GetUserReadOnlyData",
                     FunctionParameter = new {
-                        PlayFabID = result.AccountInfo.PlayFabId,
+                        PlayFabID = playFabIdOfRequestee,
                         Key = "FriendRequests"
                     },
                     GeneratePlayStreamEvent = true,
@@ -105,6 +113,20 @@ namespace Server.PlayFab {
             if(!emails.Contains(emailOfRequester)) {
                 resultArr.Add(emailOfRequester);
             }
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "UpdateUserReadOnlyData",
+                    FunctionParameter = new {
+                        PlayFabID = playFabIdOfRequestee,
+                        Key = "FriendRequests",
+                        Val = resultArr.ToString()
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptSetSuccess,
+                OnExecuteCloudScriptSetFailure
+            );
         }
 
         private void OnExecuteCloudScriptSetSuccess(ExecuteCloudScriptResult _) {
