@@ -1,6 +1,8 @@
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.PfEditor.Json;
 using Server.General;
+using SimpleJSON;
 using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
@@ -100,6 +102,23 @@ namespace Server.PlayFab {
                 OnGetAcctInfoSuccess,
                 OnGetAcctInfoFailure
             );
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "GetPlayerProfile",
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptSuccess,
+                OnExecuteCloudScriptFailure
+            );
+        }
+
+        private void OnLoginWithFacebookFailure(PlayFabError error) {
+            Console.Log("Facebook Sign In Failure: " + error.GenerateErrorReport());
+
+            facebookSignInEllipsesControl.enabled = false;
+            facebookSignInMsg.text = signInFailureText;
+            facebookSignInMsg.color = signInFailureColor;
         }
 
         private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
@@ -112,24 +131,32 @@ namespace Server.PlayFab {
             }
         }
 
+        private void OnGetAcctInfoFailure(PlayFabError _) {
+            Console.LogError("GetAcctInfoFailure!");
+        }
+
+        private void OnExecuteCloudScriptSuccess(ExecuteCloudScriptResult result) {
+            Console.Log("ExecuteCloudScriptSuccess!");
+
+            JSONNode playerProfile = JSON.Parse(JsonWrapper.SerializeObject(result.FunctionResult)); //I guess
+
+            if(string.IsNullOrEmpty(playerProfile["displayName"].Value)) {
+            }
+
+            if(string.IsNullOrEmpty(playerProfile["contactEmailAddress"].Value)) {
+            }
+        }
+
+        private void OnExecuteCloudScriptFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptFailure!");
+        }
+
         private void Func() {
             facebookSignInEllipsesControl.enabled = false;
             facebookSignInMsg.text = signInSuccessText;
             facebookSignInMsg.color = signInSuccessColor;
 
             myUnityEvent?.Invoke();
-        }
-
-        private void OnGetAcctInfoFailure(PlayFabError _) {
-            Console.LogError("GetAcctInfoFailure!");
-        }
-
-        private void OnLoginWithFacebookFailure(PlayFabError error) {
-            Console.Log("Facebook Sign In Failure: " + error.GenerateErrorReport());
-
-            facebookSignInEllipsesControl.enabled = false;
-            facebookSignInMsg.text = signInFailureText;
-            facebookSignInMsg.color = signInFailureColor;
         }
     }
 }
