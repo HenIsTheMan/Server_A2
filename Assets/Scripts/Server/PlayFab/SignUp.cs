@@ -228,13 +228,18 @@ namespace Server.PlayFab {
                 OnAddOrUpdateContactEmailFailure
             );
 
+            SimpleJSON.JSONNode node = new SimpleJSON.JSONArray();
+            node.Add("test1");
+            node.Add("test2");
+            node.Add("test3");
+
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "UpdateUserReadOnlyData",
                     FunctionParameter = new {
                         PlayFabID = result.PlayFabId,
                         Key = "FriendRequests",
-                        Val = new SimpleJSON.JSONArray().ToString()
+                        Val = node.ToString()
                     },
                     GeneratePlayStreamEvent = true,
                 },
