@@ -79,14 +79,22 @@ namespace Server.PlayFab {
         private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
             Console.Log("ExecuteCloudScriptGetSuccess!");
 
-            string strResult = JsonWrapper.SerializeObject(result.FunctionResult);
 
-            if(string.IsNullOrEmpty(strResult)) {
+            Console.Log(result.FunctionResult);
+            return;
+
+            JSONNode resultNode = JSON.Parse(JsonWrapper.SerializeObject(result.FunctionResult));
+
+            if(string.IsNullOrEmpty(resultNode["friendRequests"].Value)) {
+                JSONNode friendRequestsNode = new JSONArray();
+                friendRequestsNode.Add(resultNode["requester"].Value);
+
                 PlayFabClientAPI.ExecuteCloudScript(
                     new ExecuteCloudScriptRequest() {
                         FunctionName = "SetFriendRequests",
                         FunctionParameter = new {
-                            PlayFabID = result.AccountInfo.PlayFabId
+                            PlayFabID = resultNode["requestee"].Value,
+                            FriendRequests = friendRequestsNode.ToString()
                         },
                         GeneratePlayStreamEvent = true,
                     },
@@ -94,7 +102,7 @@ namespace Server.PlayFab {
                     OnExecuteCloudScriptSetFailure
                 );
             } else {
-                JSONArray arr = (JSONArray)JSON.Parse(strResult); //I guess
+                JSONArray arr = (JSONArray)resultNode;
                 Console.Log(arr.Count);
             }
         }
