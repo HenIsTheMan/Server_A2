@@ -357,13 +357,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1987493393798796550, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_text
-      value: Enter Username/Email...
+      value: Enter... (new accounts only)
       objectReference: {fileID: 0}
     - target: {fileID: 1987493393920030753, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_text
       value: Email
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1987493393798796548, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
 --- !u!224 &787397516 stripped
 RectTransform:
@@ -486,13 +487,14 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1987493393798796550, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_text
-      value: Enter Username/Email...
+      value: Enter... (new accounts only)
       objectReference: {fileID: 0}
     - target: {fileID: 1987493393920030753, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
       propertyPath: m_text
       value: Username
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 1987493393798796548, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
 --- !u!224 &1129326677 stripped
 RectTransform:

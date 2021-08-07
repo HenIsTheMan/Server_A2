@@ -11,6 +11,8 @@ namespace Server.PlayFab {
     internal sealed class FacebookSignIn: MonoBehaviour {
         #region Fields
 
+        private bool shldCreateAcct;
+
         private int doneCount;
 
         [SerializeField]
@@ -60,6 +62,7 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal FacebookSignIn() : base() {
+            shldCreateAcct = true;
             doneCount = 0;
             passwordLen = 0;
 
@@ -97,9 +100,13 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            shldCreateAcct
+                = !string.IsNullOrEmpty(usernameInputField.text)
+                || !string.IsNullOrEmpty(emailInputField.text);
+
             PlayFabClientAPI.LoginWithFacebook(
                 new LoginWithFacebookRequest() {
-                    CreateAccount = true,
+                    CreateAccount = shldCreateAcct,
                     AccessToken = userAccessTokenInputField.text
                 },
                 OnLoginWithFacebookSuccess,
@@ -113,6 +120,11 @@ namespace Server.PlayFab {
 
         private void OnLoginWithFacebookSuccess(LoginResult result) {
             Console.Log("Partial Facebook Sign In Success: " + result.SessionTicket);
+
+            if(!shldCreateAcct) {
+                MySuccessFunc();
+                return;
+            }
 
             doneCount = 0;
 
@@ -264,6 +276,8 @@ namespace Server.PlayFab {
         }
 
         private void MySuccessFunc() {
+             Console.Log("Full Facebook Sign In Success!");
+
             facebookSignInEllipsesControl.enabled = false;
             facebookSignInMsg.text = signInSuccessText;
             facebookSignInMsg.color = signInSuccessColor;
