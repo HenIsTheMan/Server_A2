@@ -82,6 +82,7 @@ namespace Server.PlayFab {
             foreach(FriendInfo friendInfo in result.Friends) {
                 friendSelectionGO = friendSelectionPool.ActivateObj();
                 friendSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = friendInfo.TitleDisplayName;
+                friendSelectionGO.transform.GetChild(2).GetComponent<RemoveFriend>().friendSelectionPool = friendSelectionPool;
             }
         }
 
