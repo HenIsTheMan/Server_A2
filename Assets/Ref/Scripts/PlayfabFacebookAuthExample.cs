@@ -2,6 +2,7 @@
 using Facebook.Unity;
 using PlayFab;
 using PlayFab.ClientModels;
+using Server.General;
 using UnityEngine;
 using LoginResult = PlayFab.ClientModels.LoginResult;
 
@@ -37,7 +38,18 @@ public class PlayfabFacebookAuthExample: MonoBehaviour {
              * We proceed with making a call to PlayFab API. We pass in current Facebook AccessToken and let it create
              * and account using CreateAccount flag set to true. We also pass the callback for Success and Failure results
              */
-            PlayFabClientAPI.LoginWithFacebook(new LoginWithFacebookRequest { CreateAccount = true, AccessToken = AccessToken.CurrentAccessToken.TokenString },
+            PlayFabClientAPI.LoginWithFacebook(new LoginWithFacebookRequest {
+                CreateAccount = true,
+                AccessToken = AccessToken.CurrentAccessToken.TokenString,
+                InfoRequestParameters = new GetPlayerCombinedInfoRequestParams {
+                    GetPlayerProfile = true,
+                    GetUserAccountInfo = true,
+                    ProfileConstraints = new PlayerProfileViewConstraints {
+                        //ShowContactEmailAddresses = true,
+                        ShowLinkedAccounts = true
+                    }
+                }
+            },
                 OnPlayfabFacebookAuthComplete, OnPlayfabFacebookAuthFailed);
         } else {
             // If Facebook authentication failed, we stop the cycle with the message
@@ -48,6 +60,16 @@ public class PlayfabFacebookAuthExample: MonoBehaviour {
     // When processing both results, we just set the message, explaining what's going on.
     private void OnPlayfabFacebookAuthComplete(LoginResult result) {
         SetMessage("PlayFab Facebook Auth Complete. Session ticket: " + result.SessionTicket);
+
+        foreach(var acct in result.InfoResultPayload.PlayerProfile.LinkedAccounts) {
+            if(acct.Platform == LoginIdentityProvider.Facebook) {
+                Console.Log(acct.Email);
+                Console.Log(acct.Username);
+            }
+        }
+        //Console.Log(result.InfoResultPayload.PlayerProfile.ContactEmailAddresses[0]);
+        //Console.Log(result.InfoResultPayload.AccountInfo.FacebookInfo.FullName);
+        //Console.Log(result.InfoResultPayload.AccountInfo.FacebookInfo.FacebookId);
     }
 
     private void OnPlayfabFacebookAuthFailed(PlayFabError error) {
