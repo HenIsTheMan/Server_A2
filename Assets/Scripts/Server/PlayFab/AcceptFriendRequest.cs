@@ -2,6 +2,7 @@ using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
 using SimpleJSON;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -15,8 +16,6 @@ namespace Server.PlayFab {
         private string myPlayFabID;
         private string otherPlayFabID;
 
-        internal FriendRequests friendRequests;
-
         #endregion
 
         #region Properties
@@ -29,8 +28,6 @@ namespace Server.PlayFab {
 
             myPlayFabID = string.Empty;
             otherPlayFabID = string.Empty;
-
-            friendRequests = null;
         }
 
         static AcceptFriendRequest() {
@@ -108,8 +105,6 @@ namespace Server.PlayFab {
 
         private void OnExecuteCloudScriptAcceptSuccess(ExecuteCloudScriptResult _) {
             Console.Log("ExecuteCloudScriptAcceptSuccess!");
-
-            friendRequests.OnClick();
         }
 
         private void OnExecuteCloudScriptAcceptFailure(PlayFabError _) {
