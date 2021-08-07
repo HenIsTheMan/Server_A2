@@ -17,7 +17,7 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_InputField inputField;
 
-        private string emailOfRequestee;
+        private string emailOfRequester;
 
         #endregion
 
@@ -38,6 +38,18 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            PlayFabClientAPI.GetAccountInfo(
+                new GetAccountInfoRequest(),
+                OnGetAccountInfo1stSuccess,
+                OnGetAccountInfo1stFailure
+            );
+        }
+
+        private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
+            Console.Log("GetAccountInfo1stSuccess!");
+
+            emailOfRequester = result.AccountInfo.PrivateInfo.Email;
+
             GetAccountInfoRequest request = new GetAccountInfoRequest();
 
             switch((AddFriendType)dropdown.value) {
@@ -62,10 +74,8 @@ namespace Server.PlayFab {
             );
         }
 
-		private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
+        private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
             Console.Log("GetAccountInfoSuccess!");
-
-            emailOfRequestee = result.AccountInfo.PrivateInfo.Email;
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
@@ -86,35 +96,15 @@ namespace Server.PlayFab {
 
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
-			List<string> emails = new List<string>();
+			List<string> emails = new List<string>(); //For checking
 
 			while(myEnumerator.MoveNext()) { //Iterate through JSONArray
                 emails.Add(myEnumerator.Current.Value);
             }
-            emails.Add(emailOfRequestee);
 
-            emails.ForEach(displayName => Console.Log(displayName));
-
-            //if(string.IsNullOrEmpty(resultNode["friendRequests"].Value)) {
-            //    JSONNode friendRequestsNode = new JSONArray();
-            //    friendRequestsNode.Add(resultNode["requester"].Value);
-
-            //    PlayFabClientAPI.ExecuteCloudScript(
-            //        new ExecuteCloudScriptRequest() {
-            //            FunctionName = "SetFriendRequests",
-            //            FunctionParameter = new {
-            //                PlayFabID = resultNode["requestee"].Value,
-            //                FriendRequests = friendRequestsNode.ToString()
-            //            },
-            //            GeneratePlayStreamEvent = true,
-            //        },
-            //        OnExecuteCloudScriptSetSuccess,
-            //        OnExecuteCloudScriptSetFailure
-            //    );
-            //} else {
-            //    JSONArray arr = (JSONArray)resultNode;
-            //    Console.Log(arr.Count);
-            //}
+            if(!emails.Contains(emailOfRequester)) {
+                resultArr.Add(emailOfRequester);
+            }
         }
 
         private void OnExecuteCloudScriptSetSuccess(ExecuteCloudScriptResult _) {
@@ -131,6 +121,10 @@ namespace Server.PlayFab {
 
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.Log("GetAccountInfoFailure!");
+        }
+
+        private void OnGetAccountInfo1stFailure(PlayFabError _) {
+            Console.LogError("GetAccountInfo1stFailure!");
         }
     }
 }
