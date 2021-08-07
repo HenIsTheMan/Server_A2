@@ -16,10 +16,6 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_Text contactEmailTextTmp;
 
-        internal static string displayNameCache;
-
-        internal static string contactEmailCache;
-
         #endregion
 
         #region Properties
@@ -33,8 +29,6 @@ namespace Server.PlayFab {
         }
 
         static Profile() {
-            displayNameCache = string.Empty;
-            contactEmailCache = string.Empty;
         }
 
         #endregion
@@ -61,8 +55,8 @@ namespace Server.PlayFab {
 
             JSONNode playerProfile = JSON.Parse(JsonWrapper.SerializeObject(result.FunctionResult)); //I guess
 
-            displayNameCache = displayNameTextTmp.text = playerProfile["displayName"].Value;
-            contactEmailCache = contactEmailTextTmp.text = playerProfile["contactEmailAddress"].Value;
+            displayNameTextTmp.text = playerProfile["displayName"].Value;
+            contactEmailTextTmp.text = playerProfile["contactEmailAddress"].Value;
         }
 
         private void OnExecuteCloudScriptFailure(PlayFabError _) {
