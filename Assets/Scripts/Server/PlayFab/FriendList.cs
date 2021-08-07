@@ -1,3 +1,4 @@
+using IWP.General;
 using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
@@ -14,6 +15,12 @@ namespace Server.PlayFab {
         [SerializeField]
         private Transform contentTransform;
 
+        [SerializeField]
+        private int amtOfFriendSelections;
+
+        [SerializeField]
+        private ObjPool friendSelectionPool;
+
         #endregion
 
         #region Properties
@@ -24,6 +31,9 @@ namespace Server.PlayFab {
         internal FriendList(): base() {
             friendSelectionPrefab = null;
             contentTransform = null;
+
+            amtOfFriendSelections = 0;
+            friendSelectionPool = null;
         }
 
         static FriendList() {
@@ -32,6 +42,16 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs
+
+        private void Awake() {
+            friendSelectionPool.InitMe(
+                amtOfFriendSelections,
+                friendSelectionPrefab,
+                contentTransform,
+                false
+            );
+        }
+
         #endregion
 
         public void OnClick() {
@@ -50,12 +70,16 @@ namespace Server.PlayFab {
             Console.Log("GetFriendsListSuccess!");
 
             foreach(Transform child in contentTransform) {
-                Destroy(child.gameObject);
+                if(!child.gameObject.activeInHierarchy) { //Optimization
+                    break;
+                }
+
+                friendSelectionPool.DeactivateObj(child.gameObject);
             }
 
             GameObject friendSelectionGO;
             foreach(FriendInfo friendInfo in result.Friends) {
-                friendSelectionGO = Instantiate(friendSelectionPrefab, contentTransform);
+                friendSelectionGO = friendSelectionPool.ActivateObj();
                 friendSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = friendInfo.TitleDisplayName;
             }
         }

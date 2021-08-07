@@ -268,6 +268,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   friendSelectionPrefab: {fileID: 6217885037059348089, guid: 3fd8e150ca341c34380dd83d93fdf0d0, type: 3}
   contentTransform: {fileID: 1222751255}
+  amtOfFriendSelections: 400
+  friendSelectionPool: {fileID: 538469834}
+--- !u!114 &538469834
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 538469832}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c1baa06282182114b91c263034b457cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &607124909
 PrefabInstance:
   m_ObjectHideFlags: 0
