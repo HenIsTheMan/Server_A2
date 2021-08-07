@@ -1,15 +1,8 @@
 # Not Done
 
-## Player Account Management
-
-- Login using third-party e.g. Facebook, Google, OAuth (Pending)
-
 ## Friend System
 
-- Add
-- List
 - Search
-- Remove
 - Invite
 - Group/Party/Clans
 - Chat
@@ -36,6 +29,16 @@
 - Edit Account
 - Delete/Deactivate Account
 - Logout (added)
+- Login using third-party e.g. Facebook, Google, OAuth
+
+## Friend System
+
+- Add
+- List
+- Remove
+- Send Friend Request (added)
+- Accept Friend Request (added)
+- Decline Friend Request (added)
 
 ## User Interface
 
