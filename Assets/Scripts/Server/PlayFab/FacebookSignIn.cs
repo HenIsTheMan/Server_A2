@@ -46,7 +46,7 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal FacebookSignIn(): base() {
+        internal FacebookSignIn() : base() {
             userAccessTokenInputField = null;
 
             facebookSignInMsg = null;
@@ -83,8 +83,8 @@ namespace Server.PlayFab {
                     CreateAccount = true,
                     AccessToken = userAccessTokenInputField.text
                 },
-                OnPlayfabFacebookAuthComplete,
-                OnPlayfabFacebookAuthFailed
+                OnLoginWithFacebookSuccess,
+                OnLoginWithFacebookFailure
             );
 
             facebookSignInEllipsesControl.enabled = true;
@@ -92,9 +92,27 @@ namespace Server.PlayFab {
             facebookSignInMsg.color = signingInColor;
         }
 
-        private void OnPlayfabFacebookAuthComplete(LoginResult result) {
-            Console.Log("Facebook Sign In Success: " + result.SessionTicket);
+        private void OnLoginWithFacebookSuccess(LoginResult result) {
+            Console.Log("Partial Facebook Sign In Success: " + result.SessionTicket);
 
+            PlayFabClientAPI.GetAccountInfo(
+                new GetAccountInfoRequest(),
+                OnGetAcctInfoSuccess,
+                OnGetAcctInfoFailure
+            );
+        }
+
+        private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
+            Console.Log("GetAcctInfoSuccess!");
+
+            if(string.IsNullOrEmpty(result.AccountInfo.Username)) {
+            }
+
+            if(string.IsNullOrEmpty(result.AccountInfo.PrivateInfo.Email)) {
+            }
+        }
+
+        private void Func() {
             facebookSignInEllipsesControl.enabled = false;
             facebookSignInMsg.text = signInSuccessText;
             facebookSignInMsg.color = signInSuccessColor;
@@ -102,7 +120,11 @@ namespace Server.PlayFab {
             myUnityEvent?.Invoke();
         }
 
-        private void OnPlayfabFacebookAuthFailed(PlayFabError error) {
+        private void OnGetAcctInfoFailure(PlayFabError _) {
+            Console.LogError("GetAcctInfoFailure!");
+        }
+
+        private void OnLoginWithFacebookFailure(PlayFabError error) {
             Console.Log("Facebook Sign In Failure: " + error.GenerateErrorReport());
 
             facebookSignInEllipsesControl.enabled = false;
