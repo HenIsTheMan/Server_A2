@@ -268,7 +268,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   friendSelectionPrefab: {fileID: 6217885037059348089, guid: 3fd8e150ca341c34380dd83d93fdf0d0, type: 3}
   contentTransform: {fileID: 1222751255}
-  amtOfFriendSelections: 400
+  amtOfFriendSelections: 200
   friendSelectionPool: {fileID: 538469834}
 --- !u!114 &538469834
 MonoBehaviour:
@@ -467,7 +467,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   friendRequestSelectionPrefab: {fileID: 6680533562822749027, guid: a2a530d26357b8c46a1f09c4c17f977d, type: 3}
   contentTransform: {fileID: 1222751255}
-  amtOfFriendRequestSelections: 400
+  amtOfFriendRequestSelections: 200
   friendRequestSelectionPool: {fileID: 607124912}
 --- !u!1 &655285180
 GameObject:
