@@ -357,4 +357,16 @@ handlers.GetUserReadOnlyData = function (args) {
 
     return userReadOnlyData["Data"][args.Key]["Value"];
 };
+
+handlers.AcceptFriendRequest = function (args) {
+    var result = server.AddFriend({
+        PlayFabId: args.PlayFabID,
+        FriendPlayFabId: args.OtherPlayFabID
+    });
+
+    var otherResult = server.AddFriend({
+        PlayFabId: args.OtherPlayFabID,
+        FriendPlayFabId: args.PlayFabID
+    });
+};
 //*/
