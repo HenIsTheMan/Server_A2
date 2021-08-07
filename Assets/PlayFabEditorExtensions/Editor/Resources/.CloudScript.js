@@ -355,6 +355,6 @@ handlers.GetUserReadOnlyData = function (args) {
         Keys: [args.Key]
     });
 
-    return userReadOnlyData;
+    return userReadOnlyData["Data"][args.Key]["Value"];
 };
 //*/
