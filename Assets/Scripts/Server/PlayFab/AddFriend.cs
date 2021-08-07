@@ -17,7 +17,7 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_InputField inputField;
 
-        private string emailOfRequester;
+        private string displayNameOfRequester;
 
         private string playFabIdOfRequestee;
 
@@ -31,7 +31,7 @@ namespace Server.PlayFab {
         internal AddFriend(): base() {
             dropdown = null;
             inputField = null;
-            emailOfRequester = string.Empty;
+            displayNameOfRequester = string.Empty;
             playFabIdOfRequestee = string.Empty;
         }
 
@@ -54,7 +54,7 @@ namespace Server.PlayFab {
         private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
             Console.Log("GetAccountInfo1stSuccess!");
 
-            emailOfRequester = result.AccountInfo.PrivateInfo.Email;
+            displayNameOfRequester = result.AccountInfo.TitleInfo.DisplayName;
 
             GetAccountInfoRequest request = new GetAccountInfoRequest();
 
@@ -104,14 +104,14 @@ namespace Server.PlayFab {
 
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
-			List<string> emails = new List<string>(); //For checking
+			List<string> displayNames = new List<string>(); //For checking
 
 			while(myEnumerator.MoveNext()) { //Iterate through JSONArray
-                emails.Add(myEnumerator.Current.Value);
+                displayNames.Add(myEnumerator.Current.Value);
             }
 
-            if(!emails.Contains(emailOfRequester)) {
-                resultArr.Add(emailOfRequester);
+            if(!displayNames.Contains(displayNameOfRequester)) {
+                resultArr.Add(displayNameOfRequester);
             }
 
             PlayFabClientAPI.ExecuteCloudScript(

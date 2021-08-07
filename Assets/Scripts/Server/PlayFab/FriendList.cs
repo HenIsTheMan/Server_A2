@@ -70,10 +70,6 @@ namespace Server.PlayFab {
             Console.Log("GetFriendsListSuccess!");
 
             foreach(Transform child in contentTransform) {
-                if(!child.gameObject.activeInHierarchy) { //Optimization
-                    break;
-                }
-
                 friendSelectionPool.DeactivateObj(child.gameObject);
             }
 
