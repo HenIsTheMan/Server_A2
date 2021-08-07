@@ -3,7 +3,6 @@ using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
 using SimpleJSON;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
@@ -23,6 +22,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private ObjPool friendRequestSelectionPool;
 
+        [SerializeField]
+        private ObjPool friendSelectionPool;
+
         #endregion
 
         #region Properties
@@ -36,6 +38,7 @@ namespace Server.PlayFab {
 
             amtOfFriendRequestSelections = 0;
             friendRequestSelectionPool = null;
+            friendSelectionPool = null;
         }
 
         static FriendRequests() {
@@ -86,6 +89,7 @@ namespace Server.PlayFab {
 
             foreach(Transform child in contentTransform) {
                 friendRequestSelectionPool.DeactivateObj(child.gameObject);
+                friendSelectionPool.DeactivateObj(child.gameObject);
             }
 
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);

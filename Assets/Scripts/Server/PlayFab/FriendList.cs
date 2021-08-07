@@ -21,6 +21,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private ObjPool friendSelectionPool;
 
+        [SerializeField]
+        private ObjPool friendRequestSelectionPool;
+
         #endregion
 
         #region Properties
@@ -34,6 +37,7 @@ namespace Server.PlayFab {
 
             amtOfFriendSelections = 0;
             friendSelectionPool = null;
+            friendRequestSelectionPool = null;
         }
 
         static FriendList() {
@@ -71,6 +75,7 @@ namespace Server.PlayFab {
 
             foreach(Transform child in contentTransform) {
                 friendSelectionPool.DeactivateObj(child.gameObject);
+                friendRequestSelectionPool.DeactivateObj(child.gameObject);
             }
 
             GameObject friendSelectionGO;

@@ -270,6 +270,7 @@ MonoBehaviour:
   contentTransform: {fileID: 1222751255}
   amtOfFriendSelections: 200
   friendSelectionPool: {fileID: 538469834}
+  friendRequestSelectionPool: {fileID: 607124912}
 --- !u!114 &538469834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -469,6 +470,7 @@ MonoBehaviour:
   contentTransform: {fileID: 1222751255}
   amtOfFriendRequestSelections: 200
   friendRequestSelectionPool: {fileID: 607124912}
+  friendSelectionPool: {fileID: 538469834}
 --- !u!1 &655285180
 GameObject:
   m_ObjectHideFlags: 0
