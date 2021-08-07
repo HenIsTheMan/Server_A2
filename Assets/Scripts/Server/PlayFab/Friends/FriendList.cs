@@ -4,6 +4,7 @@ using PlayFab.ClientModels;
 using Server.General;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Server.PlayFab {
     internal sealed class FriendList: MonoBehaviour {
@@ -27,6 +28,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_InputField searchInputField;
 
+        [SerializeField]
+        private Button otherButton;
+
         #endregion
 
         #region Properties
@@ -43,6 +47,8 @@ namespace Server.PlayFab {
             friendRequestSelectionPool = null;
 
             searchInputField = null;
+
+            otherButton = null;
         }
 
         static FriendList() {
@@ -65,6 +71,8 @@ namespace Server.PlayFab {
 
         public void OnClick() {
             searchInputField.text = string.Empty;
+
+            otherButton.enabled = false;
 
             PlayFabClientAPI.GetFriendsList(
                 new GetFriendsListRequest {
@@ -91,10 +99,14 @@ namespace Server.PlayFab {
                 friendSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = friendInfo.TitleDisplayName;
                 friendSelectionGO.transform.GetChild(2).GetComponent<RemoveFriend>().friendSelectionPool = friendSelectionPool;
             }
+
+            otherButton.enabled = true;
         }
 
         private void OnGetFriendsListFailure(PlayFabError _) {
             Console.Log("GetFriendsListFailure!");
+
+            otherButton.enabled = true;
         }
     }
 }

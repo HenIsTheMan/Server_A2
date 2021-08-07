@@ -5,6 +5,7 @@ using Server.General;
 using SimpleJSON;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Server.PlayFab {
     internal sealed class FriendRequests: MonoBehaviour {
@@ -28,6 +29,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_InputField searchInputField;
 
+        [SerializeField]
+        private Button otherButton;
+
         #endregion
 
         #region Properties
@@ -44,6 +48,8 @@ namespace Server.PlayFab {
             friendSelectionPool = null;
 
             searchInputField = null;
+
+            otherButton = null;
         }
 
         static FriendRequests() {
@@ -66,6 +72,8 @@ namespace Server.PlayFab {
 
         public void OnClick() {
             searchInputField.text = string.Empty;
+
+            otherButton.enabled = false;
 
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
@@ -111,14 +119,20 @@ namespace Server.PlayFab {
                 friendRequestSelectionGO.transform.GetChild(2)
                     .GetComponent<RemoveFriendRequest>().friendRequestSelectionPool = friendRequestSelectionPool;
             }
+
+            otherButton.enabled = true;
         }
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptGetFailure!");
+
+            otherButton.enabled = true;
         }
 
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.Log("GetAccountInfoFailure!");
+
+            otherButton.enabled = true;
         }
     }
 }
