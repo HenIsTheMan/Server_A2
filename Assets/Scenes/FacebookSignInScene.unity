@@ -575,7 +575,45 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b6854b0e016d1524fbdea6377b1ed3d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tokenStr: 
+  userAccessTokenInputField: {fileID: 8957235987778639334}
+  facebookSignInMsg: {fileID: 3753816965241113537}
+  facebookSignInEllipsesControl: {fileID: 3753816965241113536}
+  signingInText: Signing In
+  signingInColor: {r: 1, g: 1, b: 1, a: 1}
+  signInSuccessText: Facebook Sign In Success!
+  signInSuccessColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
+  signInFailureText: Facebook Sign In Failure!
+  signInFailureColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  myUnityEvent:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 3753816965813886552}
+        m_TargetAssemblyTypeName: Server.General.CommonSceneTransitionButton, Assembly-CSharp
+        m_MethodName: OnClick
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &3753816965813886552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3753816965813886550}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea55c194c078bf14ca5a36bada6850da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  initControl: {fileID: 0}
+  sceneName: ProfileScene
+  scenePrepMethodName: JustUnloadPrep
 --- !u!222 &4220562794567693720
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -1133,6 +1171,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+--- !u!114 &8957235987778639334 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 1987493393384155109, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
+  m_PrefabInstance: {fileID: 8957235987778639333}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &8957235987778639335 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 1987493393384155108, guid: 7f8aa6d2e8c3f914bbc7c5c3c13c440b, type: 3}
