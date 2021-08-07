@@ -373,4 +373,16 @@ handlers.AcceptFriendRequest = function (args) {
 
     UpdateUserReadOnlyData(args);
 };
+
+handlers.RemoveFriend = function (args) {
+    var result = server.RemoveFriend({
+        PlayFabId: args.PlayFabID,
+        FriendPlayFabId: args.OtherPlayFabID
+    });
+
+    var otherResult = server.RemoveFriend({
+        PlayFabId: args.OtherPlayFabID,
+        FriendPlayFabId: args.PlayFabID
+    });
+};
 //*/
