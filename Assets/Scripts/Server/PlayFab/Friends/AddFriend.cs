@@ -21,6 +21,30 @@ namespace Server.PlayFab {
 
         private string playFabIdOfRequestee;
 
+        [SerializeField]
+        private TMP_Text friendsMsg;
+
+        [SerializeField]
+        private EllipsesControl friendsEllipsesControl;
+
+        [SerializeField]
+        private string sendingText;
+
+        [SerializeField]
+        private Color sendingColor;
+
+        [SerializeField]
+        private string sentText;
+
+        [SerializeField]
+        private Color sentColor;
+
+        [SerializeField]
+        private string failedToSendText;
+
+        [SerializeField]
+        private Color failedToSendColor;
+
         #endregion
 
         #region Properties
@@ -31,8 +55,21 @@ namespace Server.PlayFab {
         internal AddFriend(): base() {
             dropdown = null;
             inputField = null;
+
             displayNameOfRequester = string.Empty;
             playFabIdOfRequestee = string.Empty;
+
+            friendsMsg = null;
+            friendsEllipsesControl = null;
+
+            sendingText = string.Empty;
+            sendingColor = Color.white;
+
+            sentText = string.Empty;
+            sentColor = Color.white;
+
+            failedToSendText = string.Empty;
+            failedToSendColor = Color.white;
         }
 
         static AddFriend() {
@@ -41,6 +78,11 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs
+
+        private void Awake() {
+            friendsMsg.text = string.Empty;
+        }
+
         #endregion
 
         public void OnClick() {
@@ -49,6 +91,8 @@ namespace Server.PlayFab {
                 OnGetAccountInfo1stSuccess,
                 OnGetAccountInfo1stFailure
             );
+
+            MyProcessingFunc();
         }
 
         private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
@@ -133,22 +177,50 @@ namespace Server.PlayFab {
 
         private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
             Console.Log("ExecuteCloudScriptUpdateSuccess!");
+
+            MySuccessFunc();
         }
 
         private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptUpdateFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptGetFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.Log("GetAccountInfoFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnGetAccountInfo1stFailure(PlayFabError _) {
             Console.LogError("GetAccountInfo1stFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void MyProcessingFunc() {
+            friendsEllipsesControl.enabled = true;
+            friendsMsg.text = sendingText;
+            friendsMsg.color = sendingColor;
+        }
+
+        private void MySuccessFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = sentText;
+            friendsMsg.color = sentColor;
+        }
+
+        private void MyFailureFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = failedToSendText;
+            friendsMsg.color = failedToSendColor;
         }
     }
 }
