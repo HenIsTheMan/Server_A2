@@ -348,4 +348,13 @@ handlers.UpdateUserReadOnlyData = function (args) {
         Data: keyValPair
     });
 };
+
+handlers.GetUserReadOnlyData = function (args) {
+    var userReadOnlyData = server.GetUserReadOnlyData({
+        PlayFabId: args.PlayFabID,
+        Keys: [args.Key]
+    });
+
+    return userReadOnlyData;
+};
 //*/
