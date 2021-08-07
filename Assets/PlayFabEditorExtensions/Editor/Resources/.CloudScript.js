@@ -338,33 +338,14 @@ handlers.GetPlayerProfile = function () {
     };
 }
 
-handlers.SetFriendRequests = function (args) {
-    var request = {
+handlers.UpdateUserReadOnlyData = function (args) {
+    var keyValPair = {};
+
+    keyValPair[args.Key] = args.Val;
+
+    var result = server.UpdateUserReadOnlyData({
         PlayFabId: args.PlayFabID,
-        Statistics: [
-            {
-                StatisticName: "FriendRequests",
-                Value: args.FriendRequests
-            }
-        ]
-    };
-
-    server.UpdatePlayerStatistics(request);
-};
-
-handlers.GetFriendRequests = function (args) {
-    var playerStats = server.GetPlayerStatistics({
-        PlayFabId: args.PlayFabID
-    }).Statistics;
-
-    for(i = 0; i < playerStats.length; ++i) {
-        if(playerStats[i].StatisticName === "FriendRequests") {
-            return {
-                requester: currentPlayerId,
-                requestee: args.PlayFabID,
-                friendRequests: playerStats[i].Value
-            };
-        }
-    }
+        Data: keyValPair
+    });
 };
 //*/

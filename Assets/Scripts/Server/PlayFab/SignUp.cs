@@ -230,16 +230,17 @@ namespace Server.PlayFab {
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
-                    FunctionName = "SetFriendRequests",
+                    FunctionName = "UpdateUserReadOnlyData",
                     FunctionParameter = new {
                         PlayFabID = result.PlayFabId,
-                        FriendRequests = string.Empty
+                        Key = "FriendRequests",
+                        Val = new SimpleJSON.JSONArray().ToString()
                     },
                     GeneratePlayStreamEvent = true,
                 },
                 OnExecuteCloudScriptSetSuccess,
                 OnExecuteCloudScriptSetFailure
-            );;
+            );
         }
 
         private void OnExecuteCloudScriptSetSuccess(ExecuteCloudScriptResult _) {
