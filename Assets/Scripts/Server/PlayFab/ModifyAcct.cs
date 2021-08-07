@@ -118,7 +118,7 @@ namespace Server.PlayFab {
 
             if(PlayFabClientAPI.IsClientLoggedIn()) {
                 PlayFabClientAPI.GetAccountInfo( 
-                    new GetAccountInfoRequest (), 
+                    new GetAccountInfoRequest(), 
                     OnGetAcctInfoSuccess, 
                     OnGetAcctInfoFailure 
                 ); 
