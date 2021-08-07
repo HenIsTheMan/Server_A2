@@ -99,6 +99,10 @@ namespace Server.PlayFab {
             while(myEnumerator.MoveNext()) { //Iterate through JSONArray
                 friendRequestSelectionGO = friendRequestSelectionPool.ActivateObj();
                 friendRequestSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = myEnumerator.Current.Value;
+                friendRequestSelectionGO.transform.GetChild(1)
+                    .GetComponent<AcceptFriendRequest>().friendRequestSelectionPool = friendRequestSelectionPool;
+                friendRequestSelectionGO.transform.GetChild(2)
+                    .GetComponent<RemoveFriendRequest>().friendRequestSelectionPool = friendRequestSelectionPool;
             }
         }
 

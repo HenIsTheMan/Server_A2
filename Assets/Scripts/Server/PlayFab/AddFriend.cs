@@ -110,7 +110,7 @@ namespace Server.PlayFab {
                 displayNames.Add(myEnumerator.Current.Value);
             }
 
-            if(!displayNames.Contains(displayNameOfRequester)) {
+            if(!displayNames.Contains(displayNameOfRequester)) { //Prevents multi-requesting
                 resultArr.Add(displayNameOfRequester);
             }
 

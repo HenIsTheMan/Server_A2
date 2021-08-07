@@ -7,14 +7,13 @@ using TMPro;
 using UnityEngine;
 
 namespace Server.PlayFab {
-    internal sealed class AcceptFriendRequest: MonoBehaviour {
+    internal sealed class RemoveFriendRequest: MonoBehaviour {
         #region Fields
 
         [SerializeField]
         private TMP_Text displayNameText;
 
         private string myPlayFabID;
-        private string otherPlayFabID;
 
         internal ObjPool friendRequestSelectionPool;
 
@@ -25,16 +24,15 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal AcceptFriendRequest(): base() {
+        internal RemoveFriendRequest(): base() {
             displayNameText = null;
 
             myPlayFabID = string.Empty;
-            otherPlayFabID = string.Empty;
 
             friendRequestSelectionPool = null;
         }
 
-        static AcceptFriendRequest() {
+        static RemoveFriendRequest() {
         }
 
         #endregion
@@ -45,20 +43,6 @@ namespace Server.PlayFab {
         public void OnClick() {
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
-                OnGetAccountInfo1stSuccess,
-                OnGetAccountInfo1stFailure
-            );
-        }
-
-        private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
-            Console.Log("GetAccountInfo1stSuccess!");
-
-            myPlayFabID = result.AccountInfo.PlayFabId;
-
-            PlayFabClientAPI.GetAccountInfo(
-                new GetAccountInfoRequest() {
-                    TitleDisplayName = displayNameText.text
-                },
                 OnGetAccountInfoSuccess,
                 OnGetAccountInfoFailure
             );
@@ -67,7 +51,7 @@ namespace Server.PlayFab {
         private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
             Console.Log("GetAccountInfoSuccess!");
 
-            otherPlayFabID = result.AccountInfo.PlayFabId;
+            myPlayFabID = result.AccountInfo.PlayFabId;
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
@@ -93,28 +77,27 @@ namespace Server.PlayFab {
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
-                    FunctionName = "AcceptFriendRequest",
+                    FunctionName = "UpdateUserReadOnlyData",
                     FunctionParameter = new {
                         PlayFabID = myPlayFabID,
-                        OtherPlayFabID = otherPlayFabID,
                         Key = "FriendRequests",
                         Val = resultArr.ToString()
                     },
                     GeneratePlayStreamEvent = true,
                 },
-                OnExecuteCloudScriptAcceptSuccess,
-                OnExecuteCloudScriptAcceptFailure
+                OnExecuteCloudScriptSetSuccess,
+                OnExecuteCloudScriptSetFailure
             );
         }
 
-        private void OnExecuteCloudScriptAcceptSuccess(ExecuteCloudScriptResult _) {
-            Console.Log("ExecuteCloudScriptAcceptSuccess!");
+        private void OnExecuteCloudScriptSetSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptSetSuccess!");
 
             friendRequestSelectionPool.DeactivateObj(displayNameText.transform.parent.gameObject);
         }
 
-        private void OnExecuteCloudScriptAcceptFailure(PlayFabError _) {
-            Console.LogError("ExecuteCloudScriptAcceptFailure!");
+        private void OnExecuteCloudScriptSetFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptSetFailure!");
         }
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
@@ -123,10 +106,6 @@ namespace Server.PlayFab {
 
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.Log("GetAccountInfoFailure!");
-        }
-
-        private void OnGetAccountInfo1stFailure(PlayFabError _) {
-            Console.LogError("GetAccountInfo1stFailure!");
         }
     }
 }
