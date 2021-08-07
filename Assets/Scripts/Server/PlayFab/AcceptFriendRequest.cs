@@ -89,7 +89,13 @@ namespace Server.PlayFab {
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
 
-            _ = resultArr.Remove(displayNameText.text);
+            string displayName = displayNameText.text;
+            while(myEnumerator.MoveNext()) { //Iterate through JSONArray
+                if(displayName == myEnumerator.Current.Value) {
+                    _ = resultArr.Remove(myEnumerator.Current.Key);
+                    break;
+                }
+            }
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
