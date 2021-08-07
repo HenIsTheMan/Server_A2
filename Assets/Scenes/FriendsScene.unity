@@ -1320,6 +1320,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   dropdown: {fileID: 1943220418}
   inputField: {fileID: 3357143370912356489}
+  friendsMsg: {fileID: 960502586}
+  friendsEllipsesControl: {fileID: 960502587}
+  sendingText: Sending Friend Request
+  sendingColor: {r: 1, g: 1, b: 1, a: 1}
+  sentText: Friend Request Sent!
+  sentColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
+  failedToSendText: Failed To Send Friend Request!
+  failedToSendColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
 --- !u!224 &1222751255 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 6566730919457596313, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}

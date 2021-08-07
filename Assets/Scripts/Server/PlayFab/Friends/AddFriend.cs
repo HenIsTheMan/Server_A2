@@ -101,23 +101,49 @@ namespace Server.PlayFab {
             displayNameOfRequester = result.AccountInfo.TitleInfo.DisplayName;
 
             GetAccountInfoRequest request = new GetAccountInfoRequest();
+            bool hasFailed = false;
 
             switch((AddFriendType)dropdown.value) {
                 case AddFriendType.DisplayName:
                     request.TitleDisplayName = inputField.text;
+
+                    if(request.TitleDisplayName == displayNameOfRequester) {
+                        hasFailed = true;
+                    }
+
                     break;
                 case AddFriendType.Username:
                     request.Username = inputField.text;
+
+                    if(request.Username == result.AccountInfo.Username) {
+                        hasFailed = true;
+                    }
+
                     break;
                 case AddFriendType.Email:
                     request.Email = inputField.text;
+
+                    if(request.Email == result.AccountInfo.PrivateInfo.Email) {
+                        hasFailed = true;
+                    }
+
                     break;
                 case AddFriendType.PlayFabID:
                     request.PlayFabId = inputField.text;
+
+                    if(request.PlayFabId == result.AccountInfo.PlayFabId) {
+                        hasFailed = true;
+                    }
+
                     break;
             }
 
             inputField.text = string.Empty;
+
+            if(hasFailed) { //Cannot add yourself
+                MyFailureFunc();
+                return;
+            }
 
             PlayFabClientAPI.GetAccountInfo(
                 request,
@@ -158,6 +184,9 @@ namespace Server.PlayFab {
 
             if(!displayNames.Contains(displayNameOfRequester)) { //Prevents multi-requesting
                 resultArr.Add(displayNameOfRequester);
+            } else {
+                MyFailureFunc();
+                return;
             }
 
             PlayFabClientAPI.ExecuteCloudScript(
