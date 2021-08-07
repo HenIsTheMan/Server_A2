@@ -12,6 +12,9 @@ namespace Server.PlayFab {
         #region Fields
 
         [SerializeField]
+        private int passwordLen;
+
+        [SerializeField]
         private TMP_InputField userAccessTokenInputField;
 
         [SerializeField]
@@ -49,6 +52,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal FacebookSignIn() : base() {
+            passwordLen = 0;
+
             userAccessTokenInputField = null;
 
             facebookSignInMsg = null;
@@ -124,11 +129,38 @@ namespace Server.PlayFab {
         private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
             Console.Log("GetAcctInfoSuccess!");
 
+            string email = string.Empty;
             if(string.IsNullOrEmpty(result.AccountInfo.Username)) {
+                email = "Test";
             }
 
+            string username = string.Empty;
             if(string.IsNullOrEmpty(result.AccountInfo.PrivateInfo.Email)) {
+                username = "Test";
             }
+
+            string password = string.Empty;
+            for(int i = 0; i < passwordLen; ++i) {
+                password += (char)Random.Range(33, 127);
+            }
+
+            PlayFabClientAPI.AddUsernamePassword(
+                new AddUsernamePasswordRequest() {
+                    Email = email,
+                    Username = username,
+                    Password = password,
+                },
+                OnAddUsernamePasswordSuccess,
+                OnAddUsernamePasswordFailure
+            );
+        }
+
+        private void OnAddUsernamePasswordSuccess(AddUsernamePasswordResult _) {
+            Console.Log("AddUsernamePasswordSuccess!");
+        }
+
+        private void OnAddUsernamePasswordFailure(PlayFabError _) {
+            Console.LogError("AddUsernamePasswordFailure!");
         }
 
         private void OnGetAcctInfoFailure(PlayFabError _) {
@@ -141,10 +173,40 @@ namespace Server.PlayFab {
             JSONNode playerProfile = JSON.Parse(JsonWrapper.SerializeObject(result.FunctionResult)); //I guess
 
             if(string.IsNullOrEmpty(playerProfile["displayName"].Value)) {
+                PlayFabClientAPI.UpdateUserTitleDisplayName(
+                    new UpdateUserTitleDisplayNameRequest {
+                        DisplayName = "Test"
+                    },
+                    OnUpdateUserTitleDisplayNameSuccess,
+                    OnUpdateUserTitleDisplayNameFailure
+                );
             }
 
             if(string.IsNullOrEmpty(playerProfile["contactEmailAddress"].Value)) {
+                PlayFabClientAPI.AddOrUpdateContactEmail(
+                    new AddOrUpdateContactEmailRequest {
+                        EmailAddress = "Test"
+                    },
+                    OnAddOrUpdateContactEmailSuccess,
+                    OnAddOrUpdateContactEmailFailure
+                );
             }
+        }
+
+        private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
+            Console.Log("UpdateUserTitleDisplayNameSuccess!");
+        }
+
+        private void OnUpdateUserTitleDisplayNameFailure(PlayFabError error) {
+            Console.LogError("UpdateUserTitleDisplayNameFailure!" + ' ' + error.ErrorMessage);
+        }
+
+        private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
+            Console.Log("AddOrUpdateContactEmailSuccess!");
+        }
+
+        private void OnAddOrUpdateContactEmailFailure(PlayFabError error) {
+            Console.LogError("AddOrUpdateContactEmailFailure!" + ' ' + error.ErrorMessage);
         }
 
         private void OnExecuteCloudScriptFailure(PlayFabError _) {
