@@ -24,6 +24,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private ObjPool friendRequestSelectionPool;
 
+        [SerializeField]
+        private TMP_InputField searchInputField;
+
         #endregion
 
         #region Properties
@@ -38,6 +41,8 @@ namespace Server.PlayFab {
             amtOfFriendSelections = 0;
             friendSelectionPool = null;
             friendRequestSelectionPool = null;
+
+            searchInputField = null;
         }
 
         static FriendList() {
@@ -59,6 +64,8 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            searchInputField.text = string.Empty;
+
             PlayFabClientAPI.GetFriendsList(
                 new GetFriendsListRequest {
                     IncludeSteamFriends = false,

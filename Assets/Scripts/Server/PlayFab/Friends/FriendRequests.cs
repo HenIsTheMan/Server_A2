@@ -25,6 +25,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private ObjPool friendSelectionPool;
 
+        [SerializeField]
+        private TMP_InputField searchInputField;
+
         #endregion
 
         #region Properties
@@ -39,6 +42,8 @@ namespace Server.PlayFab {
             amtOfFriendRequestSelections = 0;
             friendRequestSelectionPool = null;
             friendSelectionPool = null;
+
+            searchInputField = null;
         }
 
         static FriendRequests() {
@@ -60,6 +65,8 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            searchInputField.text = string.Empty;
+
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
                 OnGetAccountInfoSuccess,
