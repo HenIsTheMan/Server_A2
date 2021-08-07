@@ -101,6 +101,7 @@ namespace Server.PlayFab {
                     AccessToken = userAccessTokenInputField.text,
                     InfoRequestParameters = new GetPlayerCombinedInfoRequestParams {
                         GetPlayerProfile = true,
+                        GetUserAccountInfo = true,
                         ProfileConstraints = new PlayerProfileViewConstraints {
                             ShowLinkedAccounts = true
                         }
@@ -133,15 +134,6 @@ namespace Server.PlayFab {
                 OnGetAcctInfoSuccess,
                 OnGetAcctInfoFailure
             );
-
-            PlayFabClientAPI.ExecuteCloudScript(
-                new ExecuteCloudScriptRequest() {
-                    FunctionName = "GetPlayerProfile",
-                    GeneratePlayStreamEvent = true,
-                },
-                OnExecuteCloudScriptSuccess,
-                OnExecuteCloudScriptFailure
-            );
         }
 
         private void OnLoginWithFacebookFailure(PlayFabError error) {
@@ -155,18 +147,21 @@ namespace Server.PlayFab {
         private void OnGetAcctInfoSuccess(GetAccountInfoResult result) {
             Console.Log("GetAcctInfoSuccess!");
 
-            if(!string.IsNullOrEmpty(result.AccountInfo.Username)) {
-                username = result.AccountInfo.Username;
-            }
-            if(!string.IsNullOrEmpty(result.AccountInfo.PrivateInfo.Email)) {
-                email = result.AccountInfo.PrivateInfo.Email;
+            string myUsername = result.AccountInfo.Username;
+            if(string.IsNullOrEmpty(myUsername)) {
+                myUsername = username;
             }
 
-            if(username == null) {
-                username = string.Empty;
+            string myEmail = result.AccountInfo.PrivateInfo.Email;
+            if(string.IsNullOrEmpty(myEmail)) {
+                myEmail = email;
             }
-            if(email == null) {
-                email = string.Empty;
+
+            if(myUsername == null) {
+                myUsername = string.Empty;
+            }
+            if(myEmail == null) {
+                myEmail = string.Empty;
             }
 
             string password = string.Empty;
@@ -176,8 +171,8 @@ namespace Server.PlayFab {
 
             PlayFabClientAPI.AddUsernamePassword(
                 new AddUsernamePasswordRequest() {
-                    Email = email,
-                    Username = username,
+                    Email = myEmail,
+                    Username = myUsername,
                     Password = password,
                 },
                 OnAddUsernamePasswordSuccess,
@@ -185,22 +180,25 @@ namespace Server.PlayFab {
             );
         }
 
+        private void OnGetAcctInfoFailure(PlayFabError _) {
+            Console.LogError("GetAcctInfoFailure!");
+        }
+
         private void OnAddUsernamePasswordSuccess(AddUsernamePasswordResult _) {
             Console.Log("AddUsernamePasswordSuccess!");
 
-            if(doneCount == 2) {
-                MyFunc();
-            } else {
-                ++doneCount;
-            }
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "GetPlayerProfile",
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptSuccess,
+                OnExecuteCloudScriptFailure
+            );
         }
 
         private void OnAddUsernamePasswordFailure(PlayFabError _) {
             Console.LogError("AddUsernamePasswordFailure!");
-        }
-
-        private void OnGetAcctInfoFailure(PlayFabError _) {
-            Console.LogError("GetAcctInfoFailure!");
         }
 
         private void OnExecuteCloudScriptSuccess(ExecuteCloudScriptResult result) {
@@ -208,31 +206,37 @@ namespace Server.PlayFab {
 
             JSONNode playerProfile = JSON.Parse(JsonWrapper.SerializeObject(result.FunctionResult)); //I guess
 
-            if(string.IsNullOrEmpty(playerProfile["displayName"].Value)) {
-                PlayFabClientAPI.UpdateUserTitleDisplayName(
-                    new UpdateUserTitleDisplayNameRequest {
-                        DisplayName = "Test"
-                    },
-                    OnUpdateUserTitleDisplayNameSuccess,
-                    OnUpdateUserTitleDisplayNameFailure
-                );
+            string displayName = playerProfile["displayName"].Value;
+            if(string.IsNullOrEmpty(displayName)) {
+                displayName = username;
             }
 
-            if(string.IsNullOrEmpty(playerProfile["contactEmailAddress"].Value)) {
-                PlayFabClientAPI.AddOrUpdateContactEmail(
-                    new AddOrUpdateContactEmailRequest {
-                        EmailAddress = "Test"
-                    },
-                    OnAddOrUpdateContactEmailSuccess,
-                    OnAddOrUpdateContactEmailFailure
-                );
+            string contactEmail = playerProfile["contactEmailAddress"].Value;
+            if(string.IsNullOrEmpty(contactEmail)) {
+                contactEmail = email;
             }
+
+            PlayFabClientAPI.UpdateUserTitleDisplayName(
+                new UpdateUserTitleDisplayNameRequest {
+                    DisplayName = displayName
+                },
+                OnUpdateUserTitleDisplayNameSuccess,
+                OnUpdateUserTitleDisplayNameFailure
+            );
+
+            PlayFabClientAPI.AddOrUpdateContactEmail(
+                new AddOrUpdateContactEmailRequest {
+                    EmailAddress = contactEmail
+                },
+                OnAddOrUpdateContactEmailSuccess,
+                OnAddOrUpdateContactEmailFailure
+            );
         }
 
         private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
             Console.Log("UpdateUserTitleDisplayNameSuccess!");
 
-            if(doneCount == 2) {
+            if(doneCount == 1) {
                 MyFunc();
             } else {
                 ++doneCount;
@@ -246,7 +250,7 @@ namespace Server.PlayFab {
         private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
             Console.Log("AddOrUpdateContactEmailSuccess!");
 
-            if(doneCount == 2) {
+            if(doneCount == 1) {
                 MyFunc();
             } else {
                 ++doneCount;
