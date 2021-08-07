@@ -93,19 +93,19 @@ namespace Server.PlayFab {
                     },
                     GeneratePlayStreamEvent = true,
                 },
-                OnExecuteCloudScriptSetSuccess,
-                OnExecuteCloudScriptSetFailure
+                OnExecuteCloudScriptUpdateSuccess,
+                OnExecuteCloudScriptUpdateFailure
             );
         }
 
-        private void OnExecuteCloudScriptSetSuccess(ExecuteCloudScriptResult _) {
-            Console.Log("ExecuteCloudScriptSetSuccess!");
+        private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptUpdateSuccess!");
 
             friendRequestSelectionPool.DeactivateObj(displayNameText.transform.parent.gameObject);
         }
 
-        private void OnExecuteCloudScriptSetFailure(PlayFabError _) {
-            Console.LogError("ExecuteCloudScriptSetFailure!");
+        private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptUpdateFailure!");
         }
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
