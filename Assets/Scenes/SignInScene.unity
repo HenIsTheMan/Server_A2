@@ -1950,10 +1950,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5030681819334125685}
     m_Modifications:
-    - target: {fileID: 3437753908118493480, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
-      propertyPath: m_text
-      value: Show
-      objectReference: {fileID: 0}
     - target: {fileID: 3437753908852842969, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
       propertyPath: m_Name
       value: ShowHidePasswordButton
@@ -1988,7 +1984,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3437753908852842970, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 160
+      value: 44
       objectReference: {fileID: 0}
     - target: {fileID: 3437753908852842970, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
       propertyPath: m_SizeDelta.y
@@ -2024,7 +2020,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3437753908852842970, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 38
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 3437753908852842970, guid: 776cd4ace968cef4c8be13fceeeceba2, type: 3}
       propertyPath: m_AnchoredPosition.y
