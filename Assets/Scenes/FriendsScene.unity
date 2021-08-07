@@ -3378,15 +3378,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6566730919782500931, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
       propertyPath: m_AnchorMax.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6566730919782500931, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
       propertyPath: m_AnchorMax.y
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6566730919782500931, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
       propertyPath: m_SizeDelta.x
-      value: 0
+      value: -37
       objectReference: {fileID: 0}
     - target: {fileID: 6566730920582090729, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
       propertyPath: m_AnchorMax.x
