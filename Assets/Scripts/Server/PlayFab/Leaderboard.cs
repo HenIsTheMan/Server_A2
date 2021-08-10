@@ -43,7 +43,7 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal Leaderboard() : base() {
+        internal Leaderboard(): base() {
             selectionPrefab = null;
             contentTransform = null;
             amtOfSelections = 0;

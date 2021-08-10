@@ -62,7 +62,7 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal FacebookSignIn() : base() {
+        internal FacebookSignIn(): base() {
             shldCreateAcct = true;
 
             doneCount = 0;

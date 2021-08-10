@@ -42,7 +42,7 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal FriendRequests() : base() {
+        internal FriendRequests(): base() {
             friendRequestSelectionPrefab = null;
             contentTransform = null;
 
