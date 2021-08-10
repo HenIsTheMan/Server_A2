@@ -18,6 +18,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_Text scoreTmp;
 
+        [SerializeField]
+        private string scoreStatisticName;
+
         private uint? scoreStatisticVer;
 
         private List<StatisticUpdate> myStatistics;
@@ -37,6 +40,7 @@ namespace Server.PlayFab {
             frontText = string.Empty;
             scoreTmp = null;
 
+            scoreStatisticName = string.Empty;
             scoreStatisticVer = null;
 
             myStatistics = null;
@@ -62,7 +66,7 @@ namespace Server.PlayFab {
             PlayFabClientAPI.GetPlayerStatistics(
                 new GetPlayerStatisticsRequest() { //Lame
                     StatisticNames = new List<string> { //Lame
-                        "Score"
+                        scoreStatisticName
                     }
                 },
                 OnGetPlayerStatisticsSuccess,
@@ -81,7 +85,7 @@ namespace Server.PlayFab {
         #endregion
 
         private void UpdateScoreStatistic() {
-            myStatisticUpdate.StatisticName = "Score";
+            myStatisticUpdate.StatisticName = scoreStatisticName;
             myStatisticUpdate.Value = score;
             myStatisticUpdate.Version = scoreStatisticVer;
 
@@ -106,15 +110,15 @@ namespace Server.PlayFab {
             }
         }
 
-        private void OnGetPlayerStatisticsFailure(PlayFabError error) {
+        private void OnGetPlayerStatisticsFailure(PlayFabError _) {
             Console.LogError("GetPlayerStatisticsFailure!");
         }
 
-        private void OnUpdatePlayerStatisticsSuccess(UpdatePlayerStatisticsResult result) {
+        private void OnUpdatePlayerStatisticsSuccess(UpdatePlayerStatisticsResult _) {
             Console.Log("UpdatePlayerStatisticsSuccess!");
         }
 
-        private void OnUpdatePlayerStatisticsFailure(PlayFabError error) {
+        private void OnUpdatePlayerStatisticsFailure(PlayFabError _) {
             Console.LogError("UpdatePlayerStatisticsFailure!");
         }
 

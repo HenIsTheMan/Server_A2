@@ -412,6 +412,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   frontText: 'Current Score: '
   scoreTmp: {fileID: 117938238}
+  scoreStatisticName: Score
 --- !u!1001 &2018478515
 PrefabInstance:
   m_ObjectHideFlags: 0
