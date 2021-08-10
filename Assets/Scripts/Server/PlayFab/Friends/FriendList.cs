@@ -140,8 +140,23 @@ namespace Server.PlayFab {
             GameObject friendSelectionGO;
             foreach(FriendInfo friendInfo in result.Friends) {
                 friendSelectionGO = friendSelectionPool.ActivateObj();
+
                 friendSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = friendInfo.TitleDisplayName;
-                friendSelectionGO.transform.GetChild(2).GetComponent<RemoveFriend>().friendSelectionPool = friendSelectionPool;
+
+                RemoveFriend removeFriend = friendSelectionGO.transform.GetChild(2).GetComponent<RemoveFriend>();
+                removeFriend.friendSelectionPool = friendSelectionPool;
+
+                removeFriend.friendsMsg = friendsMsg;
+                removeFriend.friendsEllipsesControl = friendsEllipsesControl;
+
+                removeFriend.processingText = processingText;
+                removeFriend.processingColor = processingColor;
+
+                removeFriend.successText = successText;
+                removeFriend.successColor = successColor;
+
+                removeFriend.failureText = failureText;
+                removeFriend.failureColor = failureColor;
 
                 search.MySelectionLinks.Add(friendInfo.TitleDisplayName, friendSelectionGO);
             }

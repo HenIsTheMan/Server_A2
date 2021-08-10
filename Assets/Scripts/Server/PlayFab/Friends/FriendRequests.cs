@@ -159,10 +159,38 @@ namespace Server.PlayFab {
                 friendRequestSelectionGO = friendRequestSelectionPool.ActivateObj();
 
                 friendRequestSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = myEnumerator.Current.Value;
-                friendRequestSelectionGO.transform.GetChild(1)
-                    .GetComponent<AcceptFriendRequest>().friendRequestSelectionPool = friendRequestSelectionPool;
-                friendRequestSelectionGO.transform.GetChild(2)
-                    .GetComponent<RemoveFriendRequest>().friendRequestSelectionPool = friendRequestSelectionPool;
+
+                AcceptFriendRequest acceptFriendRequest = friendRequestSelectionGO.transform.GetChild(1)
+                    .GetComponent<AcceptFriendRequest>();
+                acceptFriendRequest.friendRequestSelectionPool = friendRequestSelectionPool;
+
+                acceptFriendRequest.friendsMsg = friendsMsg;
+                acceptFriendRequest.friendsEllipsesControl = friendsEllipsesControl;
+
+                acceptFriendRequest.processingText = processingText;
+                acceptFriendRequest.processingColor = processingColor;
+
+                acceptFriendRequest.successText = successText;
+                acceptFriendRequest.successColor = successColor;
+
+                acceptFriendRequest.failureText = failureText;
+                acceptFriendRequest.failureColor = failureColor;
+
+                RemoveFriendRequest removeFriendRequest = friendRequestSelectionGO.transform.GetChild(2)
+                    .GetComponent<RemoveFriendRequest>();
+                removeFriendRequest.friendRequestSelectionPool = friendRequestSelectionPool;
+
+                removeFriendRequest.friendsMsg = friendsMsg;
+                removeFriendRequest.friendsEllipsesControl = friendsEllipsesControl;
+
+                removeFriendRequest.processingText = processingText;
+                removeFriendRequest.processingColor = processingColor;
+
+                removeFriendRequest.successText = successText;
+                removeFriendRequest.successColor = successColor;
+
+                removeFriendRequest.failureText = failureText;
+                removeFriendRequest.failureColor = failureColor;
 
                 search.MySelectionLinks.Add(myEnumerator.Current.Value, friendRequestSelectionGO);
             }

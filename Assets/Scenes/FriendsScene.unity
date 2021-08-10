@@ -274,13 +274,13 @@ MonoBehaviour:
   searchInputField: {fileID: 1408214019}
   otherButton: {fileID: 607124914}
   search: {fileID: 1408214022}
-  friendsMsg: {fileID: 0}
-  friendsEllipsesControl: {fileID: 0}
-  processingText: Retrieving Friend List
+  friendsMsg: {fileID: 960502586}
+  friendsEllipsesControl: {fileID: 960502587}
+  processingText: Processing
   processingColor: {r: 1, g: 1, b: 1, a: 1}
-  successText: Friend List Retrieved!
+  successText: Success!
   successColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
-  failureText: Failed To Retrieve Friend List!
+  failureText: Failure!
   failureColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
 --- !u!114 &538469834
 MonoBehaviour:
@@ -485,13 +485,13 @@ MonoBehaviour:
   searchInputField: {fileID: 1408214019}
   otherButton: {fileID: 1794953165}
   search: {fileID: 1408214022}
-  friendsMsg: {fileID: 0}
-  friendsEllipsesControl: {fileID: 0}
-  processingText: Retrieving Friend Requests
+  friendsMsg: {fileID: 960502586}
+  friendsEllipsesControl: {fileID: 960502587}
+  processingText: Processing
   processingColor: {r: 1, g: 1, b: 1, a: 1}
-  successText: Friend Requests Retrieved!
+  successText: Success!
   successColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
-  failureText: Failed To Retrieve Friend Requests!
+  failureText: Failure!
   failureColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
 --- !u!114 &607124914 stripped
 MonoBehaviour:
