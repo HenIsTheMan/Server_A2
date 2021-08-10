@@ -31,6 +31,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private Button otherButton;
 
+        [SerializeField]
+        private Search search;
+
         #endregion
 
         #region Properties
@@ -49,6 +52,8 @@ namespace Server.PlayFab {
             searchInputField = null;
 
             otherButton = null;
+
+            search = null;
         }
 
         static FriendList() {
@@ -92,12 +97,15 @@ namespace Server.PlayFab {
                 friendSelectionPool.DeactivateObj(child.gameObject);
                 friendRequestSelectionPool.DeactivateObj(child.gameObject);
             }
+            search.MySelectionLinks.Clear();
 
             GameObject friendSelectionGO;
             foreach(FriendInfo friendInfo in result.Friends) {
                 friendSelectionGO = friendSelectionPool.ActivateObj();
                 friendSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = friendInfo.TitleDisplayName;
                 friendSelectionGO.transform.GetChild(2).GetComponent<RemoveFriend>().friendSelectionPool = friendSelectionPool;
+
+                search.MySelectionLinks.Add(friendInfo.TitleDisplayName, friendSelectionGO);
             }
 
             otherButton.enabled = true;

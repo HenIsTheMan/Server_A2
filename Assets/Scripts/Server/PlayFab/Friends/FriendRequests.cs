@@ -32,6 +32,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private Button otherButton;
 
+        [SerializeField]
+        private Search search;
+
         #endregion
 
         #region Properties
@@ -50,6 +53,8 @@ namespace Server.PlayFab {
             searchInputField = null;
 
             otherButton = null;
+
+            search = null;
         }
 
         static FriendRequests() {
@@ -106,6 +111,7 @@ namespace Server.PlayFab {
                 friendRequestSelectionPool.DeactivateObj(child.gameObject);
                 friendSelectionPool.DeactivateObj(child.gameObject);
             }
+            search.MySelectionLinks.Clear();
 
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
@@ -113,11 +119,14 @@ namespace Server.PlayFab {
             GameObject friendRequestSelectionGO;
             while(myEnumerator.MoveNext()) { //Iterate through JSONArray
                 friendRequestSelectionGO = friendRequestSelectionPool.ActivateObj();
+
                 friendRequestSelectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = myEnumerator.Current.Value;
                 friendRequestSelectionGO.transform.GetChild(1)
                     .GetComponent<AcceptFriendRequest>().friendRequestSelectionPool = friendRequestSelectionPool;
                 friendRequestSelectionGO.transform.GetChild(2)
                     .GetComponent<RemoveFriendRequest>().friendRequestSelectionPool = friendRequestSelectionPool;
+
+                search.MySelectionLinks.Add(myEnumerator.Current.Value, friendRequestSelectionGO);
             }
 
             otherButton.enabled = true;
