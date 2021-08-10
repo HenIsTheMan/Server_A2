@@ -121,5 +121,9 @@ namespace Server.PlayFab {
         public void AddToScore(int amt) {
             score += amt;
         }
+
+        public void ResetScore() {
+            score = 0;
+        }
     }
 }
