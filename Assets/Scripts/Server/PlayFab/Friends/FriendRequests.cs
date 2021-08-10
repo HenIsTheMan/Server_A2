@@ -59,6 +59,24 @@ namespace Server.PlayFab {
         [SerializeField]
         private Color failureColor;
 
+        [SerializeField]
+        private string acceptProcessingText;
+
+        [SerializeField]
+        private string acceptSuccessText;
+
+        [SerializeField]
+        private string acceptFailureText;
+
+        [SerializeField]
+        private string removeProcessingText;
+
+        [SerializeField]
+        private string removeSuccessText;
+
+        [SerializeField]
+        private string removeFailureText;
+
         #endregion
 
         #region Properties
@@ -91,6 +109,14 @@ namespace Server.PlayFab {
 
             failureText = string.Empty;
             failureColor = Color.white;
+
+            acceptProcessingText = string.Empty;
+            acceptSuccessText = string.Empty;
+            acceptFailureText = string.Empty;
+
+            removeProcessingText = string.Empty;
+            removeSuccessText = string.Empty;
+            removeFailureText = string.Empty;
         }
 
         static FriendRequests() {
@@ -167,13 +193,13 @@ namespace Server.PlayFab {
                 acceptFriendRequest.friendsMsg = friendsMsg;
                 acceptFriendRequest.friendsEllipsesControl = friendsEllipsesControl;
 
-                acceptFriendRequest.processingText = processingText;
+                acceptFriendRequest.processingText = acceptProcessingText;
                 acceptFriendRequest.processingColor = processingColor;
 
-                acceptFriendRequest.successText = successText;
+                acceptFriendRequest.successText = acceptSuccessText;
                 acceptFriendRequest.successColor = successColor;
 
-                acceptFriendRequest.failureText = failureText;
+                acceptFriendRequest.failureText = acceptFailureText;
                 acceptFriendRequest.failureColor = failureColor;
 
                 RemoveFriendRequest removeFriendRequest = friendRequestSelectionGO.transform.GetChild(2)
@@ -183,13 +209,13 @@ namespace Server.PlayFab {
                 removeFriendRequest.friendsMsg = friendsMsg;
                 removeFriendRequest.friendsEllipsesControl = friendsEllipsesControl;
 
-                removeFriendRequest.processingText = processingText;
+                removeFriendRequest.processingText = removeProcessingText;
                 removeFriendRequest.processingColor = processingColor;
 
-                removeFriendRequest.successText = successText;
+                removeFriendRequest.successText = removeSuccessText;
                 removeFriendRequest.successColor = successColor;
 
-                removeFriendRequest.failureText = failureText;
+                removeFriendRequest.failureText = removeFailureText;
                 removeFriendRequest.failureColor = failureColor;
 
                 search.MySelectionLinks.Add(myEnumerator.Current.Value, friendRequestSelectionGO);

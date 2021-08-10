@@ -58,6 +58,15 @@ namespace Server.PlayFab {
         [SerializeField]
         private Color failureColor;
 
+        [SerializeField]
+        private string removeProcessingText;
+
+        [SerializeField]
+        private string removeSuccessText;
+
+        [SerializeField]
+        private string removeFailureText;
+
         #endregion
 
         #region Properties
@@ -90,6 +99,10 @@ namespace Server.PlayFab {
 
             failureText = string.Empty;
             failureColor = Color.white;
+
+            removeProcessingText = string.Empty;
+            removeSuccessText = string.Empty;
+            removeFailureText = string.Empty;
         }
 
         static FriendList() {
@@ -149,13 +162,13 @@ namespace Server.PlayFab {
                 removeFriend.friendsMsg = friendsMsg;
                 removeFriend.friendsEllipsesControl = friendsEllipsesControl;
 
-                removeFriend.processingText = processingText;
+                removeFriend.processingText = removeProcessingText;
                 removeFriend.processingColor = processingColor;
 
-                removeFriend.successText = successText;
+                removeFriend.successText = removeSuccessText;
                 removeFriend.successColor = successColor;
 
-                removeFriend.failureText = failureText;
+                removeFriend.failureText = removeFailureText;
                 removeFriend.failureColor = failureColor;
 
                 search.MySelectionLinks.Add(friendInfo.TitleDisplayName, friendSelectionGO);

@@ -232,7 +232,7 @@ MonoBehaviour:
   shldInitVals: 0
   periodicDelay: 0
   startTimeOffset: 0
-  animDuration: 1.4
+  animDuration: 1
   countThreshold: 1
   easingType: 3
   shldAnimateX: 1
@@ -261,7 +261,7 @@ MonoBehaviour:
   shldInitVals: 0
   periodicDelay: 0
   startTimeOffset: 0
-  animDuration: 1.4
+  animDuration: 1
   countThreshold: 1
   easingType: 23
   shldAnimateX: 1
@@ -290,7 +290,7 @@ MonoBehaviour:
   shldInitVals: 0
   periodicDelay: 0
   startTimeOffset: 0
-  animDuration: 1.4
+  animDuration: 1
   countThreshold: 1
   easingType: 19
   shldAnimateX: 0
@@ -319,7 +319,7 @@ MonoBehaviour:
   shldInitVals: 0
   periodicDelay: 0
   startTimeOffset: 0
-  animDuration: 1.4
+  animDuration: 1
   countThreshold: 1
   easingType: 29
   shldAnimateX: 0

@@ -276,12 +276,15 @@ MonoBehaviour:
   search: {fileID: 1408214022}
   friendsMsg: {fileID: 960502586}
   friendsEllipsesControl: {fileID: 960502587}
-  processingText: Processing
+  processingText: Retrieving Friend List
   processingColor: {r: 1, g: 1, b: 1, a: 1}
-  successText: Success!
+  successText: Friend List Retrieved!
   successColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
-  failureText: Failure!
+  failureText: Failed To Retrieve Friend List!
   failureColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  removeProcessingText: Removing Friend
+  removeSuccessText: Friend Removed!
+  removeFailureText: Failed To Remove Friend!
 --- !u!114 &538469834
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -487,12 +490,18 @@ MonoBehaviour:
   search: {fileID: 1408214022}
   friendsMsg: {fileID: 960502586}
   friendsEllipsesControl: {fileID: 960502587}
-  processingText: Processing
+  processingText: Retrieving Friend Requests
   processingColor: {r: 1, g: 1, b: 1, a: 1}
-  successText: Success!
+  successText: Friend Requests Retrieved!
   successColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
-  failureText: Failure!
+  failureText: Failed To Retrieve Friend Requests!
   failureColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
+  acceptProcessingText: Accepting Friend Request
+  acceptSuccessText: Friend Request Accepted!
+  acceptFailureText: Failed To Accept Friend Request!
+  removeProcessingText: Removing Friend Request
+  removeSuccessText: Friend Request Removed!
+  removeFailureText: Failed To Remove Friend Request!
 --- !u!114 &607124914 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
