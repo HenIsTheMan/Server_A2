@@ -157,6 +157,27 @@ namespace Server.PlayFab {
 
             playFabIdOfRequestee = result.AccountInfo.PlayFabId;
 
+            PlayFabClientAPI.GetFriendsList(
+                new GetFriendsListRequest {
+                    IncludeSteamFriends = false,
+                    IncludeFacebookFriends = true,
+                    XboxToken = null
+                },
+                OnGetFriendsListSuccess,
+                OnGetFriendsListFailure
+            );
+        }
+
+        private void OnGetFriendsListSuccess(GetFriendsListResult result) {
+            Console.Log("GetFriendsListSuccess!");
+
+            foreach(FriendInfo friendInfo in result.Friends) { //Prevents sending friend requests to friends
+                if(playFabIdOfRequestee == friendInfo.FriendPlayFabId) {
+                    MyFailureFunc();
+                    return;
+                }
+            }
+
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "GetUserReadOnlyData",
@@ -218,6 +239,12 @@ namespace Server.PlayFab {
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptGetFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void OnGetFriendsListFailure(PlayFabError _) {
+            Console.Log("GetFriendsListFailure!");
 
             MyFailureFunc();
         }
