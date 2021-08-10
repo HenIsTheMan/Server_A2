@@ -1,3 +1,8 @@
+using PlayFab;
+using PlayFab.ClientModels;
+using Server.General;
+using System.Collections.Generic;
+using System.Linq;
 using TMPro;
 using UnityEngine;
 
@@ -34,8 +39,16 @@ namespace Server.PlayFab {
 
         #region Unity User Callback Event Funcs
 
-        private void OnEnable() { //??
-            score = 0;
+        private void OnEnable() {
+            PlayFabClientAPI.GetPlayerStatistics(
+                new GetPlayerStatisticsRequest() {
+                    StatisticNames = new List<string> {
+                        "score"
+                    }
+                },
+                OnGetPlayerStatisticsSuccess,
+                OnGetPlayerStatisticsFailure
+            );
         }
 
         private void Update() { //Lame
@@ -46,6 +59,16 @@ namespace Server.PlayFab {
         }
 
         #endregion
+
+        private void OnGetPlayerStatisticsSuccess(GetPlayerStatisticsResult result) {
+            Console.Log("GetPlayerStatisticsSuccess!");
+
+            score = result.Statistics.Any() ? result.Statistics[0].Value : 0;
+        }
+
+        private void OnGetPlayerStatisticsFailure(PlayFabError error) {
+            Console.LogError("GetPlayerStatisticsFailure!");
+        }
 
         public void AddToScore(int amt) {
             score += amt;
