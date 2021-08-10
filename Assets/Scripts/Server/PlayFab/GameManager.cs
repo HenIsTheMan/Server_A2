@@ -20,6 +20,10 @@ namespace Server.PlayFab {
 
         private uint? scoreStatisticVer;
 
+        private List<StatisticUpdate> myStatistics;
+
+        private StatisticUpdate myStatisticUpdate;
+
         #endregion
 
         #region Properties
@@ -34,6 +38,9 @@ namespace Server.PlayFab {
             scoreTmp = null;
 
             scoreStatisticVer = null;
+
+            myStatistics = null;
+            myStatisticUpdate = null;
         }
 
         static GameManager() {
@@ -44,6 +51,14 @@ namespace Server.PlayFab {
         #region Unity User Callback Event Funcs
 
         private void Awake() {
+            myStatisticUpdate = new StatisticUpdate();
+
+            myStatistics = new List<StatisticUpdate> {
+                myStatisticUpdate
+            };
+        }
+
+        private void OnEnable() {
             PlayFabClientAPI.GetPlayerStatistics(
                 new GetPlayerStatisticsRequest() { //Lame
                     StatisticNames = new List<string> { //Lame
@@ -59,22 +74,20 @@ namespace Server.PlayFab {
             scoreTmp.text = frontText + score;
         }
 
-        private void OnApplicationQuit() {
+        private void OnDisable() {
             UpdateScoreStatistic();
         }
 
         #endregion
 
         private void UpdateScoreStatistic() {
+            myStatisticUpdate.StatisticName = "score";
+            myStatisticUpdate.Value = score;
+            myStatisticUpdate.Version = scoreStatisticVer;
+
             PlayFabClientAPI.UpdatePlayerStatistics(
                 new UpdatePlayerStatisticsRequest() {
-                    Statistics = new List<StatisticUpdate> { //Lame
-                        new StatisticUpdate { //Lame
-                            StatisticName = "score",
-                            Value = score,
-                            Version = scoreStatisticVer
-                        }
-                    }
+                    Statistics = myStatistics
                 },
                 OnUpdatePlayerStatisticsSuccess,
                 OnUpdatePlayerStatisticsFailure
