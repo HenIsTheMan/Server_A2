@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 
 namespace Server.PlayFab {
-    internal sealed class Leaderboards: MonoBehaviour {
+    internal sealed class Leaderboard: MonoBehaviour {
         #region Fields
 
         [SerializeField]
@@ -20,7 +20,7 @@ namespace Server.PlayFab {
         private ObjPool selectionPool;
 
         [SerializeField]
-        private Button updateLeaderboardsButton;
+        private Button updateLeaderboardButton;
 
         private GetLeaderboardRequest getLeaderboardRequest;
 
@@ -31,16 +31,16 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal Leaderboards() : base() {
+        internal Leaderboard() : base() {
             selectionPrefab = null;
             contentTransform = null;
             amtOfSelections = 0;
             selectionPool = null;
-            updateLeaderboardsButton = null;
+            updateLeaderboardButton = null;
             getLeaderboardRequest = null;
         }
 
-        static Leaderboards() {
+        static Leaderboard() {
         }
 
         #endregion
@@ -59,7 +59,7 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
-            updateLeaderboardsButton.enabled = false;
+            updateLeaderboardButton.enabled = false;
         }
     }
 }

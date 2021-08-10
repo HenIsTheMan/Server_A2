@@ -187,7 +187,7 @@ MonoBehaviour:
   contentTransform: {fileID: 1152077089}
   amtOfSelections: 400
   selectionPool: {fileID: 1149799867}
-  updateLeaderboardsButton: {fileID: 655216940}
+  updateLeaderboardButton: {fileID: 655216940}
 --- !u!114 &1149799867
 MonoBehaviour:
   m_ObjectHideFlags: 0
