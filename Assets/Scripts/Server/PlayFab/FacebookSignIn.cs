@@ -14,6 +14,7 @@ namespace Server.PlayFab {
         private bool shldCreateAcct;
 
         private int doneCount;
+        private int operationCount;
 
         [SerializeField]
         private int passwordLen;
@@ -63,7 +64,10 @@ namespace Server.PlayFab {
 
         internal FacebookSignIn() : base() {
             shldCreateAcct = true;
+
             doneCount = 0;
+            operationCount = 0;
+
             passwordLen = 0;
 
             usernameInputField = null;
@@ -127,6 +131,7 @@ namespace Server.PlayFab {
             }
 
             doneCount = 0;
+            operationCount = 0;
 
             usernameInputField.readOnly = true;
             emailInputField.readOnly = true;
@@ -181,12 +186,14 @@ namespace Server.PlayFab {
                 OnAddUsernamePasswordSuccess,
                 OnAddUsernamePasswordFailure
             );
+
+            ++operationCount;
         }
 
         private void OnAddUsernamePasswordSuccess(AddUsernamePasswordResult _) {
             Console.Log("AddUsernamePasswordSuccess!");
 
-            if(doneCount == 2) {
+            if(doneCount == operationCount - 1) {
                 MySuccessFunc();
             } else {
                 ++doneCount;
@@ -228,6 +235,8 @@ namespace Server.PlayFab {
                 OnUpdateUserTitleDisplayNameFailure
             );
 
+            ++operationCount;
+
             _ = StartCoroutine(UpdateContactEmail(contactEmail));
         }
 
@@ -241,12 +250,14 @@ namespace Server.PlayFab {
                 OnAddOrUpdateContactEmailSuccess,
                 OnAddOrUpdateContactEmailFailure
             );
+
+            ++operationCount;
         }
 
         private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
             Console.Log("UpdateUserTitleDisplayNameSuccess!");
 
-            if(doneCount == 2) {
+            if(doneCount == operationCount - 1) {
                 MySuccessFunc();
             } else {
                 ++doneCount;
@@ -262,7 +273,7 @@ namespace Server.PlayFab {
         private void OnAddOrUpdateContactEmailSuccess(AddOrUpdateContactEmailResult _) {
             Console.Log("AddOrUpdateContactEmailSuccess!");
 
-            if(doneCount == 2) {
+            if(doneCount == operationCount - 1) {
                 MySuccessFunc();
             } else {
                 ++doneCount;
