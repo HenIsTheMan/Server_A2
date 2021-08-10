@@ -3539,7 +3539,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6566730919741588291, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
       propertyPath: m_Name
-      value: ScrollView
+      value: FriendsScrollView
       objectReference: {fileID: 0}
     - target: {fileID: 6566730919741588316, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
       propertyPath: m_Pivot.x
