@@ -1,4 +1,5 @@
 using IWP.General;
+using PlayFab.ClientModels;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -21,6 +22,8 @@ namespace Server.PlayFab {
         [SerializeField]
         private Button updateLeaderboardsButton;
 
+        private GetLeaderboardRequest getLeaderboardRequest;
+
         #endregion
 
         #region Properties
@@ -34,6 +37,7 @@ namespace Server.PlayFab {
             amtOfSelections = 0;
             selectionPool = null;
             updateLeaderboardsButton = null;
+            getLeaderboardRequest = null;
         }
 
         static Leaderboards() {
@@ -57,7 +61,5 @@ namespace Server.PlayFab {
         public void OnClick() {
             updateLeaderboardsButton.enabled = false;
         }
-
-
     }
 }
