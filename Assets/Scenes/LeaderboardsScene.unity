@@ -123,6 +123,17 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!114 &655216940 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+  m_PrefabInstance: {fileID: 7867151778035530351}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4e29b1a8efbd4b44bb3f3716e73f07ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1149799864
 GameObject:
   m_ObjectHideFlags: 0
@@ -176,6 +187,7 @@ MonoBehaviour:
   contentTransform: {fileID: 1152077089}
   amtOfSelections: 400
   selectionPool: {fileID: 1149799867}
+  updateLeaderboardsButton: {fileID: 655216940}
 --- !u!114 &1149799867
 MonoBehaviour:
   m_ObjectHideFlags: 0

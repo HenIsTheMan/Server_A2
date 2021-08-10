@@ -1,5 +1,6 @@
 using IWP.General;
 using UnityEngine;
+using UnityEngine.UI;
 
 namespace Server.PlayFab {
     internal sealed class Leaderboards: MonoBehaviour {
@@ -17,6 +18,9 @@ namespace Server.PlayFab {
         [SerializeField]
         private ObjPool selectionPool;
 
+        [SerializeField]
+        private Button updateLeaderboardsButton;
+
         #endregion
 
         #region Properties
@@ -29,6 +33,7 @@ namespace Server.PlayFab {
             contentTransform = null;
             amtOfSelections = 0;
             selectionPool = null;
+            updateLeaderboardsButton = null;
         }
 
         static Leaderboards() {
@@ -37,9 +42,22 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs
+
+        private void Awake() {
+            selectionPool.InitMe(
+                amtOfSelections,
+                selectionPrefab,
+                contentTransform,
+                false
+            );
+        }
+
         #endregion
 
         public void OnClick() {
+            updateLeaderboardsButton.enabled = false;
         }
+
+
     }
 }
