@@ -2,14 +2,12 @@
 
 ## Friend System
 
-- Search
 - Invite
 - Group/Party/Clans
 - Chat
 
 ## Other Social Elements
 
-- Leaderboard
 - Gifting
 - Trading
 
@@ -39,6 +37,11 @@
 - Send Friend Request (added)
 - Accept Friend Request (added)
 - Decline Friend Request (added)
+- Search
+
+## Other Social Elements
+
+- Leaderboard
 
 ## User Interface
 
