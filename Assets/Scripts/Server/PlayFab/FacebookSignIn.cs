@@ -177,6 +177,24 @@ namespace Server.PlayFab {
                 password += (char)Random.Range(33, 127);
             }
 
+            if(shldCreateAcct) {
+                PlayFabClientAPI.ExecuteCloudScript(
+                    new ExecuteCloudScriptRequest() {
+                        FunctionName = "UpdateUserReadOnlyData",
+                        FunctionParameter = new {
+                            PlayFabID = result.AccountInfo.PlayFabId,
+                            Key = "FriendRequests",
+                            Val = new SimpleJSON.JSONArray().ToString()
+                        },
+                        GeneratePlayStreamEvent = true,
+                    },
+                    OnExecuteCloudScriptUpdateSuccess,
+                    OnExecuteCloudScriptUpdateFailure
+                );
+
+                ++operationCount;
+            }
+
             PlayFabClientAPI.AddUsernamePassword(
                 new AddUsernamePasswordRequest() {
                     Email = email,
@@ -188,6 +206,20 @@ namespace Server.PlayFab {
             );
 
             ++operationCount;
+        }
+
+        private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptUpdateSuccess!");
+
+            if(doneCount == operationCount - 1) {
+                MySuccessFunc();
+            } else {
+                ++doneCount;
+            }
+        }
+
+        private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptUpdateFailure!");
         }
 
         private void OnAddUsernamePasswordSuccess(AddUsernamePasswordResult _) {
