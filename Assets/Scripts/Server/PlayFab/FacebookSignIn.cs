@@ -108,6 +108,8 @@ namespace Server.PlayFab {
                 = !string.IsNullOrEmpty(usernameInputField.text)
                 || !string.IsNullOrEmpty(emailInputField.text);
 
+            operationCount = shldCreateAcct ? 4 : 3;
+
             PlayFabClientAPI.LoginWithFacebook(
                 new LoginWithFacebookRequest() {
                     CreateAccount = shldCreateAcct,
@@ -131,7 +133,6 @@ namespace Server.PlayFab {
             }
 
             doneCount = 0;
-            operationCount = 0;
 
             usernameInputField.readOnly = true;
             emailInputField.readOnly = true;
@@ -184,15 +185,13 @@ namespace Server.PlayFab {
                         FunctionParameter = new {
                             PlayFabID = result.AccountInfo.PlayFabId,
                             Key = "FriendRequests",
-                            Val = new SimpleJSON.JSONArray().ToString()
+                            Val = new JSONArray().ToString()
                         },
                         GeneratePlayStreamEvent = true,
                     },
                     OnExecuteCloudScriptUpdateSuccess,
                     OnExecuteCloudScriptUpdateFailure
                 );
-
-                ++operationCount;
             }
 
             PlayFabClientAPI.AddUsernamePassword(
@@ -204,8 +203,6 @@ namespace Server.PlayFab {
                 OnAddUsernamePasswordSuccess,
                 OnAddUsernamePasswordFailure
             );
-
-            ++operationCount;
         }
 
         private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
@@ -267,8 +264,6 @@ namespace Server.PlayFab {
                 OnUpdateUserTitleDisplayNameFailure
             );
 
-            ++operationCount;
-
             _ = StartCoroutine(UpdateContactEmail(contactEmail));
         }
 
@@ -282,8 +277,6 @@ namespace Server.PlayFab {
                 OnAddOrUpdateContactEmailSuccess,
                 OnAddOrUpdateContactEmailFailure
             );
-
-            ++operationCount;
         }
 
         private void OnUpdateUserTitleDisplayNameSuccess(UpdateUserTitleDisplayNameResult _) {
