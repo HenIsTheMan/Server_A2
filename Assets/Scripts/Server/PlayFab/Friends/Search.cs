@@ -11,6 +11,24 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_InputField searchInputField;
 
+        [SerializeField]
+        private TMP_Text friendsMsg;
+
+        [SerializeField]
+        private string foundFrontText;
+
+        [SerializeField]
+        private string foundBackText;
+
+        [SerializeField]
+        private Color foundColor;
+
+        [SerializeField]
+        private string notFoundText;
+
+        [SerializeField]
+        private Color notFoundColor;
+
         #endregion
 
         #region Properties
@@ -27,6 +45,15 @@ namespace Server.PlayFab {
         internal Search(): base() {
             mySelectionLinks = null;
             searchInputField = null;
+
+            friendsMsg = null;
+
+            foundFrontText = string.Empty;
+            foundBackText = string.Empty;
+            foundColor = Color.white;
+
+            notFoundText = string.Empty;
+            notFoundColor = Color.white;
         }
 
         static Search() {
@@ -43,8 +70,23 @@ namespace Server.PlayFab {
                 string searchText = searchInputField.text;
                 int searchTextLen = searchText.Length;
 
+                int amtFound = 0;
+
                 foreach(string key in mySelectionLinks.Keys) {
-                    mySelectionLinks[key].SetActive(searchTextLen <= key.Length && searchText == key.Substring(0, searchTextLen));
+                    if(searchTextLen <= key.Length && searchText == key.Substring(0, searchTextLen)) {
+                        ++amtFound;
+                        mySelectionLinks[key].SetActive(true);
+                    } else {
+                        mySelectionLinks[key].SetActive(false);
+                    }
+                }
+
+                if(amtFound == 0) {
+                    friendsMsg.text = notFoundText;
+                    friendsMsg.color = notFoundColor;
+                } else {
+                    friendsMsg.text = foundFrontText + amtFound.ToString() + foundBackText;
+                    friendsMsg.color = foundColor;
                 }
             });
         }

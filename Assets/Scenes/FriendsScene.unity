@@ -1674,6 +1674,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   searchInputField: {fileID: 1408214019}
+  friendsMsg: {fileID: 960502586}
+  foundFrontText: 
+  foundBackText: ' result(s) found!'
+  foundColor: {r: 0, g: 0.8784314, b: 0.42352942, a: 1}
+  notFoundText: No results found!
+  notFoundColor: {r: 0.9411765, g: 0.30980393, b: 0.32941177, a: 1}
 --- !u!1 &1464088583
 GameObject:
   m_ObjectHideFlags: 0
