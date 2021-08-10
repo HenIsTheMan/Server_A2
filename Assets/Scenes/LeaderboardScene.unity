@@ -185,9 +185,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionPrefab: {fileID: 6217885037059348089, guid: e436689cfde470b42b03ca732eca9a5a, type: 3}
   contentTransform: {fileID: 1152077089}
-  amtOfSelections: 400
+  amtOfSelections: 100
   selectionPool: {fileID: 1149799867}
   updateLeaderboardButton: {fileID: 655216940}
+  leaderboardMaxResultsCount: 100
+  leaderboardStartPos: 0
+  leaderboardStatisticName: Score
 --- !u!114 &1149799867
 MonoBehaviour:
   m_ObjectHideFlags: 0

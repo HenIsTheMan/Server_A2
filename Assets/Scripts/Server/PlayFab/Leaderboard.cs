@@ -1,5 +1,8 @@
 using IWP.General;
+using PlayFab;
 using PlayFab.ClientModels;
+using Server.General;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -22,6 +25,15 @@ namespace Server.PlayFab {
         [SerializeField]
         private Button updateLeaderboardButton;
 
+        [SerializeField]
+        private int leaderboardMaxResultsCount;
+
+        [SerializeField]
+        private int leaderboardStartPos;
+
+        [SerializeField]
+        private string leaderboardStatisticName;
+
         private GetLeaderboardRequest getLeaderboardRequest;
 
         #endregion
@@ -37,6 +49,11 @@ namespace Server.PlayFab {
             amtOfSelections = 0;
             selectionPool = null;
             updateLeaderboardButton = null;
+
+            leaderboardMaxResultsCount = 0;
+            leaderboardStartPos = 0;
+            leaderboardStatisticName = string.Empty;
+
             getLeaderboardRequest = null;
         }
 
@@ -54,12 +71,45 @@ namespace Server.PlayFab {
                 contentTransform,
                 false
             );
+
+            getLeaderboardRequest = new GetLeaderboardRequest();
         }
 
         #endregion
 
         public void OnClick() {
             updateLeaderboardButton.enabled = false;
+
+            getLeaderboardRequest.MaxResultsCount = leaderboardMaxResultsCount;
+            getLeaderboardRequest.StartPosition = leaderboardStartPos;
+            getLeaderboardRequest.StatisticName = leaderboardStatisticName;
+
+            PlayFabClientAPI.GetLeaderboard(
+                getLeaderboardRequest,
+                OnGetLeaderboardSuccess,
+                OnGetLeaderboardFailure
+            );
+        }
+
+        private void OnGetLeaderboardSuccess(GetLeaderboardResult result) {
+			foreach(Transform child in contentTransform) {
+				selectionPool.DeactivateObj(child.gameObject);
+			}
+
+			GameObject selectionGO;
+			foreach(PlayerLeaderboardEntry entry in result.Leaderboard) {
+				selectionGO = selectionPool.ActivateObj();
+				selectionGO.transform.GetChild(0).GetComponent<TMP_Text>().text = entry.DisplayName;
+				selectionGO.transform.GetChild(1).GetComponent<TMP_Text>().text = entry.StatValue.ToString();
+			}
+
+			updateLeaderboardButton.enabled = true;
+        }
+
+        private void OnGetLeaderboardFailure(PlayFabError error) {
+            Console.Log("GetGetLeaderboardFailure! " + error.GenerateErrorReport());
+
+            updateLeaderboardButton.enabled = true;
         }
     }
 }
