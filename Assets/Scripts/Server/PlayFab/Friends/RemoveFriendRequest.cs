@@ -17,6 +17,18 @@ namespace Server.PlayFab {
 
         internal ObjPool friendRequestSelectionPool;
 
+        internal TMP_Text friendsMsg;
+        internal EllipsesControl friendsEllipsesControl;
+
+        internal string processingText;
+        internal Color processingColor;
+
+        internal string successText;
+        internal Color successColor;
+
+        internal string failureText;
+        internal Color failureColor;
+
         #endregion
 
         #region Properties
@@ -30,6 +42,18 @@ namespace Server.PlayFab {
             myPlayFabID = string.Empty;
 
             friendRequestSelectionPool = null;
+
+            friendsMsg = null;
+            friendsEllipsesControl = null;
+
+            processingText = string.Empty;
+            processingColor = Color.white;
+
+            successText = string.Empty;
+            successColor = Color.white;
+
+            failureText = string.Empty;
+            failureColor = Color.white;
         }
 
         static RemoveFriendRequest() {
@@ -46,6 +70,8 @@ namespace Server.PlayFab {
                 OnGetAccountInfoSuccess,
                 OnGetAccountInfoFailure
             );
+
+            MyProcessingFunc();
         }
 
         private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
@@ -102,18 +128,44 @@ namespace Server.PlayFab {
             Console.Log("ExecuteCloudScriptUpdateSuccess!");
 
             friendRequestSelectionPool.DeactivateObj(displayNameText.transform.parent.gameObject);
+
+            MySuccessFunc();
         }
 
         private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptUpdateFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptGetFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.Log("GetAccountInfoFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void MyProcessingFunc() {
+            friendsEllipsesControl.enabled = true;
+            friendsMsg.text = processingText;
+            friendsMsg.color = processingColor;
+        }
+
+        private void MySuccessFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = successText;
+            friendsMsg.color = successColor;
+        }
+
+        private void MyFailureFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = failureText;
+            friendsMsg.color = failureColor;
         }
     }
 }

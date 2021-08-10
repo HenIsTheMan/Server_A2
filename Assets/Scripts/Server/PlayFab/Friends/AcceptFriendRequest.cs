@@ -18,6 +18,18 @@ namespace Server.PlayFab {
 
         internal ObjPool friendRequestSelectionPool;
 
+        internal TMP_Text friendsMsg;
+        internal EllipsesControl friendsEllipsesControl;
+
+        internal string processingText;
+        internal Color processingColor;
+
+        internal string successText;
+        internal Color successColor;
+
+        internal string failureText;
+        internal Color failureColor;
+
         #endregion
 
         #region Properties
@@ -32,6 +44,18 @@ namespace Server.PlayFab {
             otherPlayFabID = string.Empty;
 
             friendRequestSelectionPool = null;
+
+            friendsMsg = null;
+            friendsEllipsesControl = null;
+
+            processingText = string.Empty;
+            processingColor = Color.white;
+
+            successText = string.Empty;
+            successColor = Color.white;
+
+            failureText = string.Empty;
+            failureColor = Color.white;
         }
 
         static AcceptFriendRequest() {
@@ -48,6 +72,8 @@ namespace Server.PlayFab {
                 OnGetAccountInfo1stSuccess,
                 OnGetAccountInfo1stFailure
             );
+
+            MyProcessingFunc();
         }
 
         private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
@@ -119,22 +145,50 @@ namespace Server.PlayFab {
             Console.Log("ExecuteCloudScriptAcceptSuccess!");
 
             friendRequestSelectionPool.DeactivateObj(displayNameText.transform.parent.gameObject);
+
+            MySuccessFunc();
         }
 
         private void OnExecuteCloudScriptAcceptFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptAcceptFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptGetFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnGetAccountInfoFailure(PlayFabError _) {
             Console.Log("GetAccountInfoFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnGetAccountInfo1stFailure(PlayFabError _) {
             Console.LogError("GetAccountInfo1stFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void MyProcessingFunc() {
+            friendsEllipsesControl.enabled = true;
+            friendsMsg.text = processingText;
+            friendsMsg.color = processingColor;
+        }
+
+        private void MySuccessFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = successText;
+            friendsMsg.color = successColor;
+        }
+
+        private void MyFailureFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = failureText;
+            friendsMsg.color = failureColor;
         }
     }
 }
