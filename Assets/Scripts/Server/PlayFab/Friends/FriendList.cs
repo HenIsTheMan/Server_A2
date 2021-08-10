@@ -34,6 +34,30 @@ namespace Server.PlayFab {
         [SerializeField]
         private Search search;
 
+        [SerializeField]
+        private TMP_Text friendsMsg;
+
+        [SerializeField]
+        private EllipsesControl friendsEllipsesControl;
+
+        [SerializeField]
+        private string processingText;
+
+        [SerializeField]
+        private Color processingColor;
+
+        [SerializeField]
+        private string successText;
+
+        [SerializeField]
+        private Color successColor;
+
+        [SerializeField]
+        private string failureText;
+
+        [SerializeField]
+        private Color failureColor;
+
         #endregion
 
         #region Properties
@@ -54,6 +78,18 @@ namespace Server.PlayFab {
             otherButton = null;
 
             search = null;
+
+            friendsMsg = null;
+            friendsEllipsesControl = null;
+
+            processingText = string.Empty;
+            processingColor = Color.white;
+
+            successText = string.Empty;
+            successColor = Color.white;
+
+            failureText = string.Empty;
+            failureColor = Color.white;
         }
 
         static FriendList() {
@@ -88,6 +124,8 @@ namespace Server.PlayFab {
                 OnGetFriendsListSuccess,
                 OnGetFriendsListFailure
             );
+
+            MyProcessingFunc();
         }
 
         private void OnGetFriendsListSuccess(GetFriendsListResult result) {
@@ -109,12 +147,34 @@ namespace Server.PlayFab {
             }
 
             otherButton.enabled = true;
+
+            MySuccessFunc();
         }
 
         private void OnGetFriendsListFailure(PlayFabError _) {
             Console.Log("GetFriendsListFailure!");
 
             otherButton.enabled = true;
+
+            MyFailureFunc();
+        }
+
+        private void MyProcessingFunc() {
+            friendsEllipsesControl.enabled = true;
+            friendsMsg.text = processingText;
+            friendsMsg.color = processingColor;
+        }
+
+        private void MySuccessFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = successText;
+            friendsMsg.color = successColor;
+        }
+
+        private void MyFailureFunc() {
+            friendsEllipsesControl.enabled = false;
+            friendsMsg.text = failureText;
+            friendsMsg.color = failureColor;
         }
     }
 }
