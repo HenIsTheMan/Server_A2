@@ -18,6 +18,8 @@ namespace Server.PlayFab {
         [SerializeField]
         private TMP_Text scoreTmp;
 
+        private uint? scoreStatisticVer;
+
         #endregion
 
         #region Properties
@@ -30,6 +32,8 @@ namespace Server.PlayFab {
 
             frontText = string.Empty;
             scoreTmp = null;
+
+            scoreStatisticVer = null;
         }
 
         static GameManager() {
@@ -39,10 +43,10 @@ namespace Server.PlayFab {
 
         #region Unity User Callback Event Funcs
 
-        private void OnEnable() {
+        private void Awake() {
             PlayFabClientAPI.GetPlayerStatistics(
-                new GetPlayerStatisticsRequest() {
-                    StatisticNames = new List<string> {
+                new GetPlayerStatisticsRequest() { //Lame
+                    StatisticNames = new List<string> { //Lame
                         "score"
                     }
                 },
@@ -55,19 +59,50 @@ namespace Server.PlayFab {
             scoreTmp.text = frontText + score;
         }
 
-        private void OnDisable() { //??
+        private void OnApplicationQuit() {
+            UpdateScoreStatistic();
         }
 
         #endregion
 
+        private void UpdateScoreStatistic() {
+            PlayFabClientAPI.UpdatePlayerStatistics(
+                new UpdatePlayerStatisticsRequest() {
+                    Statistics = new List<StatisticUpdate> { //Lame
+                        new StatisticUpdate { //Lame
+                            StatisticName = "score",
+                            Value = score,
+                            Version = scoreStatisticVer
+                        }
+                    }
+                },
+                OnUpdatePlayerStatisticsSuccess,
+                OnUpdatePlayerStatisticsFailure
+            );
+        }
+
         private void OnGetPlayerStatisticsSuccess(GetPlayerStatisticsResult result) {
             Console.Log("GetPlayerStatisticsSuccess!");
 
-            score = result.Statistics.Any() ? result.Statistics[0].Value : 0;
+            if(result.Statistics.Any()) {
+                score = result.Statistics[0].Value;
+                scoreStatisticVer = result.Statistics[0].Version;
+            } else {
+                score = 0;
+                scoreStatisticVer = null;
+            }
         }
 
         private void OnGetPlayerStatisticsFailure(PlayFabError error) {
             Console.LogError("GetPlayerStatisticsFailure!");
+        }
+
+        private void OnUpdatePlayerStatisticsSuccess(UpdatePlayerStatisticsResult result) {
+            Console.Log("UpdatePlayerStatisticsSuccess!");
+        }
+
+        private void OnUpdatePlayerStatisticsFailure(PlayFabError error) {
+            Console.LogError("UpdatePlayerStatisticsFailure!");
         }
 
         public void AddToScore(int amt) {
