@@ -62,7 +62,7 @@ namespace Server.PlayFab {
             PlayFabClientAPI.GetPlayerStatistics(
                 new GetPlayerStatisticsRequest() { //Lame
                     StatisticNames = new List<string> { //Lame
-                        "score"
+                        "Score"
                     }
                 },
                 OnGetPlayerStatisticsSuccess,
@@ -81,7 +81,7 @@ namespace Server.PlayFab {
         #endregion
 
         private void UpdateScoreStatistic() {
-            myStatisticUpdate.StatisticName = "score";
+            myStatisticUpdate.StatisticName = "Score";
             myStatisticUpdate.Value = score;
             myStatisticUpdate.Version = scoreStatisticVer;
 
