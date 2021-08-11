@@ -102,7 +102,7 @@ namespace Server.PlayFab {
         private void OnGrantItemsToUserSuccess(GrantItemsToUserResult result) {
             Console.Log("GrantItemsToUserSuccess!");
 
-            result.ItemGrantResults.ForEach(instance => Console.Log(instance.ItemId));
+            result.ItemGrantResults.ForEach(instance => Console.Log("Bought: " + instance.ItemId));
 
             MySuccessFunc();
         }
