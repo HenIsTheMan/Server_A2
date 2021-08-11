@@ -41,4 +41,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/Scenes/GiftTradeScene.unity
     guid: 8898ba84912d1e544970739e68d6596f
+  - enabled: 1
+    path: Assets/Scenes/StoreScene.unity
+    guid: 5150cee8e23e6044da5e20ec2d962868
   m_configObjects: {}
