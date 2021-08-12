@@ -2,6 +2,8 @@ using IWP.General;
 using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
+using SimpleJSON;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -13,6 +15,8 @@ namespace Server.PlayFab {
 
         internal ObjPool selectionPool;
 
+        private string myDisplayName;
+        internal string receivingPlayerID;
         internal string tradeID;
 
         [SerializeField]
@@ -36,6 +40,9 @@ namespace Server.PlayFab {
 
         internal SendTradeRequestSelection(): base() {
             selectionPool = null;
+
+            myDisplayName = string.Empty;
+            receivingPlayerID = string.Empty;
             tradeID = string.Empty;
 
             displayNameText = null;
@@ -60,6 +67,67 @@ namespace Server.PlayFab {
         #endregion
 
         public void CancelTrade() {
+            PlayFabClientAPI.GetAccountInfo(
+                new GetAccountInfoRequest(),
+                OnGetAccountInfo1stSuccess,
+                OnGetAccountInfo1stFailure
+            );
+		}
+
+        private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
+			Console.Log("GetAccountInfo1stSuccess!");
+
+            myDisplayName = result.AccountInfo.TitleInfo.DisplayName;
+
+			PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "GetUserReadOnlyData",
+                    FunctionParameter = new {
+                        PlayFabID = receivingPlayerID,
+                        Key = "TradeRequests"
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptGetSuccess,
+                OnExecuteCloudScriptGetFailure
+            );
+        }
+
+        private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
+            Console.Log("ExecuteCloudScriptGetSuccess!");
+
+            JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
+            JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
+
+            foreach(JSONArray node in resultArr) { //Oh, can just do this way
+                if((string)node[0] == myDisplayName) {
+                    resultArr.Remove((JSONNode)node);
+                    break;
+                }
+            }
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "UpdateUserReadOnlyData",
+                    FunctionParameter = new {
+                        PlayFabID = receivingPlayerID,
+                        Keys = new string[1] {
+                            "TradeRequests"
+                        },
+                        Vals = new string[1] {
+                            resultArr.ToString()
+                        }
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptUpdateSuccess,
+                OnExecuteCloudScriptUpdateFailure
+            );
+        }
+
+        private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptUpdateSuccess!");
+
             PlayFabClientAPI.CancelTrade(
                 new CancelTradeRequest() {
                     TradeId = tradeID
@@ -77,6 +145,18 @@ namespace Server.PlayFab {
 
         private void OnCancelTradeFailure(PlayFabError _) {
             Console.LogError("CancelTradeFailure!");
+        }
+
+        private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptUpdateFailure!");
+        }
+
+        private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptGetFailure!");
+        }
+
+        private void OnGetAccountInfo1stFailure(PlayFabError _) {
+            Console.LogError("GetAccountInfo1stFailure!");
         }
     }
 }

@@ -83,7 +83,10 @@ namespace Server.PlayFab {
                 selection = selectionGO.GetComponent<SendTradeRequestSelection>();
 
                 selection.selectionPool = selectionPool;
+
+                selection.receivingPlayerID = tradeInfo.AllowedPlayerIds[0];
                 selection.tradeID = tradeInfo.TradeId;
+
                 selection.displayNameText.text = tradeInfo.AllowedPlayerIds[0]; //Lol
 
                 for(int i = 0; i < len; ++i) {
