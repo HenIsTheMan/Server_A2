@@ -1,6 +1,6 @@
 namespace Server.PlayFab {
-	internal static class AddFriendTypes: object {
-		internal enum AddFriendType: int {
+	internal static class InputTypes: object {
+		internal enum InputType: int {
 			DisplayName,
 			Username,
 			Email,

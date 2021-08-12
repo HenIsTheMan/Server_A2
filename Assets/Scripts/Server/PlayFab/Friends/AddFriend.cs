@@ -5,7 +5,7 @@ using SimpleJSON;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using static Server.PlayFab.AddFriendTypes;
+using static Server.PlayFab.InputTypes;
 
 namespace Server.PlayFab {
     internal sealed class AddFriend: MonoBehaviour {
@@ -102,8 +102,8 @@ namespace Server.PlayFab {
             GetAccountInfoRequest request = new GetAccountInfoRequest();
             bool hasFailed = false;
 
-            switch((AddFriendType)dropdown.value) {
-                case AddFriendType.DisplayName:
+            switch((InputType)dropdown.value) {
+                case InputType.DisplayName:
                     request.TitleDisplayName = inputField.text;
 
                     if(request.TitleDisplayName == displayNameOfRequester) {
@@ -111,7 +111,7 @@ namespace Server.PlayFab {
                     }
 
                     break;
-                case AddFriendType.Username:
+                case InputType.Username:
                     request.Username = inputField.text;
 
                     if(request.Username == result.AccountInfo.Username) {
@@ -119,7 +119,7 @@ namespace Server.PlayFab {
                     }
 
                     break;
-                case AddFriendType.Email:
+                case InputType.Email:
                     request.Email = inputField.text;
 
                     if(request.Email == result.AccountInfo.PrivateInfo.Email) {
@@ -127,7 +127,7 @@ namespace Server.PlayFab {
                     }
 
                     break;
-                case AddFriendType.PlayFabID:
+                case InputType.PlayFabID:
                     request.PlayFabId = inputField.text;
 
                     if(request.PlayFabId == result.AccountInfo.PlayFabId) {
