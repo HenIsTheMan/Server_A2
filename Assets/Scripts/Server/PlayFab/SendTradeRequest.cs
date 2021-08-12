@@ -305,8 +305,10 @@ namespace Server.PlayFab {
 			);
         }
 
-        private void OnOpenTradeSuccess(OpenTradeResponse _) {
+        private void OnOpenTradeSuccess(OpenTradeResponse response) {
             Console.Log("OpenTradeSuccess!");
+
+            resultArr[resultArr.Count - 1].Add(response.Trade.TradeId);
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
