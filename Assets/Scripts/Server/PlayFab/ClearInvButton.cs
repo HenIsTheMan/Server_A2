@@ -14,6 +14,7 @@ namespace Server.PlayFab {
         [SerializeField]
         private EllipsesControl invPanelEllipsesControl;
 
+        [SerializeField]
         private string processingText;
 
         [SerializeField]
@@ -58,6 +59,12 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs
+
+        private void OnEnable() { //I guess
+            invPanelMsg.text = string.Empty;
+            invPanelEllipsesControl.enabled = false;
+        }
+
         #endregion
 
         public void OnClick() {
