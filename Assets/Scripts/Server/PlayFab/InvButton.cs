@@ -38,7 +38,7 @@ namespace Server.PlayFab {
         }
 
         private System.Collections.IEnumerator OpenInv() {
-            while(GiftTrade.IsInvUpdating) {
+            while(GiftTrade.globalObj.IsInvUpdating) {
                 yield return null;
             }
 

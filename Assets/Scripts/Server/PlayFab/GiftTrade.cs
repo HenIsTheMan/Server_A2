@@ -10,20 +10,22 @@ namespace Server.PlayFab {
         #region Fields
 
         [EnumIndices(typeof(ItemType)), SerializeField]
-        private static TMP_Text[] itemCountTexts;
+        private TMP_Text[] itemCountTexts;
 
         [EnumIndices(typeof(ItemType)), SerializeField]
-        private static string[] itemIDs;
+        private string[] itemIDs;
 
-        private static int[] itemCounts;
+        private int[] itemCounts;
 
-        private static int commonLen;
+        private int commonLen;
+
+        internal static GiftTrade globalObj;
 
         #endregion
 
         #region Properties
 
-        internal static bool IsInvUpdating {
+        internal bool IsInvUpdating {
             get;
             private set;
         }
@@ -33,9 +35,6 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal GiftTrade(): base() {
-        }
-
-        static GiftTrade() {
             itemCountTexts = System.Array.Empty<TMP_Text>();
             itemIDs = System.Array.Empty<string>();
             itemCounts = System.Array.Empty<int>();
@@ -43,6 +42,10 @@ namespace Server.PlayFab {
             commonLen = 0;
 
             IsInvUpdating = false;
+        }
+
+        static GiftTrade() {
+            globalObj = null;
         }
 
         #endregion
@@ -54,6 +57,8 @@ namespace Server.PlayFab {
         }
 
         private void Awake() {
+            globalObj = this;
+
             commonLen = itemIDs.Length;
             itemCounts = new int[commonLen];
 
@@ -64,13 +69,13 @@ namespace Server.PlayFab {
 
         #endregion
 
-        private static void ResetItemCounts() {
+        private void ResetItemCounts() {
             for(int i = 0; i < commonLen; ++i) {
                 itemCounts[i] = 0;
             }
         }
 
-        internal static void UpdateInv() {
+        internal void UpdateInv() {
             PlayFabClientAPI.GetUserInventory(
                 new GetUserInventoryRequest(),
                 OnGetUserInventorySuccess,
@@ -80,7 +85,7 @@ namespace Server.PlayFab {
             IsInvUpdating = true;
         }
 
-        private static void OnGetUserInventorySuccess(GetUserInventoryResult result) {
+        private void OnGetUserInventorySuccess(GetUserInventoryResult result) {
             Console.Log("GetUserInventorySuccess!");
 
             ResetItemCounts();
@@ -101,7 +106,7 @@ namespace Server.PlayFab {
             IsInvUpdating = false;
         }
 
-        private static void OnGetUserInventoryFailure(PlayFabError error) {
+        private void OnGetUserInventoryFailure(PlayFabError error) {
             Console.LogError("GetUserInventoryFailure!");
 
             IsInvUpdating = false;
