@@ -264,6 +264,10 @@ namespace Server.PlayFab {
             int len = (int)ItemType.Amt;
             List<ItemInstance>[] items = new List<ItemInstance>[len];
 
+            for(int i = 0; i < len; ++i) {
+                items[i] = new List<ItemInstance>();
+            }
+
             foreach(ItemInstance instance in result.Inventory) {
 				for(int i = 0; i < len; ++i) {
 					if(instance.ItemId == itemIDs[i]) {
