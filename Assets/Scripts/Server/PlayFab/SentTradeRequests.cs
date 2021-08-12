@@ -3,10 +3,13 @@ using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
 using UnityEngine;
+using static Server.PlayFab.ItemTypes;
 
 namespace Server.PlayFab {
     internal sealed class SentTradeRequests: MonoBehaviour {
         #region Fields
+
+        private GetPlayerTradesResponse myGetPlayerTradesResponse;
 
         [SerializeField]
         private GameObject selectionPrefab;
@@ -28,6 +31,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal SentTradeRequests(): base() {
+            myGetPlayerTradesResponse = null;
+
             selectionPrefab = null;
             contentTransform = null;
 
@@ -64,10 +69,53 @@ namespace Server.PlayFab {
         private void OnGetPlayerTradesSuccess(GetPlayerTradesResponse response) {
             Console.Log("GetPlayerTradesSuccess!");
 
+            myGetPlayerTradesResponse = response;
+
             GameObject selectionGO;
+            SendTradeRequestSelection selection;
+            int len = (int)ItemType.Amt - 1;
+            int[] itemCounts = new int[len];
+
             foreach(TradeInfo tradeInfo in response.OpenedTrades) {
                 selectionGO = selectionPool.ActivateObj();
+                selection = selectionGO.GetComponent<SendTradeRequestSelection>();
+
+                selection.displayNameText.text = tradeInfo.AllowedPlayerIds[0]; //Lol
+
+                for(int i = 0; i < len; ++i) {
+                    itemCounts[i] = 0;
+                }
+
+                foreach(string itemID in tradeInfo.OfferedInventoryInstanceIds) {
+                    for(int i = 0; i < len; ++i) {
+                        if(itemID == selection.itemIDs[i]) {
+                            ++itemCounts[i];
+                            break;
+                        }
+                    }
+                }
+
+                for(int i = 0; i < len; ++i) {
+                    selection.itemCountTexts[i].text = itemCounts[i].ToString();
+                }
+
+                foreach(string itemID in tradeInfo.RequestedCatalogItemIds) {
+                    for(int i = 0; i < len; ++i) {
+                        if(itemID == selection.itemIDs[i]) {
+                            selection.itemImgs[i].enabled = true;
+                            break;
+                        }
+                    }
+                }
             }
+        }
+
+		private void OnGetAccountInfoSuccess(GetAccountInfoResult _) {
+			Console.Log("GetAccountInfoSuccess!");
+		}
+
+		private void OnGetAccountInfoFailure(PlayFabError _) {
+            Console.LogError("GetAccountInfoFailure!");
         }
 
         private void OnGetPlayerTradesFailure(PlayFabError _) {
