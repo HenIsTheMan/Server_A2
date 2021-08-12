@@ -85,6 +85,11 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            if(inputField.text == string.Empty) {
+                MyFailureFunc();
+                return;
+            }
+
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
                 OnGetAccountInfo1stSuccess,
