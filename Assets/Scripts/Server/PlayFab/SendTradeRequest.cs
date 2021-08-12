@@ -16,6 +16,9 @@ namespace Server.PlayFab {
 
         private JSONArray resultArr;
 
+        private int doneCount;
+        private int operationCount;
+
         private int togglesLen;
         private bool[] flags;
 
@@ -24,6 +27,9 @@ namespace Server.PlayFab {
 
         private string displayNameOfRequester;
         private string playFabIdOfRequestee;
+
+        [EnumIndices(typeof(ItemType)), SerializeField]
+        private string[] itemIDs;
 
         [EnumIndices(typeof(ItemType)), SerializeField]
         private Toggle[] toggles;
@@ -71,9 +77,13 @@ namespace Server.PlayFab {
         internal SendTradeRequest(): base() {
             resultArr = null;
 
+            doneCount = 0;
+            operationCount = 0;
+
             displayNameOfRequester = string.Empty;
             playFabIdOfRequestee = string.Empty;
 
+            itemIDs = System.Array.Empty<string>();
             toggles = System.Array.Empty<Toggle>();
             offerCountTexts = System.Array.Empty<TMP_Text>();
 
@@ -100,13 +110,18 @@ namespace Server.PlayFab {
 
         #region Unity User Callback Event Funcs
 
+        private void OnValidate() {
+            UnityEngine.Assertions.Assert.IsTrue(itemIDs.Length == toggles.Length);
+            UnityEngine.Assertions.Assert.IsTrue(toggles.Length == offerCountTexts.Length);
+        }
+
         private void Awake() {
             sendTradeRequestMsg.text = string.Empty;
 
-            togglesLen = toggles.Length;
+            togglesLen = toggles.Length; //Lame
             flags = new bool[togglesLen];
 
-            offerCountTextsLen = offerCountTexts.Length;
+            offerCountTextsLen = offerCountTexts.Length; //Lame
             offerCounts = new int[offerCountTextsLen];
         }
 
@@ -243,52 +258,91 @@ namespace Server.PlayFab {
         private void OnGetUserInventorySuccess(GetUserInventoryResult result) {
             Console.Log("GetUserInventorySuccess!");
 
-            //PlayFabClientAPI.ExecuteCloudScript(
-            //    new ExecuteCloudScriptRequest() {
-            //        FunctionName = "UpdateUserReadOnlyData",
-            //        FunctionParameter = new {
-            //            PlayFabID = playFabIdOfRequestee,
-            //            Keys = new string[1] {
-            //                            "TradeRequests"
-            //            },
-            //            Vals = new string[1] {
-            //                            resultArr.ToString()
-            //            }
-            //        },
-            //        GeneratePlayStreamEvent = true,
-            //    },
-            //    OnExecuteCloudScriptUpdateSuccess,
-            //    OnExecuteCloudScriptUpdateFailure
-            //);
+            doneCount = 0;
+            operationCount = 2; //Lame
 
-            //PlayFabClientAPI.OpenTrade(
-            //    new OpenTradeRequest() {
-            //        AllowedPlayerIds = new List<string> {
-            //            playFabIdOfRequestee
-            //        },
-            //        OfferedInventoryInstanceIds = ,
-            //        RequestedCatalogItemIds = 
-            //    },
-            //    OnOpenTradeSuccess,
-            //    OnOpenTradeFailure
-            //);
+            int len = (int)ItemType.Amt;
+            List<ItemInstance>[] items = new List<ItemInstance>[len];
 
-            //foreach(ItemInstance instance in result.Inventory) {
-            //    for(int i = 0; i < commonLen; ++i) {
-            //        if(instance.ItemId == itemIDs[i]) {
-            //            ++itemCounts[i];
-            //            break;
-            //        }
-            //    }
-            //}
+            foreach(ItemInstance instance in result.Inventory) {
+				for(int i = 0; i < len; ++i) {
+					if(instance.ItemId == itemIDs[i]) {
+						items[i].Add(instance);
+						break;
+					}
+				}
+			}
+
+            for(int i = 0; i < len; ++i) { //Prevents offering more than possessed
+                if(items[i].Count < offerCounts[i]) {
+                    MyFailureFunc();
+                    return;
+                }
+            }
+
+            List<string> offeredInventoryInstanceIDs = new List<string>();
+            for(int i = 0; i < len; ++i) {
+                for(int j = 0; j < offerCounts[i]; ++j) {
+                    offeredInventoryInstanceIDs.Add(items[i][j].ItemInstanceId);
+                }
+            }
+
+            List<string> requestedCatalogItemIDs = new List<string>();
+            for(int i = 0; i < togglesLen; ++i) {
+                if(flags[i]) {
+                    requestedCatalogItemIDs.Add(itemIDs[i]);
+                }
+            }
+
+            PlayFabClientAPI.OpenTrade(
+				new OpenTradeRequest() {
+					AllowedPlayerIds = new List<string> {
+						playFabIdOfRequestee
+					},
+					OfferedInventoryInstanceIds = offeredInventoryInstanceIDs,
+					RequestedCatalogItemIds = requestedCatalogItemIDs
+                },
+				OnOpenTradeSuccess,
+				OnOpenTradeFailure
+			);
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "UpdateUserReadOnlyData",
+                    FunctionParameter = new {
+                        PlayFabID = playFabIdOfRequestee,
+                        Keys = new string[1] {
+                            "TradeRequests"
+                        },
+                        Vals = new string[1] {
+                            resultArr.ToString()
+                        }
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptUpdateSuccess,
+                OnExecuteCloudScriptUpdateFailure
+            );
         }
 
         private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
             Console.Log("ExecuteCloudScriptUpdateSuccess!");
+
+            if(doneCount == operationCount - 1) {
+                MySuccessFunc();
+            } else {
+                ++doneCount;
+            }
         }
 
         private void OnOpenTradeSuccess(OpenTradeResponse _) {
             Console.Log("OpenTradeSuccess!");
+
+            if(doneCount == operationCount - 1) {
+                MySuccessFunc();
+            } else {
+                ++doneCount;
+            }
         }
 
         private void OnOpenTradeFailure(PlayFabError _) {
