@@ -17,6 +17,9 @@ namespace Server.PlayFab {
         [EnumIndices(typeof(ItemType)), SerializeField]
         internal Image[] itemImgs;
 
+        [EnumIndices(typeof(ItemType)), SerializeField]
+        internal string[] itemIDs;
+
         #endregion
 
         #region Properties
@@ -28,6 +31,7 @@ namespace Server.PlayFab {
             displayNameText = null;
             itemCountTexts = System.Array.Empty<TMP_Text>();
             itemImgs = System.Array.Empty<Image>();
+            itemIDs = System.Array.Empty<string>();
         }
 
         static SendTradeRequestSelection() {
@@ -39,6 +43,7 @@ namespace Server.PlayFab {
 
         private void OnValidate() {
             UnityEngine.Assertions.Assert.IsTrue(itemCountTexts.Length == itemImgs.Length);
+            UnityEngine.Assertions.Assert.IsTrue(itemImgs.Length == itemIDs.Length);
         }
 
         #endregion

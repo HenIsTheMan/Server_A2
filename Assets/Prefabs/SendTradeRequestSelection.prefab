@@ -446,6 +446,10 @@ MonoBehaviour:
   - {fileID: 303889195013679768}
   - {fileID: 3448362849384591029}
   - {fileID: 3448362849769927544}
+  itemIDs:
+  - Gun
+  - Meteor
+  - Pogo
 --- !u!1 &5944185138526661223
 GameObject:
   m_ObjectHideFlags: 0
