@@ -64,7 +64,10 @@ namespace Server.PlayFab {
         private void OnGetPlayerTradesSuccess(GetPlayerTradesResponse response) {
             Console.Log("GetPlayerTradesSuccess!");
 
-
+            GameObject selectionGO;
+            foreach(TradeInfo tradeInfo in response.OpenedTrades) {
+                selectionGO = selectionPool.ActivateObj();
+            }
         }
 
         private void OnGetPlayerTradesFailure(PlayFabError _) {
