@@ -351,7 +351,10 @@ handlers.GetPlayerProfile = function () {
 function UpdateUserReadOnlyData(args) {
     var keyValPair = {};
 
-    keyValPair[args.Key] = args.Val;
+    var len = args.Keys.length;
+    for (var i = 0; i < len; ++i) {
+        keyValPair[args.Keys[i]] = args.Vals[i];
+    }
 
     var result = server.UpdateUserReadOnlyData({
         PlayFabId: args.PlayFabID,

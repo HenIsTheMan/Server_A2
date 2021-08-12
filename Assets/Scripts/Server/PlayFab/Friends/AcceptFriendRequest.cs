@@ -131,8 +131,12 @@ namespace Server.PlayFab {
                     FunctionParameter = new {
                         PlayFabID = myPlayFabID,
                         OtherPlayFabID = otherPlayFabID,
-                        Key = "FriendRequests",
-                        Val = resultArr.ToString()
+                        Keys = new string[1] {
+                            "FriendRequests"
+                        },
+                        Vals = new string[1] {
+                            resultArr.ToString()
+                        }
                     },
                     GeneratePlayStreamEvent = true,
                 },

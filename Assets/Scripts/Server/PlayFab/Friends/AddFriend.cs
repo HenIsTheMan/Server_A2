@@ -215,8 +215,12 @@ namespace Server.PlayFab {
                     FunctionName = "UpdateUserReadOnlyData",
                     FunctionParameter = new {
                         PlayFabID = playFabIdOfRequestee,
-                        Key = "FriendRequests",
-                        Val = resultArr.ToString()
+                        Keys = new string[1] {
+                            "FriendRequests"
+                        },
+                        Vals = new string[1] {
+                            resultArr.ToString()
+                        }
                     },
                     GeneratePlayStreamEvent = true,
                 },

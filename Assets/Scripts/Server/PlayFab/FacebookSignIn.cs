@@ -179,13 +179,21 @@ namespace Server.PlayFab {
             }
 
             if(shldCreateAcct) {
+                string val = new JSONArray().ToString();
+
                 PlayFabClientAPI.ExecuteCloudScript(
                     new ExecuteCloudScriptRequest() {
                         FunctionName = "UpdateUserReadOnlyData",
                         FunctionParameter = new {
                             PlayFabID = result.AccountInfo.PlayFabId,
-                            Key = "FriendRequests",
-                            Val = new JSONArray().ToString()
+                            Keys = new string[2] {
+                                "FriendRequests",
+                                "TradeRequests",
+                            },
+                            Vals = new string[2] {
+                                val,
+                                val
+                            }
                         },
                         GeneratePlayStreamEvent = true,
                     },
