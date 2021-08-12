@@ -60,7 +60,9 @@ namespace Server.PlayFab {
 
         public void OnClick() {
             PlayFabClientAPI.GetPlayerTrades(
-                new GetPlayerTradesRequest(),
+                new GetPlayerTradesRequest() {
+                    StatusFilter = TradeStatus.Open
+                },
                 OnGetPlayerTradesSuccess,
                 OnGetPlayerTradesFailure
             );
@@ -110,14 +112,6 @@ namespace Server.PlayFab {
                     }
                 }
             }
-        }
-
-		private void OnGetAccountInfoSuccess(GetAccountInfoResult _) {
-			Console.Log("GetAccountInfoSuccess!");
-		}
-
-		private void OnGetAccountInfoFailure(PlayFabError _) {
-            Console.LogError("GetAccountInfoFailure!");
         }
 
         private void OnGetPlayerTradesFailure(PlayFabError _) {

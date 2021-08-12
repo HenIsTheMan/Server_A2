@@ -59,7 +59,7 @@ namespace Server.PlayFab {
 
         #endregion
 
-        public void OnClick() {
+        public void CancelTrade() {
             PlayFabClientAPI.CancelTrade(
                 new CancelTradeRequest() {
                     TradeId = tradeID
