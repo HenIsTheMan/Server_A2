@@ -218,13 +218,11 @@ namespace Server.PlayFab {
             resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
 
-			List<string> serializedTradeRequestData = new List<string>();
             List<JSONArray> deserializedTradeRequestData = new List<JSONArray>();
 
             while(myEnumerator.MoveNext()) { //Iterate through JSONArray
-                serializedTradeRequestData.Add(myEnumerator.Current.Value);
+                deserializedTradeRequestData.Add((JSONArray)myEnumerator.Current.Value);
             }
-            serializedTradeRequestData.ForEach(dataPt => deserializedTradeRequestData.Add((JSONArray)JSON.Parse(dataPt)));
 
             foreach(JSONArray node in deserializedTradeRequestData) {
                 if((string)node[0] == displayNameOfRequester) { //Prevents multi-requesting
