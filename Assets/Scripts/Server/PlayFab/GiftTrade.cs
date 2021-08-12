@@ -106,7 +106,7 @@ namespace Server.PlayFab {
             IsInvUpdating = false;
         }
 
-        private void OnGetUserInventoryFailure(PlayFabError error) {
+        private void OnGetUserInventoryFailure(PlayFabError _) {
             Console.LogError("GetUserInventoryFailure!");
 
             IsInvUpdating = false;
