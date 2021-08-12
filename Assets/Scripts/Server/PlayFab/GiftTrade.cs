@@ -9,6 +9,12 @@ namespace Server.PlayFab {
         #endregion
 
         #region Properties
+
+        internal static bool IsInvUpdating {
+            get;
+            private set;
+        }
+
         #endregion
 
         #region Ctors and Dtor
@@ -17,6 +23,7 @@ namespace Server.PlayFab {
         }
 
         static GiftTrade() {
+            IsInvUpdating = false;
         }
 
         #endregion
@@ -24,23 +31,33 @@ namespace Server.PlayFab {
         #region Unity User Callback Event Funcs
 
         private void Awake() {
+            UpdateInv();
+        }
+
+        #endregion
+
+        internal static void UpdateInv() {
             PlayFabClientAPI.GetUserInventory(
                 new GetUserInventoryRequest(),
                 OnGetUserInventorySuccess,
                 OnGetUserInventoryFailure
             );
+
+            IsInvUpdating = true;
         }
 
-        #endregion
-
-        private void OnGetUserInventorySuccess(GetUserInventoryResult result) {
+        private static void OnGetUserInventorySuccess(GetUserInventoryResult result) {
             Console.Log("GetUserInventorySuccess!");
 
             result.Inventory.ForEach(instance => Console.Log(instance.ItemId));
+
+            IsInvUpdating = false;
         }
 
-        private void OnGetUserInventoryFailure(PlayFabError error) {
+        private static void OnGetUserInventoryFailure(PlayFabError error) {
             Console.LogError("GetUserInventoryFailure!");
+
+            IsInvUpdating = false;
         }
     }
 }

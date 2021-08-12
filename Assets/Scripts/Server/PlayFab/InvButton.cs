@@ -4,6 +4,8 @@ namespace Server.PlayFab {
     internal sealed class InvButton: MonoBehaviour {
         #region Fields
 
+        private bool canClick;
+
         [SerializeField]
         private GameObject invPanelGO;
 
@@ -15,6 +17,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal InvButton(): base() {
+            canClick = true;
+
             invPanelGO = null;
         }
 
@@ -27,8 +31,21 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
+            if(canClick) {
+                _ = StartCoroutine(nameof(OpenInv));
+                canClick = false;
+            }
+        }
+
+        private System.Collections.IEnumerator OpenInv() {
+            while(GiftTrade.IsInvUpdating) {
+                yield return null;
+            }
+
             invPanelGO.SetActive(true);
             enabled = false;
+
+            canClick = true;
         }
     }
 }
