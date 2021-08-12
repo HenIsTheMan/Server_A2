@@ -1,3 +1,6 @@
+using IWP.General;
+using PlayFab;
+using PlayFab.ClientModels;
 using Server.General;
 using TMPro;
 using UnityEngine;
@@ -7,6 +10,10 @@ using static Server.PlayFab.ItemTypes;
 namespace Server.PlayFab {
     internal sealed class SendTradeRequestSelection: MonoBehaviour {
         #region Fields
+
+        internal ObjPool selectionPool;
+
+        internal string tradeID;
 
         [SerializeField]
         internal TMP_Text displayNameText;
@@ -28,7 +35,11 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal SendTradeRequestSelection(): base() {
+            selectionPool = null;
+            tradeID = string.Empty;
+
             displayNameText = null;
+
             itemCountTexts = System.Array.Empty<TMP_Text>();
             itemImgs = System.Array.Empty<Image>();
             itemIDs = System.Array.Empty<string>();
@@ -47,5 +58,25 @@ namespace Server.PlayFab {
         }
 
         #endregion
+
+        public void OnClick() {
+            PlayFabClientAPI.CancelTrade(
+                new CancelTradeRequest() {
+                    TradeId = tradeID
+                },
+                OnCancelTradeSuccess,
+                OnCancelTradeFailure
+            );
+        }
+
+        private void OnCancelTradeSuccess(CancelTradeResponse _) {
+            Console.Log("CancelTradeSuccess!");
+
+            selectionPool.DeactivateObj(gameObject);
+        }
+
+        private void OnCancelTradeFailure(PlayFabError _) {
+            Console.LogError("CancelTradeFailure!");
+        }
     }
 }
