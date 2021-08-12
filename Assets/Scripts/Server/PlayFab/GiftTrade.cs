@@ -1,11 +1,24 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
+using TMPro;
 using UnityEngine;
+using static Server.PlayFab.ItemTypes;
 
 namespace Server.PlayFab {
     internal sealed class GiftTrade: MonoBehaviour {
         #region Fields
+
+        [EnumIndices(typeof(ItemType)), SerializeField]
+        private static TMP_Text[] itemCountTexts;
+
+        [EnumIndices(typeof(ItemType)), SerializeField]
+        private static string[] itemIDs;
+
+        private static int[] itemCounts;
+
+        private static int commonLen;
+
         #endregion
 
         #region Properties
@@ -23,6 +36,12 @@ namespace Server.PlayFab {
         }
 
         static GiftTrade() {
+            itemCountTexts = System.Array.Empty<TMP_Text>();
+            itemIDs = System.Array.Empty<string>();
+            itemCounts = System.Array.Empty<int>();
+
+            commonLen = 0;
+
             IsInvUpdating = false;
         }
 
@@ -30,11 +49,26 @@ namespace Server.PlayFab {
 
         #region Unity User Callback Event Funcs
 
+        private void OnValidate() {
+            UnityEngine.Assertions.Assert.IsTrue(itemCountTexts.Length == itemIDs.Length);
+        }
+
         private void Awake() {
+            commonLen = itemIDs.Length;
+            itemCounts = new int[commonLen];
+
+            ResetItemCounts();
+
             UpdateInv();
         }
 
         #endregion
+
+        private static void ResetItemCounts() {
+            for(int i = 0; i < commonLen; ++i) {
+                itemCounts[i] = 0;
+            }
+        }
 
         internal static void UpdateInv() {
             PlayFabClientAPI.GetUserInventory(
@@ -49,7 +83,20 @@ namespace Server.PlayFab {
         private static void OnGetUserInventorySuccess(GetUserInventoryResult result) {
             Console.Log("GetUserInventorySuccess!");
 
-            result.Inventory.ForEach(instance => Console.Log(instance.ItemId));
+            ResetItemCounts();
+
+            foreach(ItemInstance instance in result.Inventory) {
+                for(int i = 0; i < commonLen; ++i) {
+                    if(instance.ItemId == itemIDs[i]) {
+                        ++itemCounts[i];
+                        break;
+                    }
+                }
+			}
+
+            for(int i = 0; i < commonLen; ++i) {
+                itemCountTexts[i].text = itemCounts[i].ToString();
+            }
 
             IsInvUpdating = false;
         }
