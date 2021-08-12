@@ -349,16 +349,19 @@ handlers.GetPlayerProfile = function () {
 }
 
 function UpdateUserReadOnlyData(args) {
-    var keyValPair = {};
+    var dict = server.GetUserReadOnlyData({
+        PlayFabId: args.PlayFabID,
+        Keys: args.Keys
+    });
 
     var len = args.Keys.length;
     for (var i = 0; i < len; ++i) {
-        keyValPair[args.Keys[i]] = args.Vals[i];
+        dict[args.Keys[i]] = args.Vals[i];
     }
 
     var result = server.UpdateUserReadOnlyData({
         PlayFabId: args.PlayFabID,
-        Data: keyValPair
+        Data: dict
     });
 };
 
