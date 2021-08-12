@@ -16,9 +16,6 @@ namespace Server.PlayFab {
 
         private JSONArray resultArr;
 
-        private int doneCount;
-        private int operationCount;
-
         private int togglesLen;
         private bool[] flags;
 
@@ -76,9 +73,6 @@ namespace Server.PlayFab {
 
         internal SendTradeRequest(): base() {
             resultArr = null;
-
-            doneCount = 0;
-            operationCount = 0;
 
             displayNameOfRequester = string.Empty;
             playFabIdOfRequestee = string.Empty;
@@ -263,9 +257,6 @@ namespace Server.PlayFab {
         private void OnGetUserInventorySuccess(GetUserInventoryResult result) {
             Console.Log("GetUserInventorySuccess!");
 
-            doneCount = 0;
-            operationCount = 2; //Lame
-
             int len = (int)ItemType.Amt;
             List<ItemInstance>[] items = new List<ItemInstance>[len];
 
@@ -314,6 +305,10 @@ namespace Server.PlayFab {
 				OnOpenTradeSuccess,
 				OnOpenTradeFailure
 			);
+        }
+
+        private void OnOpenTradeSuccess(OpenTradeResponse _) {
+            Console.Log("OpenTradeSuccess!");
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
@@ -337,31 +332,17 @@ namespace Server.PlayFab {
         private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
             Console.Log("ExecuteCloudScriptUpdateSuccess!");
 
-            if(doneCount == operationCount - 1) {
-                MySuccessFunc();
-            } else {
-                ++doneCount;
-            }
-        }
-
-        private void OnOpenTradeSuccess(OpenTradeResponse _) {
-            Console.Log("OpenTradeSuccess!");
-
-            if(doneCount == operationCount - 1) {
-                MySuccessFunc();
-            } else {
-                ++doneCount;
-            }
-        }
-
-        private void OnOpenTradeFailure(PlayFabError _) {
-            Console.LogError("OpenTradeFailure!");
-
-            MyFailureFunc();
+            MySuccessFunc();
         }
 
         private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptUpdateFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void OnOpenTradeFailure(PlayFabError _) {
+            Console.LogError("OpenTradeFailure!");
 
             MyFailureFunc();
         }
