@@ -1,5 +1,6 @@
 using PlayFab;
 using PlayFab.ClientModels;
+using PlayFab.PfEditor.Json;
 using Server.General;
 using SimpleJSON;
 using System.Collections.Generic;
@@ -162,20 +163,18 @@ namespace Server.PlayFab {
 
             playFabIdOfRequestee = result.AccountInfo.PlayFabId;
 
-            //open trade??
-
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "GetUserReadOnlyData",
                     FunctionParameter = new {
                         PlayFabID = playFabIdOfRequestee,
-                        Key = "FriendRequests"
+                        Key = "TradeRequests"
                     },
                     GeneratePlayStreamEvent = true,
                 },
                 OnExecuteCloudScriptGetSuccess,
                 OnExecuteCloudScriptGetFailure
-            ); //??
+            );
         }
 
         private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
@@ -183,18 +182,40 @@ namespace Server.PlayFab {
 
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
-			List<string> displayNames = new List<string>(); //For checking
 
-			while(myEnumerator.MoveNext()) { //Iterate through JSONArray
-                displayNames.Add(myEnumerator.Current.Value);
+			List<string> serializedTradeRequestData = new List<string>();
+            List<JSONArray> deserializedTradeRequestData = new List<JSONArray>();
+
+            while(myEnumerator.MoveNext()) { //Iterate through JSONArray
+                serializedTradeRequestData.Add(myEnumerator.Current.Value);
+            }
+            serializedTradeRequestData.ForEach(dataPt => deserializedTradeRequestData.Add((JSONArray)JSON.Parse(dataPt)));
+
+            foreach(JSONArray node in deserializedTradeRequestData) {
+                if((string)node[0] == displayNameOfRequester) { //Prevents multi-requesting
+                    MyFailureFunc();
+                    return;
+                }
             }
 
-            if(!displayNames.Contains(displayNameOfRequester)) { //Prevents multi-requesting
-                resultArr.Add(displayNameOfRequester);
-            } else {
-                MyFailureFunc();
-                return;
+            int togglesLen = toggles.Length;
+            bool[] flags = new bool[togglesLen];
+            for(int i = 0; i < togglesLen; ++i) {
+                flags[i] = toggles[i].isOn;
             }
+
+            int offerCountTextsLen = offerCountTexts.Length;
+            int[] offerCounts = new int[offerCountTextsLen];
+            for(int i = 0; i < offerCountTextsLen; ++i) {
+               offerCounts[i] = System.Convert.ToInt32(offerCountTexts[i].text);
+            }
+
+            JSONArray newNode = new JSONArray();
+            newNode.Add(displayNameOfRequester);
+            newNode.Add(JsonWrapper.SerializeObject(flags));
+            newNode.Add(JsonWrapper.SerializeObject(offerCounts));
+
+            resultArr.Add(newNode);
 
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
@@ -202,7 +223,7 @@ namespace Server.PlayFab {
                     FunctionParameter = new {
                         PlayFabID = playFabIdOfRequestee,
                         Keys = new string[1] {
-                            "FriendRequests"
+                            "TradeRequests"
                         },
                         Vals = new string[1] {
                             resultArr.ToString()
@@ -229,12 +250,6 @@ namespace Server.PlayFab {
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptGetFailure!");
-
-            MyFailureFunc();
-        }
-
-        private void OnGetFriendsListFailure(PlayFabError _) {
-            Console.Log("GetFriendsListFailure!");
 
             MyFailureFunc();
         }
