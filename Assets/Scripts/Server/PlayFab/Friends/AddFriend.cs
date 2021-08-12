@@ -18,7 +18,6 @@ namespace Server.PlayFab {
         private TMP_InputField inputField;
 
         private string displayNameOfRequester;
-
         private string playFabIdOfRequestee;
 
         [SerializeField]
