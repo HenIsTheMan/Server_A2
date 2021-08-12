@@ -28,7 +28,7 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnModifyOfferCountButtonClick(int modAmt) {
-            offerCountText.text = (System.Convert.ToInt32(offerCountText.text) + modAmt).ToString();
+            offerCountText.text = System.Math.Max(0, System.Convert.ToInt32(offerCountText.text) + modAmt).ToString();
         }
     }
 }
