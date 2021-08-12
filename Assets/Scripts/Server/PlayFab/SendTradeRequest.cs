@@ -14,6 +14,14 @@ namespace Server.PlayFab {
     internal sealed class SendTradeRequest: MonoBehaviour {
         #region Fields
 
+        private JSONArray resultArr;
+
+        private int togglesLen;
+        private bool[] flags;
+
+        private int offerCountTextsLen;
+        private int[] offerCounts;
+
         private string displayNameOfRequester;
         private string playFabIdOfRequestee;
 
@@ -60,7 +68,9 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal SendTradeRequest() : base() {
+        internal SendTradeRequest(): base() {
+            resultArr = null;
+
             displayNameOfRequester = string.Empty;
             playFabIdOfRequestee = string.Empty;
 
@@ -89,6 +99,17 @@ namespace Server.PlayFab {
         #endregion
 
         #region Unity User Callback Event Funcs
+
+        private void Awake() {
+            sendTradeRequestMsg.text = string.Empty;
+
+            togglesLen = toggles.Length;
+            flags = new bool[togglesLen];
+
+            offerCountTextsLen = offerCountTexts.Length;
+            offerCounts = new int[offerCountTextsLen];
+        }
+
         #endregion
 
         public void OnClick() {
@@ -180,7 +201,7 @@ namespace Server.PlayFab {
         private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
             Console.Log("ExecuteCloudScriptGetSuccess!");
 
-            JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
+            resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
 
 			List<string> serializedTradeRequestData = new List<string>();
@@ -198,14 +219,9 @@ namespace Server.PlayFab {
                 }
             }
 
-            int togglesLen = toggles.Length;
-            bool[] flags = new bool[togglesLen];
             for(int i = 0; i < togglesLen; ++i) {
                 flags[i] = toggles[i].isOn;
             }
-
-            int offerCountTextsLen = offerCountTexts.Length;
-            int[] offerCounts = new int[offerCountTextsLen];
             for(int i = 0; i < offerCountTextsLen; ++i) {
                offerCounts[i] = System.Convert.ToInt32(offerCountTexts[i].text);
             }
@@ -217,33 +233,78 @@ namespace Server.PlayFab {
 
             resultArr.Add(newNode);
 
-            PlayFabClientAPI.ExecuteCloudScript(
-                new ExecuteCloudScriptRequest() {
-                    FunctionName = "UpdateUserReadOnlyData",
-                    FunctionParameter = new {
-                        PlayFabID = playFabIdOfRequestee,
-                        Keys = new string[1] {
-                            "TradeRequests"
-                        },
-                        Vals = new string[1] {
-                            resultArr.ToString()
-                        }
-                    },
-                    GeneratePlayStreamEvent = true,
-                },
-                OnExecuteCloudScriptUpdateSuccess,
-                OnExecuteCloudScriptUpdateFailure
+            PlayFabClientAPI.GetUserInventory(
+                new GetUserInventoryRequest(),
+                OnGetUserInventorySuccess,
+                OnGetUserInventoryFailure
             );
+        }
+
+        private void OnGetUserInventorySuccess(GetUserInventoryResult result) {
+            Console.Log("GetUserInventorySuccess!");
+
+            //PlayFabClientAPI.ExecuteCloudScript(
+            //    new ExecuteCloudScriptRequest() {
+            //        FunctionName = "UpdateUserReadOnlyData",
+            //        FunctionParameter = new {
+            //            PlayFabID = playFabIdOfRequestee,
+            //            Keys = new string[1] {
+            //                            "TradeRequests"
+            //            },
+            //            Vals = new string[1] {
+            //                            resultArr.ToString()
+            //            }
+            //        },
+            //        GeneratePlayStreamEvent = true,
+            //    },
+            //    OnExecuteCloudScriptUpdateSuccess,
+            //    OnExecuteCloudScriptUpdateFailure
+            //);
+
+            //PlayFabClientAPI.OpenTrade(
+            //    new OpenTradeRequest() {
+            //        AllowedPlayerIds = new List<string> {
+            //            playFabIdOfRequestee
+            //        },
+            //        OfferedInventoryInstanceIds = ,
+            //        RequestedCatalogItemIds = 
+            //    },
+            //    OnOpenTradeSuccess,
+            //    OnOpenTradeFailure
+            //);
+
+            //foreach(ItemInstance instance in result.Inventory) {
+            //    for(int i = 0; i < commonLen; ++i) {
+            //        if(instance.ItemId == itemIDs[i]) {
+            //            ++itemCounts[i];
+            //            break;
+            //        }
+            //    }
+            //}
         }
 
         private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
             Console.Log("ExecuteCloudScriptUpdateSuccess!");
+        }
 
-            MySuccessFunc();
+        private void OnOpenTradeSuccess(OpenTradeResponse _) {
+            Console.Log("OpenTradeSuccess!");
+        }
+
+        private void OnOpenTradeFailure(PlayFabError _) {
+            Console.LogError("OpenTradeFailure!");
+
+            MyFailureFunc();
         }
 
         private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptUpdateFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void OnGetUserInventoryFailure(PlayFabError _) {
+            Console.LogError("GetUserInventoryFailure!");
 
             MyFailureFunc();
         }
