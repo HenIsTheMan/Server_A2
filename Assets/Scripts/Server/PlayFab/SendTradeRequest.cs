@@ -1,9 +1,12 @@
 using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
+using SimpleJSON;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
+using static Server.PlayFab.InputTypes;
 using static Server.PlayFab.ItemTypes;
 
 namespace Server.PlayFab {
@@ -95,6 +98,157 @@ namespace Server.PlayFab {
             );
 
             MyProcessingFunc();
+        }
+
+        private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
+            Console.Log("GetAccountInfo1stSuccess!");
+
+            displayNameOfRequester = result.AccountInfo.TitleInfo.DisplayName;
+
+            GetAccountInfoRequest request = new GetAccountInfoRequest();
+            bool hasFailed = false;
+
+            switch((InputType)dropdown.value) {
+                case InputType.DisplayName:
+                    request.TitleDisplayName = inputField.text;
+
+                    if(request.TitleDisplayName == displayNameOfRequester) {
+                        hasFailed = true;
+                    }
+
+                    break;
+                case InputType.Username:
+                    request.Username = inputField.text;
+
+                    if(request.Username == result.AccountInfo.Username) {
+                        hasFailed = true;
+                    }
+
+                    break;
+                case InputType.Email:
+                    request.Email = inputField.text;
+
+                    if(request.Email == result.AccountInfo.PrivateInfo.Email) {
+                        hasFailed = true;
+                    }
+
+                    break;
+                case InputType.PlayFabID:
+                    request.PlayFabId = inputField.text;
+
+                    if(request.PlayFabId == result.AccountInfo.PlayFabId) {
+                        hasFailed = true;
+                    }
+
+                    break;
+            }
+
+            inputField.text = string.Empty;
+
+            if(hasFailed) { //Cannot trade with yourself
+                MyFailureFunc();
+                return;
+            }
+
+            PlayFabClientAPI.GetAccountInfo(
+                request,
+                OnGetAccountInfoSuccess,
+                OnGetAccountInfoFailure
+            );
+        }
+
+        private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
+            Console.Log("GetAccountInfoSuccess!");
+
+            playFabIdOfRequestee = result.AccountInfo.PlayFabId;
+
+            //open trade??
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "GetUserReadOnlyData",
+                    FunctionParameter = new {
+                        PlayFabID = playFabIdOfRequestee,
+                        Key = "FriendRequests"
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptGetSuccess,
+                OnExecuteCloudScriptGetFailure
+            ); //??
+        }
+
+        private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
+            Console.Log("ExecuteCloudScriptGetSuccess!");
+
+            JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
+            JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
+			List<string> displayNames = new List<string>(); //For checking
+
+			while(myEnumerator.MoveNext()) { //Iterate through JSONArray
+                displayNames.Add(myEnumerator.Current.Value);
+            }
+
+            if(!displayNames.Contains(displayNameOfRequester)) { //Prevents multi-requesting
+                resultArr.Add(displayNameOfRequester);
+            } else {
+                MyFailureFunc();
+                return;
+            }
+
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "UpdateUserReadOnlyData",
+                    FunctionParameter = new {
+                        PlayFabID = playFabIdOfRequestee,
+                        Keys = new string[1] {
+                            "FriendRequests"
+                        },
+                        Vals = new string[1] {
+                            resultArr.ToString()
+                        }
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptUpdateSuccess,
+                OnExecuteCloudScriptUpdateFailure
+            );
+        }
+
+        private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptUpdateSuccess!");
+
+            MySuccessFunc();
+        }
+
+        private void OnExecuteCloudScriptUpdateFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptUpdateFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptGetFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void OnGetFriendsListFailure(PlayFabError _) {
+            Console.Log("GetFriendsListFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void OnGetAccountInfoFailure(PlayFabError _) {
+            Console.Log("GetAccountInfoFailure!");
+
+            MyFailureFunc();
+        }
+
+        private void OnGetAccountInfo1stFailure(PlayFabError _) {
+            Console.LogError("GetAccountInfo1stFailure!");
+
+            MyFailureFunc();
         }
 
         private void MyProcessingFunc() {
