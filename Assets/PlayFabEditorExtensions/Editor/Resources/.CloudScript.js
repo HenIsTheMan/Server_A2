@@ -395,4 +395,17 @@ handlers.RemoveFriend = function (args) {
         FriendPlayFabId: args.PlayFabID
     });
 };
+
+handlers.ClearInv = function (args) {
+    var userInv = server.GetUserInventory({
+        PlayFabId: currentPlayerId
+    });
+
+    for (var i = 0; i < userInv.Inventory.length; ++i) {
+        server.RevokeInventoryItem({
+            ItemInstanceId: userInv.Inventory[i].ItemInstanceId,
+            PlayFabId: currentPlayerId
+        });
+    }
+};
 //*/

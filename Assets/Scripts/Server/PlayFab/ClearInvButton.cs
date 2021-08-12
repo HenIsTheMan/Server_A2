@@ -1,5 +1,5 @@
 using PlayFab;
-using PlayFab.ServerModels;
+using PlayFab.ClientModels;
 using Server.General;
 using UnityEngine;
 
@@ -25,36 +25,22 @@ namespace Server.PlayFab {
         #endregion
 
         public void OnClick() {
-            PlayFabServerAPI.GetUserInventory(
-                new GetUserInventoryRequest(),
-                OnGetUserInventorySuccess,
-                OnGetUserInventoryFailure
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "ClearInv",
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptSuccess,
+                OnExecuteCloudScriptFailure
             );
         }
 
-        private void OnGetUserInventorySuccess(GetUserInventoryResult result) {
-            Console.Log("GetUserInventorySuccess!");
-
-            foreach(ItemInstance instance in result.Inventory) {
-                PlayFabServerAPI.RevokeInventoryItem(
-                    new RevokeInventoryItemRequest() {
-                    },
-                    OnRevokeInventoryItemSuccess,
-                    OnRevokeInventoryItemFailure
-                );
-            }
+        private void OnExecuteCloudScriptSuccess(ExecuteCloudScriptResult _) {
+            Console.Log("ExecuteCloudScriptSuccess!");
         }
 
-        private void OnRevokeInventoryItemSuccess(RevokeInventoryResult _) {
-            Console.Log("RevokeInventoryItemSuccess!");
-        }
-
-        private void OnRevokeInventoryItemFailure(PlayFabError _) {
-            Console.LogError("RevokeInventoryItemFailure!");
-        }
-
-        private void OnGetUserInventoryFailure(PlayFabError _) {
-            Console.LogError("GetUserInventoryFailure!");
+        private void OnExecuteCloudScriptFailure(PlayFabError _) {
+            Console.LogError("ExecuteCloudScriptFailure!");
         }
     }
 }
