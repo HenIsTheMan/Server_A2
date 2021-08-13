@@ -98,8 +98,6 @@ namespace Server.PlayFab {
             Console.Log("ExecuteCloudScriptGetSuccess!");
 
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
-            JSONNode.Enumerator myEnumerator = resultArr.GetEnumerator();
-
             foreach(JSONArray node in resultArr) { //Oh, can just do this way
                 if((string)node[0] == myDisplayName) {
                     resultArr.Remove((JSONNode)node);
