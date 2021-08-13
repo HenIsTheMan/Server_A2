@@ -3,7 +3,6 @@ using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
 using SimpleJSON;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
@@ -65,6 +64,9 @@ namespace Server.PlayFab {
         }
 
         #endregion
+
+        public void AcceptTrade() {
+        }
 
         public void CancelTrade() {
             PlayFabClientAPI.GetAccountInfo(
