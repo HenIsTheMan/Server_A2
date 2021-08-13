@@ -20,6 +20,24 @@ namespace Server.PlayFab {
         [SerializeField]
         private ObjPool selectionPool;
 
+        [SerializeField]
+        private string processingText;
+
+        [SerializeField]
+        private Color processingColor;
+
+        [SerializeField]
+        private string successText;
+
+        [SerializeField]
+        private Color successColor;
+
+        [SerializeField]
+        private string failureText;
+
+        [SerializeField]
+        private Color failureColor;
+
         #endregion
 
         #region Properties

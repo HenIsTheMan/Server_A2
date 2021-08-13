@@ -34,6 +34,24 @@ namespace Server.PlayFab {
         [EnumIndices(typeof(ItemType)), SerializeField]
         internal string[] itemIDs;
 
+        [SerializeField]
+        private string processingText;
+
+        [SerializeField]
+        private Color processingColor;
+
+        [SerializeField]
+        private string successText;
+
+        [SerializeField]
+        private Color successColor;
+
+        [SerializeField]
+        private string failureText;
+
+        [SerializeField]
+        private Color failureColor;
+
         #endregion
 
         #region Properties
