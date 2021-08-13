@@ -359,7 +359,7 @@ GameObject:
   - component: {fileID: 5944185138058108643}
   - component: {fileID: 5807912677733129549}
   m_Layer: 5
-  m_Name: SendTradeRequestSelection
+  m_Name: GiftTradeSelection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -83,7 +83,7 @@ namespace Server.PlayFab {
             Console.Log("ExecuteCloudScriptGetSuccess!");
 
             GameObject selectionGO;
-            SendTradeRequestSelection selection;
+            GiftTradeSelection selection;
 
             JSONArray tempArr;
             JSONNode.Enumerator myEnumerator;
@@ -92,7 +92,7 @@ namespace Server.PlayFab {
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             foreach(JSONArray node in resultArr) { //Oh, can just do this way
                 selectionGO = selectionPool.ActivateObj();
-                selection = selectionGO.GetComponent<SendTradeRequestSelection>();
+                selection = selectionGO.GetComponent<GiftTradeSelection>();
 
                 selection.selectionPool = selectionPool;
 

@@ -67,13 +67,13 @@ namespace Server.PlayFab {
             Console.Log("GetPlayerTradesSuccess!");
 
             GameObject selectionGO;
-            SendTradeRequestSelection selection;
+            GiftTradeSelection selection;
             int len = (int)ItemType.Amt - 1;
             int[] itemCounts = new int[len];
 
             foreach(TradeInfo tradeInfo in response.OpenedTrades) {
                 selectionGO = selectionPool.ActivateObj();
-                selection = selectionGO.GetComponent<SendTradeRequestSelection>();
+                selection = selectionGO.GetComponent<GiftTradeSelection>();
 
                 selection.selectionPool = selectionPool;
 

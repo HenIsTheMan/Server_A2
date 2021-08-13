@@ -8,7 +8,7 @@ using UnityEngine.UI;
 using static Server.PlayFab.ItemTypes;
 
 namespace Server.PlayFab {
-    internal sealed class SendTradeRequestSelection: MonoBehaviour {
+    internal sealed class GiftTradeSelection: MonoBehaviour {
         #region Fields
 
         internal ObjPool selectionPool;
@@ -36,7 +36,7 @@ namespace Server.PlayFab {
 
         #region Ctors and Dtor
 
-        internal SendTradeRequestSelection(): base() {
+        internal GiftTradeSelection(): base() {
             selectionPool = null;
 
             myDisplayName = string.Empty;
@@ -50,7 +50,7 @@ namespace Server.PlayFab {
             itemIDs = System.Array.Empty<string>();
         }
 
-        static SendTradeRequestSelection() {
+        static GiftTradeSelection() {
         }
 
         #endregion
