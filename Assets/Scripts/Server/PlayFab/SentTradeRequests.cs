@@ -77,7 +77,7 @@ namespace Server.PlayFab {
 
                 selection.selectionPool = selectionPool;
 
-                selection.receivingPlayerID = tradeInfo.AllowedPlayerIds[0];
+                selection.playerID = tradeInfo.AllowedPlayerIds[0];
                 selection.tradeID = tradeInfo.TradeId;
 
                 selection.displayNameText.text = tradeInfo.AllowedPlayerIds[0]; //Lol

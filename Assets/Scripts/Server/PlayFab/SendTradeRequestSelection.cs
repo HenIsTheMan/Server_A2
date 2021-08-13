@@ -14,7 +14,7 @@ namespace Server.PlayFab {
         internal ObjPool selectionPool;
 
         private string myDisplayName;
-        internal string receivingPlayerID;
+        internal string playerID;
         internal string tradeID;
 
         [SerializeField]
@@ -40,7 +40,7 @@ namespace Server.PlayFab {
             selectionPool = null;
 
             myDisplayName = string.Empty;
-            receivingPlayerID = string.Empty;
+            playerID = string.Empty;
             tradeID = string.Empty;
 
             displayNameText = null;
@@ -84,7 +84,7 @@ namespace Server.PlayFab {
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "GetUserReadOnlyData",
                     FunctionParameter = new {
-                        PlayFabID = receivingPlayerID,
+                        PlayFabID = playerID,
                         Key = "TradeRequests"
                     },
                     GeneratePlayStreamEvent = true,
@@ -109,7 +109,7 @@ namespace Server.PlayFab {
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "UpdateUserReadOnlyData",
                     FunctionParameter = new {
-                        PlayFabID = receivingPlayerID,
+                        PlayFabID = playerID,
                         Keys = new string[1] {
                             "TradeRequests"
                         },
