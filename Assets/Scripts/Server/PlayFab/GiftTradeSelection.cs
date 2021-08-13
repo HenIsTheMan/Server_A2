@@ -6,6 +6,8 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 using static Server.PlayFab.ItemTypes;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Server.PlayFab {
     internal sealed class GiftTradeSelection: MonoBehaviour {
@@ -149,16 +151,54 @@ namespace Server.PlayFab {
                     OnCancelTradeFailure
                 );
             } else {
-                PlayFabClientAPI.AcceptTrade(
-                    new AcceptTradeRequest() {
-                        OfferingPlayerId = playerID,
-                        TradeId = tradeID,
-                        AcceptedInventoryInstanceIds = null //??
-                    },
-                    OnAcceptTradeSuccess,
-                    OnAcceptTradeFailure
+                PlayFabClientAPI.GetUserInventory(
+                    new GetUserInventoryRequest(),
+                    OnGetUserInventorySuccess,
+                    OnGetUserInventoryFailure
                 );
             }
+        }
+
+        private void OnGetUserInventorySuccess(GetUserInventoryResult result) {
+            Console.Log("GetUserInventorySuccess!");
+
+            int commonLen = itemImgs.Length;
+            List<string> itemIDsToFulfill = new List<string>(commonLen);
+
+            for(int i = 0; i < commonLen; ++i) {
+                if(itemImgs[i].enabled) {
+                    itemIDsToFulfill.Add(itemIDs[i]);
+                }
+            }
+
+            List<string> acceptedInvInstanceIDs = new List<string>();
+            int count = itemIDsToFulfill.Count;
+
+            foreach(ItemInstance instance in result.Inventory) {
+                if(!itemIDsToFulfill.Any()) {
+                    break;
+                }
+
+                for(int i = 0; i < count; ++i) {
+                    if(instance.ItemId == itemIDsToFulfill[i]) {
+                        acceptedInvInstanceIDs.Add(instance.ItemInstanceId);
+
+                        itemIDsToFulfill.Remove(instance.ItemId);
+
+                        break;
+                    }
+                }
+            }
+
+            PlayFabClientAPI.AcceptTrade(
+                new AcceptTradeRequest() {
+                    OfferingPlayerId = playerID,
+                    TradeId = tradeID,
+                    AcceptedInventoryInstanceIds = acceptedInvInstanceIDs
+                },
+                OnAcceptTradeSuccess,
+                OnAcceptTradeFailure
+            );
         }
 
         private void OnAcceptTradeSuccess(AcceptTradeResponse _) {
@@ -169,6 +209,10 @@ namespace Server.PlayFab {
 
         private void OnAcceptTradeFailure(PlayFabError _) {
             Console.LogError("AcceptTradeFailure!");
+        }
+
+        private void OnGetUserInventoryFailure(PlayFabError _) {
+            Console.LogError("GetUserInventoryFailure!");
         }
 
         private void OnCancelTradeSuccess(CancelTradeResponse _) {
