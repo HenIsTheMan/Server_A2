@@ -90,7 +90,7 @@ namespace Server.PlayFab {
                     itemCounts[i] = 0;
                 }
 
-                foreach(string itemID in tradeInfo.OfferedInventoryInstanceIds) {
+                foreach(string itemID in tradeInfo.OfferedCatalogItemIds) {
                     for(int i = 0; i < len; ++i) {
                         if(itemID == selection.itemIDs[i]) {
                             ++itemCounts[i];
