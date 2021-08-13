@@ -23,6 +23,7 @@ namespace Server.PlayFab {
         private int[] offerCounts;
 
         private string displayNameOfRequester;
+        private string playFabIdOfRequester;
         private string playFabIdOfRequestee;
 
         [EnumIndices(typeof(ItemType)), SerializeField]
@@ -75,6 +76,7 @@ namespace Server.PlayFab {
             resultArr = null;
 
             displayNameOfRequester = string.Empty;
+            playFabIdOfRequester = string.Empty;
             playFabIdOfRequestee = string.Empty;
 
             itemIDs = System.Array.Empty<string>();
@@ -140,6 +142,7 @@ namespace Server.PlayFab {
             Console.Log("GetAccountInfo1stSuccess!");
 
             displayNameOfRequester = result.AccountInfo.TitleInfo.DisplayName;
+            playFabIdOfRequester = result.AccountInfo.PlayFabId;
 
             GetAccountInfoRequest request = new GetAccountInfoRequest();
             bool hasFailed = false;
@@ -172,7 +175,7 @@ namespace Server.PlayFab {
                 case InputType.PlayFabID:
                     request.PlayFabId = inputField.text;
 
-                    if(request.PlayFabId == result.AccountInfo.PlayFabId) {
+                    if(request.PlayFabId == playFabIdOfRequester) {
                         hasFailed = true;
                     }
 
@@ -242,6 +245,7 @@ namespace Server.PlayFab {
             newNode.Add(displayNameOfRequester);
             newNode.Add(JsonWrapper.SerializeObject(flags));
             newNode.Add(JsonWrapper.SerializeObject(offerCounts));
+            newNode.Add(playFabIdOfRequester);
 
             resultArr.Add(newNode);
 
