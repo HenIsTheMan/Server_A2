@@ -2,14 +2,12 @@ using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
 using SimpleJSON;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace Server.PlayFab {
     internal sealed class ReceivedTradeRequests: MonoBehaviour {
         #region Fields
-
-        private string myPlayFabID;
-        private string otherPlayFabID;
 
         [SerializeField]
         private GameObject selectionPrefab;
@@ -31,9 +29,6 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal ReceivedTradeRequests(): base() {
-            myPlayFabID = string.Empty;
-            otherPlayFabID = string.Empty;
-
             selectionPrefab = null;
             contentTransform = null;
 
@@ -70,27 +65,11 @@ namespace Server.PlayFab {
         private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
             Console.Log("GetAccountInfo1stSuccess!");
 
-            myPlayFabID = result.AccountInfo.PlayFabId;
-
-            PlayFabClientAPI.GetAccountInfo(
-                new GetAccountInfoRequest() {
-                    PlayFabId = otherPlayFabID
-                },
-                OnGetAccountInfoSuccess,
-                OnGetAccountInfoFailure
-            );
-        }
-
-        private void OnGetAccountInfoSuccess(GetAccountInfoResult result) {
-            Console.Log("GetAccountInfoSuccess!");
-
-            otherPlayFabID = result.AccountInfo.PlayFabId;
-
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "GetUserReadOnlyData",
                     FunctionParameter = new {
-                        PlayFabID = myPlayFabID,
+                        PlayFabID = result.AccountInfo.PlayFabId,
                         Key = "TradeRequests"
                     },
                     GeneratePlayStreamEvent = true,
@@ -117,7 +96,7 @@ namespace Server.PlayFab {
 
                 selection.selectionPool = selectionPool;
 
-               selection.playerID = otherPlayFabID;
+                //selection.receivingPlayerID = tradeInfo.AllowedPlayerIds[0]; //??
                 selection.tradeID = node[3];
 
                 selection.displayNameText.text = node[0];
@@ -144,10 +123,6 @@ namespace Server.PlayFab {
 
         private void OnExecuteCloudScriptGetFailure(PlayFabError _) {
             Console.LogError("ExecuteCloudScriptGetFailure!");
-        }
-
-        private void OnGetAccountInfoFailure(PlayFabError _) {
-            Console.LogError("GetAccountInfoFailure!");
         }
 
         private void OnGetAccountInfo1stFailure(PlayFabError _) {
