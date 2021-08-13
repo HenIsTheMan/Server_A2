@@ -2,7 +2,6 @@ using PlayFab;
 using PlayFab.ClientModels;
 using Server.General;
 using SimpleJSON;
-using System.Collections.Generic;
 using UnityEngine;
 
 namespace Server.PlayFab {
@@ -21,6 +20,8 @@ namespace Server.PlayFab {
         [SerializeField]
         private ObjPool selectionPool;
 
+        private string myPlayerID;
+
         #endregion
 
         #region Properties
@@ -34,6 +35,8 @@ namespace Server.PlayFab {
 
             amtOfSelections = 0;
             selectionPool = null;
+
+            myPlayerID = string.Empty;
         }
 
         static ReceivedTradeRequests() {
@@ -65,11 +68,13 @@ namespace Server.PlayFab {
         private void OnGetAccountInfo1stSuccess(GetAccountInfoResult result) {
             Console.Log("GetAccountInfo1stSuccess!");
 
+            myPlayerID = result.AccountInfo.PlayFabId;
+
             PlayFabClientAPI.ExecuteCloudScript(
                 new ExecuteCloudScriptRequest() {
                     FunctionName = "GetUserReadOnlyData",
                     FunctionParameter = new {
-                        PlayFabID = result.AccountInfo.PlayFabId,
+                        PlayFabID = myPlayerID,
                         Key = "TradeRequests"
                     },
                     GeneratePlayStreamEvent = true,
@@ -101,7 +106,7 @@ namespace Server.PlayFab {
                 selection.selectionPool = selectionPool;
 
                 selection.otherDisplayName = node[0];
-                selection.playerID = node[3];
+                selection.playerID = myPlayerID;
                 selection.tradeID = node[4];
 
                 selection.displayNameText.text = selection.otherDisplayName;
