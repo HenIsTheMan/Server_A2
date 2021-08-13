@@ -132,6 +132,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 119929752}
+  - component: {fileID: 119929754}
   - component: {fileID: 119929753}
   m_Layer: 5
   m_Name: ReceivedTradeRequests
@@ -174,6 +175,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c1baa06282182114b91c263034b457cb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &119929754
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 119929751}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2ddae2464eff4164ab96ecf819329865, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  selectionPrefab: {fileID: 5944185138058108645, guid: 3d6e43cbfcb103041a0686b8b76a9c6a, type: 3}
+  contentTransform: {fileID: 873565518}
+  amtOfSelections: 70
+  selectionPool: {fileID: 119929753}
 --- !u!1 &586711577
 GameObject:
   m_ObjectHideFlags: 0
@@ -228,7 +245,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   selectionPrefab: {fileID: 5944185138058108645, guid: 675c4ef4a22cf8c4781783aeffd857bf, type: 3}
   contentTransform: {fileID: 943457010}
-  amtOfSelections: 100
+  amtOfSelections: 70
   selectionPool: {fileID: 586711580}
 --- !u!114 &586711580
 MonoBehaviour:
@@ -863,6 +880,11 @@ RectTransform:
   m_CorrespondingSourceObject: {fileID: 6566730919741588316, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
   m_PrefabInstance: {fileID: 873565516}
   m_PrefabAsset: {fileID: 0}
+--- !u!224 &873565518 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6566730919457596313, guid: d54535b71aedac24ebbb7176f67a50e6, type: 3}
+  m_PrefabInstance: {fileID: 873565516}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &873665850
 GameObject:
   m_ObjectHideFlags: 0
@@ -1409,6 +1431,34 @@ PrefabInstance:
     - target: {fileID: 5646325973333328732, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
       propertyPath: m_Name
       value: ReceivedTradeRequestsButton
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 119929754}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: OnClick
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: Server.PlayFab.ReceivedTradeRequests, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 5646325973333328734, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 5646325973333328735, guid: 542abe8d9e97dd0449c93e9609cd988c, type: 3}
       propertyPath: m_Pivot.x
