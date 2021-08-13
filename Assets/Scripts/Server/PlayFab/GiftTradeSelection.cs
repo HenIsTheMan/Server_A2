@@ -18,6 +18,7 @@ namespace Server.PlayFab {
         internal ObjPool selectionPool;
 
         private string myDisplayName;
+        internal string otherDisplayName;
         internal string playerID;
         internal string tradeID;
 
@@ -46,6 +47,7 @@ namespace Server.PlayFab {
             selectionPool = null;
 
             myDisplayName = string.Empty;
+            otherDisplayName = string.Empty;
             playerID = string.Empty;
             tradeID = string.Empty;
 
@@ -73,10 +75,17 @@ namespace Server.PlayFab {
         public void AcceptTrade() {
             isCancelTrade = false;
 
-            PlayFabClientAPI.GetAccountInfo(
-                new GetAccountInfoRequest(),
-                OnGetAccountInfo1stSuccess,
-                OnGetAccountInfo1stFailure
+            PlayFabClientAPI.ExecuteCloudScript(
+                new ExecuteCloudScriptRequest() {
+                    FunctionName = "GetUserReadOnlyData",
+                    FunctionParameter = new {
+                        PlayFabID = playerID,
+                        Key = "TradeRequests"
+                    },
+                    GeneratePlayStreamEvent = true,
+                },
+                OnExecuteCloudScriptGetSuccess,
+                OnExecuteCloudScriptGetFailure
             );
         }
 
@@ -112,9 +121,11 @@ namespace Server.PlayFab {
         private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
             Console.Log("ExecuteCloudScriptGetSuccess!");
 
+            string displayName = isCancelTrade ? myDisplayName : otherDisplayName;
+
             JSONArray resultArr = (JSONArray)JSON.Parse((string)result.FunctionResult);
             foreach(JSONArray node in resultArr) { //Oh, can just do this way
-                if((string)node[0] == myDisplayName) {
+                if((string)node[0] == displayName) {
                     resultArr.Remove((JSONNode)node);
                     break;
                 }

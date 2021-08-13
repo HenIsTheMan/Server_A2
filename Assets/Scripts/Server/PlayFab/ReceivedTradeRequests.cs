@@ -100,10 +100,11 @@ namespace Server.PlayFab {
 
                 selection.selectionPool = selectionPool;
 
+                selection.otherDisplayName = node[0];
                 selection.playerID = node[3];
                 selection.tradeID = node[4];
 
-                selection.displayNameText.text = node[0];
+                selection.displayNameText.text = selection.otherDisplayName;
 
                 tempArr = (JSONArray)JSON.Parse(node[1]);
                 myEnumerator = tempArr.GetEnumerator();
