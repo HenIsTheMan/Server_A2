@@ -9,8 +9,6 @@ namespace Server.PlayFab {
     internal sealed class SentTradeRequests: MonoBehaviour {
         #region Fields
 
-        private GetPlayerTradesResponse myGetPlayerTradesResponse;
-
         [SerializeField]
         private GameObject selectionPrefab;
 
@@ -31,8 +29,6 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal SentTradeRequests(): base() {
-            myGetPlayerTradesResponse = null;
-
             selectionPrefab = null;
             contentTransform = null;
 
@@ -70,8 +66,6 @@ namespace Server.PlayFab {
 
         private void OnGetPlayerTradesSuccess(GetPlayerTradesResponse response) {
             Console.Log("GetPlayerTradesSuccess!");
-
-            myGetPlayerTradesResponse = response;
 
             GameObject selectionGO;
             SendTradeRequestSelection selection;
