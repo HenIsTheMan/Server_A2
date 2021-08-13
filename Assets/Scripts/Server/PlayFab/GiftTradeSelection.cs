@@ -11,6 +11,8 @@ namespace Server.PlayFab {
     internal sealed class GiftTradeSelection: MonoBehaviour {
         #region Fields
 
+        private bool isCancelTrade;
+
         internal ObjPool selectionPool;
 
         private string myDisplayName;
@@ -37,6 +39,8 @@ namespace Server.PlayFab {
         #region Ctors and Dtor
 
         internal GiftTradeSelection(): base() {
+            isCancelTrade = false;
+
             selectionPool = null;
 
             myDisplayName = string.Empty;
@@ -65,9 +69,18 @@ namespace Server.PlayFab {
         #endregion
 
         public void AcceptTrade() {
+            isCancelTrade = false;
+
+            PlayFabClientAPI.GetAccountInfo(
+                new GetAccountInfoRequest(),
+                OnGetAccountInfo1stSuccess,
+                OnGetAccountInfo1stFailure
+            );
         }
 
         public void CancelTrade() {
+            isCancelTrade = true;
+
             PlayFabClientAPI.GetAccountInfo(
                 new GetAccountInfoRequest(),
                 OnGetAccountInfo1stSuccess,
@@ -127,13 +140,35 @@ namespace Server.PlayFab {
         private void OnExecuteCloudScriptUpdateSuccess(ExecuteCloudScriptResult _) {
             Console.Log("ExecuteCloudScriptUpdateSuccess!");
 
-            PlayFabClientAPI.CancelTrade(
-                new CancelTradeRequest() {
-                    TradeId = tradeID
-                },
-                OnCancelTradeSuccess,
-                OnCancelTradeFailure
-            );
+            if(isCancelTrade) {
+                PlayFabClientAPI.CancelTrade(
+                    new CancelTradeRequest() {
+                        TradeId = tradeID
+                    },
+                    OnCancelTradeSuccess,
+                    OnCancelTradeFailure
+                );
+            } else {
+                PlayFabClientAPI.AcceptTrade(
+                    new AcceptTradeRequest() {
+                        OfferingPlayerId = playerID,
+                        TradeId = tradeID,
+                        AcceptedInventoryInstanceIds = null //??
+                    },
+                    OnAcceptTradeSuccess,
+                    OnAcceptTradeFailure
+                );
+            }
+        }
+
+        private void OnAcceptTradeSuccess(AcceptTradeResponse _) {
+            Console.Log("AcceptTradeSuccess!");
+
+            selectionPool.DeactivateObj(gameObject);
+        }
+
+        private void OnAcceptTradeFailure(PlayFabError _) {
+            Console.LogError("AcceptTradeFailure!");
         }
 
         private void OnCancelTradeSuccess(CancelTradeResponse _) {
