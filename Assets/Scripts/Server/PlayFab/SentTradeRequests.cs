@@ -66,6 +66,10 @@ namespace Server.PlayFab {
         private void OnGetPlayerTradesSuccess(GetPlayerTradesResponse response) {
             Console.Log("GetPlayerTradesSuccess!");
 
+            foreach(Transform childTransform in contentTransform) {
+                selectionPool.DeactivateObj(childTransform.gameObject);
+            }
+
             GameObject selectionGO;
             GiftTradeSelection selection;
             int len = (int)ItemType.Amt - 1;

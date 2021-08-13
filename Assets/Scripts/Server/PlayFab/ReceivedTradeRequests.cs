@@ -82,6 +82,10 @@ namespace Server.PlayFab {
         private void OnExecuteCloudScriptGetSuccess(ExecuteCloudScriptResult result) {
             Console.Log("ExecuteCloudScriptGetSuccess!");
 
+            foreach(Transform childTransform in contentTransform) {
+                selectionPool.DeactivateObj(childTransform.gameObject);
+            }
+
             GameObject selectionGO;
             GiftTradeSelection selection;
 
