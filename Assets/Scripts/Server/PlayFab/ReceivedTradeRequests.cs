@@ -106,10 +106,7 @@ namespace Server.PlayFab {
                 index = 0;
 
                 while(myEnumerator.MoveNext()) { //Iterate through JSONArray
-                    if(myEnumerator.Current.Value) {
-                        selection.itemImgs[index].enabled = true;
-                    }
-                    ++index;
+                    selection.itemImgs[index++].enabled = myEnumerator.Current.Value;
                 }
 
                 tempArr = (JSONArray)JSON.Parse(node[2]);
